@@ -2,11 +2,8 @@
 
 Comdagen (_Com_merce _Da_ta _Gen_erator) is a tool that will build you a site import file tailored to your specification.
 
-Comdagen is developed primarly by Matti Bickel (<mbickel@salesforce.com>). Version 1.0 was written almost entirely by Oskar Jauch.
-Initial ideas were brought by Rene Schwietzke. Martin Klaus and Matti Bickel contributed to earlier versions.
-
-The team has it's own slack room at [#datageneration](https://commercecloud.slack.com/messages/#datageneration/).
-Come say hi!
+Comdagen is developed primarly by Matti Bickel (<mbickel@salesforce.com>). Version 1.0 was written almost entirely by Oskar Jauch (@ojauch).
+Initial ideas were brought by Rene Schwietzke (@rschwietzke). Martin Klaus and Matti Bickel contributed to earlier versions.
 
 _Note_: historically, this project has been known as undagen (Unified Data Generator). But we want to very specific about the type 
 of data this project is able to produce - you'll get a full fledged Commerce Cloud data set. Nothing more, nothing less.  
