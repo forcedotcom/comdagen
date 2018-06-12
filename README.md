@@ -89,7 +89,7 @@ Open and edit the respective config files to adjust the generation result. Two e
  - the `elementCount` attribute controls how many elements get generated. Note that the first X elements will be the 
    same if you just increase this value without changing `initialSeed`.
 
-### Data sources
+## Data sources
 Comdagen uses data files to pick realistic names, cities or zip codes for the generated data sets. You can find those
 files in your checkout under `src/main/resources/contentfiles`. They are not meant to provide accurate data, the main
 goal is to get character and word distribution correct for our internal localized indexers.
