@@ -1,0 +1,12 @@
+/classes/
+/target/
+/.idea/
+/.settings/
+/output/
+.DS_Store
+.project
+.classpath
+*.iml
+*.zip
+*.jfr
+dependency-reduced-pom.xml

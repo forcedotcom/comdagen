@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<inventory xmlns="http://www.demandware.com/xml/impex/inventory/2007-05-31">
+    <#list gen.objects as inventory>
+    <inventory-list>
+        <header list-id="${inventory.listId}">
+            <default-instock>${inventory.defaultInstock?c}</default-instock>
+            <description>${inventory.description}</description>
+            <use-bundle-inventory-only>false</use-bundle-inventory-only>
+            <on-order>false</on-order>
+        </header>
+        <records>
+            <#list inventory.inventoryRecords as record>
+            <record product-id="${record.productId}">
+                <allocation>${record.allocation}</allocation>
+                <allocation-timestamp>${record.allocationDateTime}</allocation-timestamp>
+                <ats>${record.ats}</ats>
+            </record>
+            </#list>
+        </records>
+    </inventory-list>
+    </#list>
+
+</inventory>

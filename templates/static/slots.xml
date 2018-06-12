@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slot-configurations xmlns="http://www.demandware.com/xml/impex/slot/2008-09-08">
+    <slot-configuration slot-id="minicart-banner" context="global" configuration-id="10%offorderover$150" assigned-to-site="true">
+        <description>Free Ground Shipping for Orders over $150</description>
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <schedule>
+            <recurrence>
+                <time-of-day>
+                    <time-from>21:00:00.000Z</time-from>
+                    <time-to>08:59:00.000Z</time-to>
+                </time-of-day>
+            </recurrence>
+        </schedule>
+        <content>
+            <html>
+                <body xml:lang="x-default">&lt;div class="minicartslot"&gt;
+&lt;p style="padding: 0px 10px;"&gt;10% off any order with a purchase of over $150&lt;/p&gt;
+&lt;/div&gt;</body>
+            </html>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="404-banner" context="global" configuration-id="404 banner" assigned-to-site="true">
+        <template>slots/content/giftcertificates.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <content-assets>
+                <content-asset content-id="404-banner"/>
+            </content-assets>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="account-banner" context="global" configuration-id="Account Banner" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="error-banner" context="global" configuration-id="Error Banner" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="folder-main-slot" context="folder" context-id="about-us" configuration-id="New Slot Configuration - 2014-12-31 11:14:21" default="true" assigned-to-site="false">
+        <description>default slot for about us page</description>
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html>
+                <body xml:lang="x-default">&lt;div class="folder-slot"&gt;
+    &lt;h2&gt;
+        About Demandware
+    &lt;/h2&gt;
+    &lt;p&gt;
+It all started with a series of observations: eCommerce merchandising and marketing innovation is what generates the revenue, yet most operations are spending 80% of their budgets simply maintaining current infrastructure. The pace of ecommerce accelerates daily, yet most operations are scrambling to stand still. Merchandisers and marketers are supremely frustrated, spending more time chasing outsourced providers and internal IT organizations, than actually merchandising and marketing their own businesses. There had to be a better way.
+    &lt;/p&gt;
+&lt;/div&gt;</body>
+            </html>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="folder-main-slot" context="folder" context-id="customer-service" configuration-id="New Slot Configuration - 2014-12-31 11:43:32" default="true" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html>
+                <body xml:lang="x-default">&lt;div class="folder-slot"&gt;
+&lt;h2&gt;
+Customer Service
+&lt;/h2&gt;
+&lt;p&gt;
+Here you will find answers to your questions about shopping at our online store, your order, payment options and more. Simply select from the categories below for you complete information.
+&lt;/p&gt;
+&lt;/div&gt;</body>
+            </html>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="noresult-banner" context="global" configuration-id="Noresult Banner" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="placeorder-slot" context="global" configuration-id="Placeorder Slot" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="404-promo" context="global" configuration-id="Promo Zune" default="true" assigned-to-site="true">
+        <description>Free Microsoft Zune with Purchase of $500 or More in Electronics</description>
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html>
+                <body xml:lang="x-default">&lt;p style="margin:10px 0 0 0"&gt;&lt;img height="139" width="350" alt="Free Microsoft Zune with Purchase of $500 or More in Electronics" src="images/slot/404-promo-zune.jpg?$staticlink$" /&gt;&lt;/p&gt;</body>
+            </html>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="registry-header" context="global" configuration-id="Registry Header" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="wishlist-banner" context="global" configuration-id="Wishlist Banner" assigned-to-site="false">
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>false</enabled-flag>
+        <content>
+            <html/>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="home-main" context="global" configuration-id="homepage-jquery-cycle" default="true" assigned-to-site="true">
+        <description>Homepage Jquery Cycle</description>
+        <template>slots/content/homepage/homepageslider.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <content-assets>
+                <content-asset content-id="home-cycle"/>
+            </content-assets>
+        </content>
+    </slot-configuration>
+
+    <slot-configuration slot-id="search-result-banner" context="global" configuration-id="search-results-banner" default="true" assigned-to-site="true">
+        <description>Slot Banner that displays above search results</description>
+        <template>slots/html/htmlslotcontainer.isml</template>
+        <enabled-flag>true</enabled-flag>
+        <content>
+            <html>
+                <body xml:lang="x-default">&lt;div class="html-slot"&gt;
+&lt;h1&gt;Can't find what you are looking for? Consider a &lt;a href="$httpsURL('GiftCert-Purchase')$" title="Go to Gift Certificates"&gt;gift certificate&lt;/a&gt;!&lt;/h1&gt;
+&lt;/div&gt;</body>
+            </html>
+        </content>
+    </slot-configuration>
+
+</slot-configurations>

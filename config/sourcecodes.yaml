@@ -1,0 +1,10 @@
+sourcecodes:
+  # number of generated source code groups
+  elementCount: 10
+  # range of codes per source code group
+  minCodes: 1
+  maxCodes: 10
+
+  # generate random custom attributes
+  generatedAttributes:
+    elementCount: 5

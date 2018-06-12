@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<stores xmlns="http://www.demandware.com/xml/impex/store/2007-04-30">
+    <#list gen.objects as store>
+    <store store-id="${store.id}">
+        <name>${store.name}</name>
+        <latitude>${store.coordinates.first}</latitude>
+        <longitude>${store.coordinates.second}</longitude>
+        <#if store.customAttributes?has_content>
+        <custom-attributes>
+            <#list store.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">
+                <value>${attribute.value}</value>
+            </custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+    </store>
+    </#list>
+</stores>

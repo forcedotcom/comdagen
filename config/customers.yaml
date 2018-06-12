@@ -1,0 +1,23 @@
+# customer list configuration
+customers:
+    # number of customers
+    elementCount: 1000
+    outputDir: "customer-lists"
+
+    # each customer needs a valid (no 'example.net' or localhost - see #18) email address
+    # pick whatever domain you own or leave the default one (it's one of Xceptance's blackhole domains that discard all
+    # emails send to it - they graciously agreed to let us use it)
+    emailDomain: "varmail.net"
+
+    # define customer custom attributes
+    customAttributes:
+        foobar:
+          type: boolean
+          data: static
+          staticValue: true
+
+    generatedAttributes:
+        elementCount: 10
+
+    # should customer passwords be hashed before writing them to the XML file?
+    prehashPassword: true

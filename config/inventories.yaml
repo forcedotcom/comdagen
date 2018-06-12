@@ -1,0 +1,10 @@
+inventories:
+  # number of generated inventory lists
+  elementCount: 1
+  # percentage of products covered by an inventory list (1.0 == all products)
+  # Note that this determines the number of total inventory records: elementCount * (coverage * number of products)
+  coverage: 1.0
+  inventoryRecords:
+    # How many items of a single SKU should there be?
+    minCount: 0
+    maxCount: 5000

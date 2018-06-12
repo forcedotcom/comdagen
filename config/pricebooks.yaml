@@ -1,0 +1,38 @@
+# pricebook configuration
+pricebooks:
+    # base id of pricebook
+    id: "pricebook"
+
+    # number of pricebooks to generate for this configuration
+    elementCount: 1
+
+    # define range of prices per product and pricebook
+    minAmountCount: 1
+    maxAmountCount: 4
+
+    # define range of price in USD
+    minAmount: 0.01
+    maxAmount: 2000.0
+
+    # define pricebook custom attributes
+    customAttributes:
+      foobar:
+        type: boolean
+        data: static
+        staticValue: true
+
+    # randomly generate custom attributes for pricebook
+    generatedAttributes:
+      elementCount: 5
+
+    # percentage of products to generate prices for (1.0 == 100%, 0.75 == 75%, etc.)
+    coverage: 1.0
+
+    # if true generate cheaper prices
+    sales: false
+
+    # define child pricebooks
+    children:
+      - id: "sales-pricebook"
+        coverage: 0.25
+        sales: true

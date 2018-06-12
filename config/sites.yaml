@@ -1,0 +1,98 @@
+sitesConfig:
+  # each email address needs a valid, routable domain (no 'example.net' or localhost - see #18)
+  # pick whatever domain you own or leave the default one (it's one of Xceptance's blackhole domains that discard all
+  # emails send to it - they graciously agreed to let us use it)
+  emailDomain: "varmail.net"
+
+  staticFiles: ["libraries/"]
+
+  # Total amount of sites that will be generated. Sites specified under "sites" count against this.
+  # If you specify more sites below than in elementCount this number will be silently expanded.
+  # If you specify less, we will generate "random" sites to fill the gap.
+  elementCount: 3
+
+  # the top-level seed - everything in your site import will derive from this unless explicitly overwritten
+  initialSeed: 1234
+
+  # data on the site itself goes here
+  outputFilePattern: "site.xml"
+  outputDir: "sites"
+
+  # Defaults you specify here will be respected for both sites you specify and those that are generated automatically.
+  defaults:
+    customerConfig: "customers.yaml"
+    pricebookConfig: "pricebooks.yaml"
+    catalogConfig: "catalogs.yaml"
+    couponConfig: "coupons.yaml"
+    inventoryConfig: "inventories.yaml"
+    customerGroupConfig: "customer-groups.yaml"
+    promotionConfig: "promotions.yaml"
+    shippingConfig: "shipping.yaml"
+    sourceCodeConfig: "sourcecodes.yaml"
+    storeConfig: "stores.yaml"
+    sortingRuleConfig: "sortingrules.yaml"
+    redirectUrlConfig: "redirect-urls.yaml"
+
+    regions: [Generic]
+    currencies: [USD]
+
+    navigationCatalog:
+      coverage: 0.8
+      categories:
+        elementCount: 50
+        categoryTreeDepth: 5
+        categoryTreeBreadth: 10
+        categoryTemplate: "rendering/category/categoryproducthits"
+      # define category custom attributes
+      customAttributes:
+        enableCompare:
+          type: boolean
+          data: static
+          staticValue: true
+        showInMenu:
+          type: boolean
+          data: static
+          staticValue: true
+
+
+  sites:
+    # Each dash causes one site to be created, with a name like "Site 1", "Site 2", etc.
+    # You can customize the name by specifying the "sitename" attribute
+
+    # SiteGenesis site import
+    - regions: [Generic, German, Chinese]
+      currencies: [USD, EUR, CNY]
+      # pseudo randomization seed, could be overwritten in generator config files
+      initialSeed: 1234
+      customCartridges: ["sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"]
+      staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml", "slots.xml"]
+
+    # MFRA site import
+    - regions: [Generic, German, Chinese]
+      currencies: [USD]
+      # can optionally give a site name and description to make site meaning clear
+      # siteName: "MFRA"
+      siteDescription: "Mobile First Reference Architecture demo site"
+      # pseudo randomization seed, could be overwritten in generator config files
+
+      customCartridges: ["app_storefront_base"]
+      staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml"]
+      # navigation catalog inherits seed from site
+      # need to overwrite the whole thing as we can't handle merging right now
+      navigationCatalog:
+        coverage: 0.8
+        categories:
+          elementCount: 50
+          categoryTreeDepth: 5
+          categoryTreeBreadth: 10
+          categoryTemplate: "rendering/category/catLanding"
+        # define category custom attributes
+        customAttributes:
+          enableCompare:
+            type: boolean
+            data: static
+            staticValue: true
+          showInMenu:
+            type: boolean
+            data: static
+            staticValue: true

@@ -1,0 +1,140 @@
+# catalog configuration
+catalogs:
+  # number of master catalogs
+  elementCount: 3
+
+  initialSeed: 1234
+
+  outputDir: "catalogs"
+  outputFilePattern: "catalog.xml"
+
+  # number of categories per catalog
+  categories:
+    elementCount: 50
+    categoryTreeDepth: 5
+    categoryTreeBreadth: 10
+
+  # define category custom attributes
+  customAttributes:
+    enableCompare:
+      type: boolean
+      data: static
+      staticValue: true
+    showInMenu:
+      type: boolean
+      data: static
+      staticValue: true
+    headerMenuBanner:
+      type: string
+      data: static
+      staticValue: ""
+    # This attribute, unlike others, is not used by SiteGenesis but to show the "searchable" config
+    inStock:
+      type: boolean
+      data: random
+      # Ignored, needed for bug #114 in jackson-kotlin
+      staticValue: ""
+      # This attribute will be indexed
+      searchable: true
+
+  # randomly generate category custom attributes
+  generatedAttributes:
+    elementCount: 40
+    # out of 40 attributes, the first 10 will be indexed (and thus searchable)
+    thereofSearchable: 10
+
+  # define shared variation attributes by name and available values
+  sharedVariationAttributes:
+    - name: "color"
+      values:
+        - "blue"
+        - "red"
+        - "green"
+      # shared attributes may include a probability factor as well, see below.
+      # It's applied to all product definitions in which it is shared.
+    - name: "size"
+      values:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+
+  # configure shared product options
+  sharedOptions:
+    # number of generated shared product options per catalog
+    elementCount: 10
+    # minimum number of values per option
+    minValues: 1
+    # maximum number of values per option
+    maxValues: 5
+    # minimum price of product option value in USD
+    minPrice: 0.01
+    # maximum price of product option value in USD
+    maxPrice: 500.0
+    # Chance of a product using will use options. Results in about (not exactly) 10% of all products having them.
+    probability: 0.1
+
+  products:
+    # number of standard products per catalog
+    elementCount: 100
+    generatedAttributes:
+      elementCount: 20
+      thereofSearchable: 5
+
+    # local options are defined _for each_ product individually. Since that's an uncommon (and expensive to generate)
+    # use case, the default is to not have them.
+    # The attributes supported are the same as for sharedOptions above
+    #options:
+    #  # The number of options _per product_. This combines with the number of products to give the total number of different options.
+    #  elementCount: 0
+    #  minValues: 1
+    #  maxValues: 5
+    #  minPrice: 0.01
+    #  maxPrice: 500.0
+    #  probability: 0.05
+
+  variationProducts:
+    # list of different variation master product configs
+      # number of master products to generate per configuration
+    - elementCount: 30
+      # define local variation attributes
+      localVariationAttributes:
+        - name: "color"
+          values:
+            - "yellow"
+            - "purple"
+          # the probability default is "1.0f", that is, include every attribute value
+          probability: 1.0
+        - name: "memory-size"
+          values:
+            - "4 GB"
+            - "8 GB"
+            - "16 GB"
+            - "32 GB"
+          # a float from [0,1] - describes the probability of each value being selected for a given master product
+          # NOTE: A probability of 0.5 DOES NOT guarantee inclusion of exactly half the attributes
+          probability: 0.5
+      # reference shared variation attributes to use
+      sharedVariationAttributes:
+        - "size"
+    - elementCount: 20
+      sharedVariationAttributes:
+        - "color"
+        - "size"
+
+  bundleConfig:
+    # number of product bundles to generate
+    elementCount: 10
+
+    # define range of bundled products per bundle
+    minBundledProducts: 2
+    maxBundledProducts: 5
+
+  productSets:
+    # number of product sets to generate
+    elementCount: 10
+
+    # define range of products per product set
+    minSetProducts: 3
+    maxSetProducts: 8
+

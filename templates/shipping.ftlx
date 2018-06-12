@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipping xmlns="http://www.demandware.com/xml/impex/shipping/2007-03-31">
+    <#list gen.objects as method>
+    <shipping-method method-id="${method.id}" default="${method.default?c}">
+        <display-name xml:lang="x-default">${method.name}</display-name>
+        <description xml:lang="x-default">${method.description}</description>
+        <online-flag>true</online-flag>
+        <price-table>
+            <#list method.priceTable as amount>
+            <#setting number_format="0.##">
+            <amount order-value="${amount.orderValue}">${amount.amount}</amount>
+            </#list>
+        </price-table>
+        <#if method.customAttributes?has_content>
+        <custom-attributes>
+            <#list method.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">
+                <value>${attribute.value}</value>
+            </custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+        <currency>USD</currency>
+    </shipping-method>
+    </#list>
+</shipping>

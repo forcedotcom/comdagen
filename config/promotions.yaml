@@ -1,0 +1,38 @@
+promotions:
+  productConfig:
+    elementCount: 100
+    # discount in percent
+    minDiscount: 1
+    maxDiscount: 50
+
+  orderConfig:
+    elementCount: 50
+    # discount in percent
+    minDiscount: 1
+    maxDiscount: 50
+    # range of min order amount to trigger the order promotion
+    minThreshold: 0.01
+    maxThreshold: 200.00
+
+  shippingConfig:
+    elementCount: 50
+    # discount in percent
+    minDiscount: 1
+    maxDiscount: 50
+    # range of min order amount to trigger the shipping promotion
+    minThreshold: 0.01
+    maxThreshold: 200.00
+
+  campaigns:
+    # range of promotions triggered by one campaign
+    minPromotions: 1
+    maxPromotions: 5
+    # range of customer groups triggering a campaign
+    minCustomerGroups: 1
+    maxCustomerGroups: 5
+    # range of coupons triggering a campaign
+    minCoupons: 1
+    maxCoupons: 5
+    # range of source codes triggering a campaign
+    minSourceCodes: 1
+    maxSourceCodes: 5

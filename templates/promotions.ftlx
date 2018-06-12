@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<promotions xmlns="http://www.demandware.com/xml/impex/promotion/2008-01-31">
+    <#list gen.campaigns as campaign>
+    <campaign campaign-id="${campaign.id}">
+        <description>${campaign.description}</description>
+        <enabled-flag>true</enabled-flag>
+        <#if campaign.customerGroups?has_content>
+        <customer-groups>
+            <#list campaign.customerGroups as group>
+            <customer-group group-id="${group}" />
+            </#list>
+        </customer-groups>
+        </#if>
+        <#if campaign.coupons?has_content>
+        <coupons>
+            <#list campaign.coupons as coupon>
+            <coupon coupon-id="${coupon}" />
+            </#list>
+        </coupons>
+        </#if>
+        <#if campaign.sourceCodes?has_content>
+        <source-codes>
+            <#list campaign.sourceCodes as group>
+            <source-code group-id="${group}" />
+            </#list>
+        </source-codes>
+        </#if>
+        <#if campaign.customAttributes?has_content>
+        <custom-attributes>
+            <#list campaign.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">
+                <value>${attribute.value}</value>
+            </custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+    </campaign>
+    </#list>
+
+    <#list gen.objects as promotion>
+
+    <promotion promotion-id="${promotion.id}">
+        <enabled-flag>true</enabled-flag>
+        <exclusivity>no</exclusivity>
+        <name xml:lang="x-default">${promotion.name}</name>
+        <callout-msg>${promotion.calloutMsg}</callout-msg>
+        <#if promotion.class.simpleName == "ProductPromotion">
+        <product-promotion-rule>
+            <discounted-products>
+                <included-products>
+                    <condition-group>
+                        <category-condition catalog-id="${promotion.catalogId?c}">
+                            <category-id>${promotion.discountedCategory}</category-id>
+                        </category-condition>
+                    </condition-group>
+                </included-products>
+            </discounted-products>
+            <simple-discount>
+                <percentage>${promotion.discount}</percentage>
+            </simple-discount>
+        </product-promotion-rule>
+        <#if promotion.customAttributes?has_content>
+        <custom-attributes>
+            <#list promotion.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">
+                <value>${attribute.value}</value>
+            </custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+
+        </#if>
+        <#if promotion.class.simpleName == "OrderPromotion">
+        <order-promotion-rule>
+            <qualifying-products>
+                <included-products>
+                    <condition-group>
+                        <category-condition catalog-id="${promotion.catalogId?c}">
+                            <category-id>${promotion.qualifyingCategory}</category-id>
+                        </category-condition>
+                    </condition-group>
+                </included-products>
+            </qualifying-products>
+            <discounts condition-type="order-total">
+                <discount>
+                    <#setting number_format="0.##">
+                    <threshold>${promotion.threshold}</threshold>
+                    <percentage>${promotion.discount}</percentage>
+                </discount>
+            </discounts>
+        </order-promotion-rule>
+        </#if>
+        <#if promotion.class.simpleName == "ShippingPromotion">
+        <shipping-promotion-rule>
+            <qualifying-products>
+                <included-products>
+                    <condition-group>
+                        <category-condition catalog-id="${promotion.catalogId?c}">
+                            <category-id>${promotion.qualifyingCategory}</category-id>
+                        </category-condition>
+                    </condition-group>
+                </included-products>
+            </qualifying-products>
+            <shipping-methods>
+                <method-id>${promotion.shippingMethod}</method-id>
+            </shipping-methods>
+            <discounts condition-type="shipment-total">
+                <discount>
+                    <threshold>${promotion.threshold}</threshold>
+                    <percentage>${promotion.discount}</percentage>
+                </discount>
+            </discounts>
+        </shipping-promotion-rule>
+        </#if>
+    </promotion>
+
+    </#list>
+
+    <#list gen.assignments as assignment>
+    <promotion-campaign-assignment promotion-id="${assignment.promotion.id}" campaign-id="${assignment.campaign.id}">
+        <qualifiers match-mode="any">
+            <customer-groups/>
+            <source-codes/>
+            <coupons/>
+        </qualifiers>
+    </promotion-campaign-assignment>
+    </#list>
+
+</promotions>

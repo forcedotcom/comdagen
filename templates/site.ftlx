@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site xmlns="http://www.demandware.com/xml/impex/site/2007-04-30" site-id="${site.id}">
+    <name>${site.name}</name>
+    <#if site.description??>
+    <description>${site.description}</description>
+    </#if>
+    <currency>${site.currencies?first}</currency>
+    <taxation>net</taxation>
+    <custom-cartridges>${site.customCartridges?join(":")}</custom-cartridges>
+    <storefront-status>online</storefront-status>
+</site>

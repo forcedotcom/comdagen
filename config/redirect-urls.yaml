@@ -1,0 +1,7 @@
+redirectUrls:
+  # static redirects
+  elementCount: 10
+  # redirects from random uri to product
+  productRedirects: 10
+  # redirects from random uri to category
+  categoryRedirects: 10

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences xmlns="http://www.demandware.com/xml/impex/preferences/2007-03-31">
+    <standard-preferences>
+        <all-instances>
+            <preference preference-id="AddProductToBasketBehavior">IncrementQuantities</preference>
+            <preference preference-id="CategoryChangeFrequency">daily</preference>
+            <preference preference-id="CategoryPriority">0.5</preference>
+            <preference preference-id="ContentChangeFrequency">daily</preference>
+            <preference preference-id="ContentPriority">0.5</preference>
+            <preference preference-id="CouponGeneratorIncludeDashes">true</preference>
+            <preference preference-id="CouponGeneratorIncludeVowels">true</preference>
+            <preference preference-id="EnableSiteOrderNumbers">false</preference>
+            <preference preference-id="IntegrationOrderCenterIncludeSite">true</preference>
+            <preference preference-id="MaxURLsPerFile">5000</preference>
+            <preference preference-id="OrderEditExportDelay">30</preference>
+            <preference preference-id="OrderExportDelay">30</preference>
+            <preference preference-id="OrderIPLoggingEnabled">true</preference>
+            <preference preference-id="OrderLifetime">0</preference>
+            <preference preference-id="PaymentAccountNumberLifetime">0</preference>
+            <preference preference-id="ProductChangeFrequency">daily</preference>
+            <preference preference-id="ProductPriority">0.5</preference>
+            <#if catalogs??>
+            <preference preference-id="SiteCatalog">${catalogs?first?c}</preference>
+            </#if>
+            <#if currencies??>
+            <preference preference-id="SiteCurrencies">${currencies?join(":")}</preference>
+            </#if>
+            <#if customerListId??>
+            <preference preference-id="SiteCustomerList">${customerListId}</preference>
+            </#if>
+            <preference preference-id="SiteDefaultLocale">en_US</preference>
+            <preference preference-id="SiteInventoryList">inventory</preference>
+            <preference preference-id="SiteLibrary">SiteGenesisSharedLibrary</preference>
+            <preference preference-id="SiteLocales">default:en_US</preference>
+            <#if pricebooks??>
+            <preference preference-id="SitePriceBooks">${pricebooks?join(":")}</preference>
+            </#if>
+            <preference preference-id="SiteTimezone">Etc/UTC</preference>
+            <preference preference-id="StorefrontURLsEnabled">true</preference>
+        </all-instances>
+    </standard-preferences>
+    <custom-preferences>
+        <all-instances/>
+        <development/>
+        <staging/>
+        <production/>
+    </custom-preferences>
+</preferences>
+

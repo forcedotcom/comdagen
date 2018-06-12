@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <#list customAttributes as key, value>
+    <#if value?size != 0>
+    <type-extension type-id="${key}">
+        <custom-attribute-definitions>
+        <#list value as attr>
+            <attribute-definition attribute-id="${attr.id}">
+                <display-name xml:lang="x-default">${attr.displayName}</display-name>
+                <type>${attr.type}</type>
+            </attribute-definition>
+        </#list>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <!-- have all custom attributes in one group, just so we can see them in BM -->
+            <attribute-group group-id="customAttributes">
+                <display-name xml:lang="x-default">Custom</display-name>
+                <#list value as attr>
+                <attribute attribute-id="${attr.id}"/>
+                </#list>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    </#if>
+    </#list>
+    <type-extension type-id="Content">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="body">
+                <type>html</type>
+            </attribute-definition>
+        </custom-attribute-definitions>
+    </type-extension>
+</metadata>

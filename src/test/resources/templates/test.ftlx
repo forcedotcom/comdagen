@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test>
+  <title>${title}</title>
+  <#if myObject??>
+  <object>${myObject.name} by ${myObject.developer}</object>
+  </#if>
+</test>

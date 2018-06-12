@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer-groups xmlns="http://www.demandware.com/xml/impex/customergroup/2007-06-30">
+
+    <#list gen.objects as group>
+    <customer-group group-id="${group.id}">
+        <description>${group.description}</description>
+        <#if group.customAttributes?has_content>
+        <custom-attributes>
+            <#list group.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">${attribute.value}</custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+    </customer-group>
+    </#list>
+
+    <#list gen.assignments as assignment>
+    <group-assignment group-id="${assignment.groupId}" customer-no="${assignment.customerId?left_pad(8, "0")}" />
+    </#list>
+
+</customer-groups>

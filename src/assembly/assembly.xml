@@ -1,0 +1,35 @@
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <!-- Adds all templates and config files -->
+        <fileSet>
+            <directory>${project.basedir}/config</directory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/templates</directory>
+        </fileSet>
+
+        <!-- startup script -->
+        <fileSet>
+            <directory>${project.basedir}/bin</directory>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>comdagen.sh</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>
+
+        <!-- Adds the uber-jar to the bin directory, where the startup script can find it -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>${project.build.finalName}.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

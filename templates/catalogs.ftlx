@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="${catalog.id?c}">
+    <category category-id="root">
+        <display-name xml:lang="x-default">Root Category</display-name>
+        <refinement-definitions>
+            <refinement-definition type="category" bucket-type="none">
+                <display-name xml:lang="x-default">Category</display-name>
+                <sort-mode>category-position</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+        </refinement-definitions>
+    </category>
+<#list catalog.categories as category>
+    <category category-id="${category.id}">
+        <#list category.name as region, name>
+        <display-name xml:lang="${region}">${name}</display-name>
+        </#list>
+        <#list category.description as region, description>
+        <description xml:lang="${region}">${description}</description>
+        </#list>
+        <online-flag>true</online-flag>
+        <#if category.parent??>
+            <parent>${category.parent.id}</parent>
+        <#else>
+            <parent>root</parent>
+        </#if>
+        <thumbnail>image/category/thumb/madgen-Accounting_Clerk_null_L1_C0.jpg</thumbnail>
+        <image>image/category/regular/madgen-Accounting_Clerk_null_L1_C0.jpg</image>
+        <#if category.template??>
+        <template>${category.template}</template>
+        </#if>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>yearly</sitemap-changefrequency>
+        <sitemap-priority>0.6</sitemap-priority>
+        <page-attributes>
+            <#list category.pageTitle as region, pageTitle>
+            <page-title xml:lang="${region}">${pageTitle}</page-title>
+            </#list>
+            <#list category.pageDescription as region, pageDescription>
+            <page-description xml:lang="${region}">${pageDescription}</page-description>
+            </#list>
+        </page-attributes>
+        <custom-attributes>
+            <#list category.customAttributes as attr>
+                <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+            </#list>
+        </custom-attributes>
+        <refinement-definitions>
+            <refinement-definition type="price" bucket-type="thresholds">
+                <display-name xml:lang="x-default">Price</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+                <bucket-definitions>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 10 USD</display-name>
+                        <threshold>10</threshold>
+                    </price-bucket>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 25 USD</display-name>
+                        <threshold>25</threshold>
+                    </price-bucket>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 50 USD</display-name>
+                        <threshold>50</threshold>
+                    </price-bucket>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 200 USD</display-name>
+                        <threshold>200</threshold>
+                    </price-bucket>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 350 USD</display-name>
+                        <threshold>350</threshold>
+                    </price-bucket>
+                    <price-bucket currency="USD">
+                        <display-name xml:lang="x-default">less than 500 USD</display-name>
+                        <threshold>500</threshold>
+                    </price-bucket>
+                </bucket-definitions>
+            </refinement-definition>
+        </refinement-definitions>
+    </category>
+</#list>
+
+<#if catalog.class.simpleName == "MasterCatalog">
+<#list catalog.masterProducts as masterProduct>
+    <product product-id="${masterProduct.id}">
+        <ean>EAN</ean>
+        <upc>UPC</upc>
+        <unit>pcs.</unit>
+        <min-order-quantity>1.0</min-order-quantity>
+        <step-quantity>1.0</step-quantity>
+        <#list masterProduct.name as region, name>
+        <display-name xml:lang="${region}">${name}</display-name>
+        </#list>
+        <#list masterProduct.shortDescription as region, shortDescription>
+        <short-description xml:lang="${region}">${shortDescription}</short-description>
+        </#list>
+        <#list masterProduct.longDescription as region, longDescription>
+        <long-description xml:lang="${region}">${longDescription}</long-description>
+        </#list>
+        <online-flag>true</online-flag>
+        <available-flag>true</available-flag>
+        <searchable-flag>true</searchable-flag>
+        <images>
+            <image-group view-type="large">
+                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="medium">
+                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="small">
+                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+        </images>
+        <tax-class-id>standard</tax-class-id>
+        <brand>Jump Backs</brand>
+        <manufacturer-name>Tenney Engineering</manufacturer-name>
+        <manufacturer-sku>MANUFACTURER_01</manufacturer-sku>
+        <search-placement>6</search-placement>
+        <search-rank>0</search-rank>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>always</sitemap-changefrequency>
+        <sitemap-priority>0.7</sitemap-priority>
+        <page-attributes>
+            <#list masterProduct.pageTitle as region, pageTitle>
+            <page-title xml:lang="${region}">${pageTitle}</page-title>
+            </#list>
+            <#list masterProduct.pageDescription as region, pageDescription>
+            <page-description xml:lang="${region}">${pageDescription}</page-description>
+            </#list>
+        </page-attributes>
+        <variations>
+            <attributes>
+                <#list masterProduct.localVariationAttributes as attribute>
+                    <variation-attribute attribute-id="${attribute.id}" variation-attribute-id="${attribute.id}">
+                        <display-name xml:lang="x-default">${attribute.id?capitalize}</display-name>
+                        <#if attribute.values?has_content>
+                            <variation-attribute-values>
+                                <#list attribute.values as value>
+                                    <variation-attribute-value value="${value}">
+                                        <display-value xml:lang="x-default">${value?capitalize}</display-value>
+                                    </variation-attribute-value>
+                                </#list>
+                            </variation-attribute-values>
+                        </#if>
+                    </variation-attribute>
+                </#list>
+                <#list masterProduct.sharedVariationAttributes as attribute>
+                    <shared-variation-attribute attribute-id="${attribute.id}"
+                                                variation-attribute-id="${attribute.id}"/>
+                </#list>
+            </attributes>
+            <variants>
+                <#list masterProduct.variants as variant>
+                    <variant product-id="${variant.id}"/>
+                </#list>
+            </variants>
+        </variations>
+        <classification-category catalog-id="${catalog.id?c}">root</classification-category>
+    </product>
+    <#list masterProduct.variants as variant>
+        <product product-id="${variant.id}">
+            <ean>EAN</ean>
+            <upc>UPC</upc>
+            <unit>pcs.</unit>
+            <min-order-quantity>1.0</min-order-quantity>
+            <step-quantity>1.0</step-quantity>
+            <#list variant.name as region, name>
+            <display-name xml:lang="${region}">${name}</display-name>
+            </#list>
+            <#list variant.shortDescription as region, shortDescription>
+            <short-description xml:lang="${region}">${shortDescription}</short-description>
+            </#list>
+            <#list variant.longDescription as region, longDescription>
+            <long-description xml:lang="${region}">${longDescription}</long-description>
+            </#list>
+            <online-flag>true</online-flag>
+            <available-flag>true</available-flag>
+            <searchable-flag>true</searchable-flag>
+            <tax-class-id>standard</tax-class-id>
+            <brand>Jump Backs</brand>
+            <manufacturer-name>Tenney Engineering</manufacturer-name>
+            <manufacturer-sku>MANUFACTURER_01</manufacturer-sku>
+            <search-placement>6</search-placement>
+            <search-rank>0</search-rank>
+            <sitemap-included-flag>true</sitemap-included-flag>
+            <sitemap-changefrequency>always</sitemap-changefrequency>
+            <sitemap-priority>0.7</sitemap-priority>
+            <page-attributes>
+                <#list variant.pageTitle as region, pageTitle>
+                <page-title xml:lang="${region}">${pageTitle}</page-title>
+                </#list>
+                <#list variant.pageDescription as region, pageDescription>
+                <page-description xml:lang="${region}">${pageDescription}</page-description>
+                </#list>
+            </page-attributes>
+            <custom-attributes>
+                <#list variant.customAttributes as attribute>
+                    <custom-attribute attribute-id="${attribute.id}">${attribute.value}</custom-attribute>
+                </#list>
+            </custom-attributes>
+        </product>
+    </#list>
+</#list>
+
+<#list catalog.products as product>
+    <product product-id="${product.id}">
+        <ean>EAN</ean>
+        <upc>UPC</upc>
+        <unit>pcs.</unit>
+        <min-order-quantity>1.0</min-order-quantity>
+        <step-quantity>1.0</step-quantity>
+        <#list product.name as region, name>
+        <display-name xml:lang="${region}">${name}</display-name>
+        </#list>
+        <#list product.shortDescription as region, shortDescription>
+        <short-description xml:lang="${region}">${shortDescription}</short-description>
+        </#list>
+        <#list product.longDescription as region, longDescription>
+        <long-description xml:lang="${region}">${longDescription}</long-description>
+        </#list>
+        <online-flag>true</online-flag>
+        <available-flag>true</available-flag>
+        <searchable-flag>true</searchable-flag>
+        <images>
+            <image-group view-type="large">
+                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="medium">
+                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="small">
+                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+        </images>
+        <tax-class-id>standard</tax-class-id>
+        <brand>Jump Backs</brand>
+        <manufacturer-name>Tenney Engineering</manufacturer-name>
+        <manufacturer-sku>MANUFACTURER_01</manufacturer-sku>
+        <search-placement>6</search-placement>
+        <search-rank>0</search-rank>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>always</sitemap-changefrequency>
+        <sitemap-priority>0.7</sitemap-priority>
+        <page-attributes>
+            <#list product.pageTitle as region, pageTitle>
+            <page-title xml:lang="${region}">${pageTitle}</page-title>
+            </#list>
+            <#list product.pageDescription as region, pageDescription>
+            <page-description xml:lang="${region}">${pageDescription}</page-description>
+            </#list>
+        </page-attributes>
+        <#if product.customAttributes?has_content>
+            <custom-attributes>
+                <#list product.customAttributes as attr>
+                    <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                </#list>
+            </custom-attributes>
+        </#if>
+        <#if product.hasOptions()>
+            <options>
+                <#list product.localOptions as option>
+                    <option option-id="${option.id}">
+                        <display-name xml:lang="x-default">${option.displayName}</display-name>
+                        <sort-mode>price</sort-mode>
+                        <option-values>
+                            <#list option.values as value>
+                                <option-value value-id="${value.id}" default="${value.default?c}">
+                                    <display-value xml:lang="x-default">${value.displayName}</display-value>
+                                    <option-value-prices>
+                                        <#list value.prices as currency, price>
+                                            <#setting number_format="0.##">
+                                            <option-value-price currency="${currency}">${price}</option-value-price>
+                                        </#list>
+                                    </option-value-prices>
+                                </option-value>
+                            </#list>
+                        </option-values>
+                    </option>
+                </#list>
+                <#list product.sharedOptions as option>
+                    <shared-option option-id="${option.id}"/>
+                </#list>
+            </options>
+        </#if>
+        <classification-category catalog-id="${catalog.id?c}">root</classification-category>
+    </product>
+</#list>
+
+<#list catalog.bundles as bundle>
+    <product product-id="${bundle.id}">
+        <ean>EAN</ean>
+        <upc>UPC</upc>
+        <unit>pcs.</unit>
+        <min-order-quantity>1.0</min-order-quantity>
+        <step-quantity>1.0</step-quantity>
+        <#list bundle.name as region, name>
+        <display-name xml:lang="${region}">${name}</display-name>
+        </#list>
+        <#list bundle.shortDescription as region, shortDescription>
+        <short-description xml:lang="${region}">${shortDescription}</short-description>
+        </#list>
+        <#list bundle.longDescription as region, longDescription>
+        <long-description xml:lang="${region}">${longDescription}</long-description>
+        </#list>
+        <online-flag>true</online-flag>
+        <available-flag>true</available-flag>
+        <searchable-flag>true</searchable-flag>
+        <images>
+            <image-group view-type="large">
+                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="medium">
+                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="small">
+                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+        </images>
+        <tax-class-id>standard</tax-class-id>
+        <brand>Jump Backs</brand>
+        <manufacturer-name>Tenney Engineering</manufacturer-name>
+        <manufacturer-sku>MANUFACTURER_01</manufacturer-sku>
+        <search-placement>6</search-placement>
+        <search-rank>0</search-rank>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>always</sitemap-changefrequency>
+        <sitemap-priority>0.7</sitemap-priority>
+        <page-attributes>
+            <#list bundle.pageTitle as region, pageTitle>
+            <page-title xml:lang="${region}">${pageTitle}</page-title>
+            </#list>
+            <#list bundle.pageDescription as region, pageDescription>
+            <page-description xml:lang="${region}">${pageDescription}</page-description>
+            </#list>
+        </page-attributes>
+        <bundled-products>
+            <#list bundle.bundledProducts as key, value>
+                <bundled-product product-id="${key.id}">
+                    <quantity>${value}</quantity>
+                </bundled-product>
+            </#list>
+        </bundled-products>
+    </product>
+</#list>
+
+<#list catalog.productSets as set>
+    <product product-id="${set.id}">
+        <ean>EAN</ean>
+        <upc>UPC</upc>
+        <unit>pcs.</unit>
+        <min-order-quantity>1.0</min-order-quantity>
+        <step-quantity>1.0</step-quantity>
+        <#list set.name as region, name>
+        <display-name xml:lang="${region}">${name}</display-name>
+        </#list>
+        <#list set.shortDescription as region, shortDescription>
+        <short-description xml:lang="${region}">${shortDescription}</short-description>
+        </#list>
+        <#list set.longDescription as region, longDescription>
+        <long-description xml:lang="${region}">${longDescription}</long-description>
+        </#list>
+        <online-flag>true</online-flag>
+        <available-flag>true</available-flag>
+        <searchable-flag>true</searchable-flag>
+        <images>
+            <image-group view-type="large">
+                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="medium">
+                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+            <image-group view-type="small">
+                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+            </image-group>
+        </images>
+        <tax-class-id>standard</tax-class-id>
+        <brand>Jump Backs</brand>
+        <manufacturer-name>Tenney Engineering</manufacturer-name>
+        <manufacturer-sku>MANUFACTURER_01</manufacturer-sku>
+        <search-placement>6</search-placement>
+        <search-rank>0</search-rank>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>always</sitemap-changefrequency>
+        <sitemap-priority>0.7</sitemap-priority>
+        <page-attributes>
+            <#list set.pageTitle as region, pageTitle>
+            <page-title xml:lang="${region}">${pageTitle}</page-title>
+            </#list>
+            <#list set.pageDescription as region, pageDescription>
+            <page-description xml:lang="${region}">${pageDescription}</page-description>
+            </#list>
+        </page-attributes>
+        <product-set-products>
+            <#list set.products as product>
+                <product-set-product product-id="${product.id}"/>
+            </#list>
+        </product-set-products>
+    </product>
+</#list>
+
+<#list catalog.sharedOptions as option>
+    <product-option option-id="${option.id}">
+        <display-name xml:lang="x-default">${option.displayName}</display-name>
+        <sort-mode>price</sort-mode>
+        <option-values>
+            <#list option.values as value>
+                <option-value value-id="${value.id}" default="${value.default?c}">
+                    <display-value xml:lang="x-default">${value.displayName}</display-value>
+                    <option-value-prices>
+                        <#list value.prices as currency, price>
+                            <#setting number_format="0.##">
+                            <option-value-price currency="${currency}">${price}</option-value-price>
+                        </#list>
+                    </option-value-prices>
+                </option-value>
+            </#list>
+        </option-values>
+    </product-option>
+</#list>
+
+<#list catalog.sharedVariationAttributes as attribute>
+    <variation-attribute attribute-id="${attribute.id}" variation-attribute-id="${attribute.id}">
+        <display-name xml:lang="x-default">${attribute.id?capitalize}</display-name>
+        <#if attribute.values?has_content>
+            <variation-attribute-values>
+                <#list attribute.values as value>
+                    <variation-attribute-value value="${value}">
+                        <display-value xml:lang="x-default">${value?capitalize}</display-value>
+                    </variation-attribute-value>
+                </#list>
+            </variation-attribute-values>
+        </#if>
+    </variation-attribute>
+</#list>
+</#if>
+
+<#list catalog.categoryAssignments as assignment>
+    <category-assignment product-id="${assignment.product.id}" category-id="${assignment.category.id}">
+        <primary-flag>true</primary-flag>
+    </category-assignment>
+</#list>
+
+</catalog>

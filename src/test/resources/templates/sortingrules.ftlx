@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sort xmlns="http://www.demandware.com/xml/impex/sort/2009-05-15">
+    <#list gen.objects as rule>
+    <sorting-rule rule-id="${rule.id}">
+        <description>${rule.description}</description>
+        <sorting-attributes>
+            <category-position/>
+            <attribute>
+                <attribute-path>product.searchPlacement</attribute-path>
+                <direction>descending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+            <attribute>
+                <attribute-path>product.searchRank</attribute-path>
+                <direction>descending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+            <text-relevance/>
+            <explicit-sortings/>
+        </sorting-attributes>
+    </sorting-rule>
+    </#list>
+
+    <#list gen.assignments as assignment>
+    <sorting-rule-assignment category-id="${assignment.categoryId}" rule-id="${assignment.ruleId}" />
+    </#list>
+</sort>

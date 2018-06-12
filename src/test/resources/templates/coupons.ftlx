@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coupons xmlns="http://www.demandware.com/xml/impex/coupon/2008-06-17">
+    <#list gen.objects as coupon>
+    <coupon coupon-id="${coupon.id}">
+        <description>${coupon.description}</description>
+        <enabled-flag>${coupon.enabled?c}</enabled-flag>
+        <#if coupon.codeList??>
+        <multiple-codes>
+            <#list coupon.codeList as code>
+            <code>${code}</code>
+            </#list>
+        </multiple-codes>
+        </#if>
+        <#if coupon.singleCode??>
+        <single-code>${coupon.singleCode}</single-code>
+        </#if>
+        <#if coupon.systemCodes??>
+        <system-codes>
+            <max-number-of-codes>${coupon.systemCodes.maxNumberOfCodes}</max-number-of-codes>
+        </system-codes>
+        </#if>
+    </coupon>
+    </#list>
+</coupons>

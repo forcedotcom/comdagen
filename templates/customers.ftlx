@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customer-list xmlns="http://www.demandware.com/xml/impex/customer/2006-10-31" list-id="${gen.listId}">
+<header>
+  <customerno-sequence-enabled>false</customerno-sequence-enabled>
+  <customer-lockout-enabled>false</customer-lockout-enabled>
+  <max-failed-logins>10</max-failed-logins>
+  <lockout-effective-period>30</lockout-effective-period>
+  <customer-login-attempt-reset-time>30</customer-login-attempt-reset-time>
+</header>
+<#list gen.objects as customer>
+<customer>
+  <credentials>
+    <login>${customer.profile.email}</login>
+    <#if customer.encryptionScheme??>
+    <password encrypted="true" encryptionScheme="${customer.encryptionScheme}">${customer.password}</password>
+    <#else>
+    <password encrypted="false">${customer.password}</password>
+    </#if>
+    <enabled-flag>true</enabled-flag>
+  </credentials>
+  <profile>
+    <first-name>${customer.profile.firstName}</first-name>
+    <last-name>${customer.profile.lastName}</last-name>
+    <email>${customer.profile.email}</email>
+    <phone-mobile>${customer.profile.phoneMobile}</phone-mobile>
+    <birthday>${customer.profile.birthday}</birthday>
+    <custom-attributes>
+      <#list customer.customAttributes as attr>
+      <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+      </#list>
+    </custom-attributes>
+  </profile>
+  <#if customer.addresses??>
+  <addresses>
+    <#list customer.addresses as address>
+    <address address-id="${address.id}" preferred="${address.preferred}">
+        <first-name>${address.firstName}</first-name>
+        <last-name>${address.lastName}</last-name>
+        <address1>${address.street}</address1>
+        <city>${address.city}</city>
+        <postal-code>${address.postalCode}</postal-code>
+        <phone>${address.phone}</phone>
+    </address>
+    </#list>
+  </addresses>
+  </#if>
+</customer>
+</#list>
+</customer-list>

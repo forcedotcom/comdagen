@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tax xmlns="http://www.demandware.com/xml/impex/tax/2007-02-14">
+    <tax-classes>
+        <tax-class class-id="exempt">
+            <display-name>Exempt</display-name>
+            <description>This is tax class for tax exempt products.</description>
+        </tax-class>
+
+        <tax-class class-id="standard" default="true">
+            <display-name>Standard</display-name>
+            <description>Standard tax class used if no specific tax class is set for a taxable product or service.</description>
+        </tax-class>
+
+    </tax-classes>
+    <tax-jurisdictions>
+        <tax-jurisdiction jurisdiction-id="CA">
+            <display-name>CA</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-11111">
+            <display-name>CA Ottawa</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-22222">
+            <display-name>CA Montreal</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="CA-33333">
+            <display-name>CA Quebec</display-name>
+            <address-mappings>
+                <address-mapping key1="CA" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE">
+            <display-name>DE</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-11111">
+            <display-name>DE Berlin</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-22222">
+            <display-name>DE Hamburg</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="DE-33333">
+            <display-name>DE Frankfurt</display-name>
+            <address-mappings>
+                <address-mapping key1="DE" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="Default" default="true">
+            <display-name>Default</display-name>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US">
+            <display-name>US</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="-"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-11111">
+            <display-name>US New York</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="11111"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-22222">
+            <display-name>US Washington</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="22222"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-33333">
+            <display-name>US Boston</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="33333"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-44444">
+            <display-name>US Chicago</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="44444"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-55555">
+            <display-name>US Los Angeles</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="55555"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-66666">
+            <display-name>US San Francisco</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="66666"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-77777">
+            <display-name>US Dallas</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="77777"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+        <tax-jurisdiction jurisdiction-id="US-88888">
+            <display-name>US New Orleans</display-name>
+            <address-mappings>
+                <address-mapping key1="US" key2="88888"/>
+            </address-mappings>
+        </tax-jurisdiction>
+
+    </tax-jurisdictions>
+    <tax-rates>
+        <tax-rate jurisdiction-id="US-44444" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-55555" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-11111" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="Default" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="CA" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-77777" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-66666" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-33333" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-22222" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-88888" class-id="exempt">0</tax-rate>
+
+        <tax-rate jurisdiction-id="US-44444" class-id="standard">0.0625</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-22222" class-id="standard">0.14</tax-rate>
+
+        <tax-rate jurisdiction-id="US-11111" class-id="standard">0.04</tax-rate>
+
+        <tax-rate jurisdiction-id="DE" class-id="standard">0.1</tax-rate>
+
+        <tax-rate jurisdiction-id="US-55555" class-id="standard">0.0725</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-11111" class-id="standard">0.1</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-33333" class-id="standard">0.12</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-11111" class-id="standard">0.13</tax-rate>
+
+        <tax-rate jurisdiction-id="Default" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="CA-33333" class-id="standard">0.15</tax-rate>
+
+        <tax-rate jurisdiction-id="CA" class-id="standard">0.13</tax-rate>
+
+        <tax-rate jurisdiction-id="DE-22222" class-id="standard">0.11</tax-rate>
+
+        <tax-rate jurisdiction-id="US-77777" class-id="standard">0.06</tax-rate>
+
+        <tax-rate jurisdiction-id="US" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="US-66666" class-id="standard">0.0775</tax-rate>
+
+        <tax-rate jurisdiction-id="US-33333" class-id="standard">0.05</tax-rate>
+
+        <tax-rate jurisdiction-id="US-22222" class-id="standard">0.0575</tax-rate>
+
+        <tax-rate jurisdiction-id="US-88888" class-id="standard">0</tax-rate>
+
+    </tax-rates>
+</tax>

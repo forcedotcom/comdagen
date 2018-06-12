@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sourcecodes xmlns="http://www.demandware.com/xml/impex/sourcecode/2007-03-31">
+    <#list gen.objects as group>
+    <sourcecode-group group-id="${group.id}">
+        <description>${group.description}</description>
+        <enabled-flag>true</enabled-flag>
+        <#if group.sourceCodes?has_content>
+        <code-specs>
+            <#list group.sourceCodes as code>
+            <code-spec>${code}</code-spec>
+            </#list>
+        </code-specs>
+        </#if>
+        <#if group.customAttributes?has_content>
+        <custom-attributes>
+            <#list group.customAttributes as attribute>
+            <custom-attribute attribute-id="${attribute.id}">
+                <value>${attribute.value}</value>
+            </custom-attribute>
+            </#list>
+        </custom-attributes>
+        </#if>
+    </sourcecode-group>
+    </#list>
+</sourcecodes>
