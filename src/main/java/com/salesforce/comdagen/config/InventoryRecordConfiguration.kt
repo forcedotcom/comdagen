@@ -10,15 +10,15 @@ package com.salesforce.comdagen.config
 import com.salesforce.comdagen.ExtendableObjectConfig
 
 data class InventoryRecordConfiguration(
-        val minCount: Int = 0,
+    val minCount: Int = 0,
 
-        val maxCount: Int = 1000,
+    val maxCount: Int = 1000,
 
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        /** Not used. Number of records is determined by [InventoryConfig.coverage] percentage. */
-        override val elementCount: Int = 0,
-        override val initialSeed: Long
+    /** Not used. Number of records is determined by [InventoryConfig.coverage] percentage. */
+    override val elementCount: Int = 0,
+    override val initialSeed: Long
 ) : ExtendableObjectConfig

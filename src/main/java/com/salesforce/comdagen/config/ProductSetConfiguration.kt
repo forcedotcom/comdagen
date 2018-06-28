@@ -17,9 +17,9 @@ package com.salesforce.comdagen.config
  * @property maxSetProducts maximum number of set products per product set
  */
 data class ProductSetConfiguration(
-        val elementCount: Int = 20,
+    val elementCount: Int = 20,
 
-        val minSetProducts: Int = 2,
+    val minSetProducts: Int = 2,
 
-        val maxSetProducts: Int = 10
+    val maxSetProducts: Int = 10
 )

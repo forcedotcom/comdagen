@@ -29,8 +29,8 @@ import java.util.*
 class SeedInheritance : JsonDeserializer<Long>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Long {
         val currentContextName = p.parsingContext.pathAsPointer().toString()
-                // cut the last "initalSeed variable name
-                .replaceAfterLast("/", "")
+            // cut the last "initalSeed variable name
+            .replaceAfterLast("/", "")
         val configSeed = p.longValue
 
         val seedStack = initStackIfNeeded(ctxt)
@@ -40,7 +40,8 @@ class SeedInheritance : JsonDeserializer<Long>() {
             // we drop everything with the old index (since we know it can't be reached anymore)
             // so it's okay to push the incorrect 0 indexed value(s)
             if (p.parsingContext.parent.inArray() && p.parsingContext.parent.currentIndex == 0
-                    && (collectionName(prevName) == collectionName(currentContextName))) {
+                && (collectionName(prevName) == collectionName(currentContextName))
+            ) {
                 val base = collectionName(currentContextName)
                 while (seedStack.isNotEmpty() && seedStack.peek().first.startsWith("$base/0/")) seedStack.pop()
             }
@@ -69,9 +70,9 @@ class SeedInheritance : JsonDeserializer<Long>() {
         }
 
         val configSeed =
-                if (seedStack.isNotEmpty()) seedStack.peek().second
-                else ctxt.getAttribute(siteSeedName) as Long?
-                        ?: throw InvalidSpecificationException("Can not infer initialSeed and no default was given")
+            if (seedStack.isNotEmpty()) seedStack.peek().second
+            else ctxt.getAttribute(siteSeedName) as Long?
+                    ?: throw InvalidSpecificationException("Can not infer initialSeed and no default was given")
 
         // record current seed on the stack so potential children can find it
         seedStack.push(currentContextName to configSeed)

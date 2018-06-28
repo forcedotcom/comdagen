@@ -12,7 +12,9 @@ import org.junit.rules.TemporaryFolder
 import kotlin.test.assertNull
 
 class SiteTest {
-    @Rule @JvmField val testFolder = TemporaryFolder()
+    @Rule
+    @JvmField
+    val testFolder = TemporaryFolder()
 
     @Test(expected = IllegalArgumentException::class)
     fun `no site specified errors`() {
@@ -22,7 +24,8 @@ class SiteTest {
     @Test
     fun `random single site created`() {
         val config = SitesConfig(elementCount = 1, initialSeed = 123, defaults = SiteConfiguration("random"))
-        val generator = SiteGenerator(config, testFolder.root /* nothing in here, but we also have no config files specified */)
+        val generator =
+            SiteGenerator(config, testFolder.root /* nothing in here, but we also have no config files specified */)
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(1)))
@@ -44,7 +47,12 @@ class SiteTest {
 
     @Test
     fun `nonrandom site created, no defaults`() {
-        val config = SitesConfig(elementCount = 1, initialSeed = 123, sites = listOf(SiteConfiguration("First")), defaults = null)
+        val config = SitesConfig(
+            elementCount = 1,
+            initialSeed = 123,
+            sites = listOf(SiteConfiguration("First")),
+            defaults = null
+        )
         val generator = SiteGenerator(config, testFolder.root)
 
         val sites = generator.objects.toList()
@@ -54,8 +62,10 @@ class SiteTest {
 
     @Test
     fun `nonrandom site created, with defaults`() {
-        val config = SitesConfig(elementCount = 1, initialSeed = 123, sites = listOf(SiteConfiguration("First")),
-                defaults = SiteConfiguration("Doesn't matter", "My site"))
+        val config = SitesConfig(
+            elementCount = 1, initialSeed = 123, sites = listOf(SiteConfiguration("First")),
+            defaults = SiteConfiguration("Doesn't matter", "My site")
+        )
         val generator = SiteGenerator(config, testFolder.root)
 
         val sites = generator.objects.toList()
@@ -66,8 +76,10 @@ class SiteTest {
 
     @Test
     fun `mixed scenario, random and nonrandom sites`() {
-        val config = SitesConfig(elementCount = 2, initialSeed = 123, sites = listOf(SiteConfiguration("First")),
-                defaults = SiteConfiguration("random", "My site"))
+        val config = SitesConfig(
+            elementCount = 2, initialSeed = 123, sites = listOf(SiteConfiguration("First")),
+            defaults = SiteConfiguration("random", "My site")
+        )
 
         val generator = SiteGenerator(config, testFolder.root)
 

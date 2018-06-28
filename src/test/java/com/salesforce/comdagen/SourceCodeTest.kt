@@ -44,7 +44,12 @@ class SourceCodeTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
         val sourceCodeConfig = SourceCodeConfiguration(customAttributes = customAttributesConfig, initialSeed = seed)
@@ -64,7 +69,8 @@ class SourceCodeTest {
     fun testShippingMethodGeneratedAttributes() {
         val elementCount = 15
 
-        val sourceCodeConfig = SourceCodeConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
+        val sourceCodeConfig =
+            SourceCodeConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
         val sourceCodeGenerator = SourceCodeGenerator(sourceCodeConfig)
 
         sourceCodeGenerator.objects.forEach { group ->

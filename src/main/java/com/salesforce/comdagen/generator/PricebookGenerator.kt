@@ -30,10 +30,11 @@ import java.util.*
  *
  * @property objects sequence of generated pricebooks
  */
-data class PricebookGenerator(override val configuration: PricebookConfiguration,
-                              private val catalogConfiguration: CatalogListConfiguration,
-                              private val currencies: List<SupportedCurrency>)
-    : Generator<PricebookConfiguration, Pricebook> {
+data class PricebookGenerator(
+    override val configuration: PricebookConfiguration,
+    private val catalogConfiguration: CatalogListConfiguration,
+    private val currencies: List<SupportedCurrency>
+) : Generator<PricebookConfiguration, Pricebook> {
 
     override val objects: Sequence<Pricebook>
         get() {
@@ -48,16 +49,39 @@ data class PricebookGenerator(override val configuration: PricebookConfiguration
                     val allProductIds = GeneratorHelper.getProductIds(catalogConfiguration)
 
                     val totalProductCount = catalogConfiguration.totalProductCount()
-                    val productIds = getPartialProductSequence(seed, totalProductCount, configuration.coverage, allProductIds)
+                    val productIds =
+                        getPartialProductSequence(seed, totalProductCount, configuration.coverage, allProductIds)
 
-                    val parent = ParentPriceBook(productIds, seed, metadata["PriceBook"].orEmpty(), configuration, currency.toString(), i, catalogConfiguration.hashCode())
+                    val parent = ParentPriceBook(
+                        productIds,
+                        seed,
+                        metadata["PriceBook"].orEmpty(),
+                        configuration,
+                        currency.toString(),
+                        i,
+                        catalogConfiguration.hashCode()
+                    )
                     pricebooks.add(parent)
 
                     // generate child pricebooks for parent if any
                     configuration.children?.forEach { childConfig ->
-                        pricebooks.add(ChildPricebook(parent,
-                                getPartialProductSequence(seed, totalProductCount, configuration.coverage, allProductIds),
-                                seed, metadata["PriceBook"].orEmpty(), childConfig, currency.toString(), i, catalogConfiguration.hashCode()))
+                        pricebooks.add(
+                            ChildPricebook(
+                                parent,
+                                getPartialProductSequence(
+                                    seed,
+                                    totalProductCount,
+                                    configuration.coverage,
+                                    allProductIds
+                                ),
+                                seed,
+                                metadata["PriceBook"].orEmpty(),
+                                childConfig,
+                                currency.toString(),
+                                i,
+                                catalogConfiguration.hashCode()
+                            )
+                        )
                     }
                 }
             }
@@ -66,6 +90,6 @@ data class PricebookGenerator(override val configuration: PricebookConfiguration
         }
 
     override val metadata: Map<String, Set<AttributeDefinition>> = mapOf(
-            "PriceBook" to configuration.attributeDefinitions()
+        "PriceBook" to configuration.attributeDefinitions()
     )
 }

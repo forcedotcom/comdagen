@@ -21,7 +21,8 @@ import kotlin.streams.toList
  * @property configDir directory where linked configuration files are stored
  * @property generatorTemplate site configuration happens in this template
  */
-data class SiteGenerator(override val configuration: SitesConfig, private val configDir: File) : Generator<SitesConfig, Site> {
+data class SiteGenerator(override val configuration: SitesConfig, private val configDir: File) :
+    Generator<SitesConfig, Site> {
 
     private val rng: Random
         get() = Random(configuration.initialSeed)
@@ -43,7 +44,12 @@ data class SiteGenerator(override val configuration: SitesConfig, private val co
             } +
                     // for random sites we materialize a series of seeds (even thousands are a tiny memory footprint)
                     // note how defaults is all we got for the _actual_ site configuration, so the defaults _param_ is null
-                    rng.longs(max(0, configuration.elementCount - configuration.sites.size).toLong()).toList().mapIndexed { index, siteSeed ->
+                    rng.longs(
+                        max(
+                            0,
+                            configuration.elementCount - configuration.sites.size
+                        ).toLong()
+                    ).toList().mapIndexed { index, siteSeed ->
                         Site(index + configuration.sites.size + 1, siteSeed, null, configuration.defaults!!, configDir)
                     })
 

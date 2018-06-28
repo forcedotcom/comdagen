@@ -21,12 +21,16 @@ class InventoryTest {
 
     @Test
     fun testInventoryGeneratesCorrectProductIds() {
-        val catalogConfig = CatalogListConfiguration(products = ProductConfiguration(elementCount = 100, initialSeed = seed), initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            products = ProductConfiguration(elementCount = 100, initialSeed = seed),
+            initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val recordConfig = InventoryRecordConfiguration(initialSeed = seed)
         val inventoryConfig = InventoryConfiguration(inventoryRecords = recordConfig, initialSeed = seed)
-        val inventoryGenerator = InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
+        val inventoryGenerator =
+            InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
 
         val catalogProductIds = catalogGenerator.objects.flatMap { it.products.asSequence().map { it.id } }.toList()
         val inventoryProductIds = inventoryGenerator.objects.flatMap {
@@ -47,7 +51,8 @@ class InventoryTest {
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val recordConfig = InventoryRecordConfiguration(minCount = minCount, maxCount = maxCount, initialSeed = seed)
         val inventoryConfig = InventoryConfiguration(inventoryRecords = recordConfig, initialSeed = seed)
-        val inventoryGenerator = InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
+        val inventoryGenerator =
+            InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
 
         inventoryGenerator.objects.forEach { inventory ->
             inventory.inventoryRecords.forEach { record ->
@@ -63,8 +68,10 @@ class InventoryTest {
 
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val recordConfig = InventoryRecordConfiguration(initialSeed = seed)
-        val inventoryConfig = InventoryConfiguration(elementCount = elementCount, inventoryRecords = recordConfig, initialSeed = seed)
-        val inventoryGenerator = InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
+        val inventoryConfig =
+            InventoryConfiguration(elementCount = elementCount, inventoryRecords = recordConfig, initialSeed = seed)
+        val inventoryGenerator =
+            InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
 
         assertEquals(elementCount, inventoryGenerator.objects.count())
     }
@@ -76,8 +83,13 @@ class InventoryTest {
         val productElementCount = catalogGenerator.objects.toList().flatMap { it.getAllProducts() }.count()
 
         val coverage = 0.5F
-        val inventoryConfig = InventoryConfiguration(coverage = coverage, inventoryRecords = InventoryRecordConfiguration(initialSeed = seed), initialSeed = seed)
-        val inventoryGenerator = InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
+        val inventoryConfig = InventoryConfiguration(
+            coverage = coverage,
+            inventoryRecords = InventoryRecordConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
+        val inventoryGenerator =
+            InventoryGenerator(configuration = inventoryConfig, catalogConfiguration = catalogConfig)
 
         val recordCount = (inventoryGenerator.objects.flatMap { it.inventoryRecords }).count()
 
@@ -86,9 +98,21 @@ class InventoryTest {
 
     @Test
     fun testInventoryConfigEquals() {
-        val configA = InventoryConfiguration(elementCount = 10, inventoryRecords = InventoryRecordConfiguration(initialSeed = seed), initialSeed = seed)
-        val configB = InventoryConfiguration(elementCount = 10, inventoryRecords = InventoryRecordConfiguration(initialSeed = seed), initialSeed = seed)
-        val configC = InventoryConfiguration(elementCount = 15, inventoryRecords = InventoryRecordConfiguration(initialSeed = seed), initialSeed = seed)
+        val configA = InventoryConfiguration(
+            elementCount = 10,
+            inventoryRecords = InventoryRecordConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
+        val configB = InventoryConfiguration(
+            elementCount = 10,
+            inventoryRecords = InventoryRecordConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
+        val configC = InventoryConfiguration(
+            elementCount = 15,
+            inventoryRecords = InventoryRecordConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
 
         assertEquals(configA, configB)
         assertNotEquals(configA, configC)

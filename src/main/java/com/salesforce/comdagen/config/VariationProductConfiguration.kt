@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property attributes all attributes, both local and shared (only the ones applicable to this config), , initialized from [CatalogListConfiguration]
  */
 data class VariationProductConfiguration(
-        @JsonProperty("elementCount")
-        val elementCount: Int = 100,
+    @JsonProperty("elementCount")
+    val elementCount: Int = 100,
 
-        @JsonProperty("localVariationAttributes")
-        val localVariationAttributes: List<VariationAttributeConfiguration> = emptyList(),
+    @JsonProperty("localVariationAttributes")
+    val localVariationAttributes: List<VariationAttributeConfiguration> = emptyList(),
 
-        @JsonProperty("sharedVariationAttributes")
-        val sharedVariationAttributes: List<String> = emptyList()
+    @JsonProperty("sharedVariationAttributes")
+    val sharedVariationAttributes: List<String> = emptyList()
 ) {
     lateinit var attributes: List<VariationAttributeConfiguration>
 }

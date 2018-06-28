@@ -30,10 +30,20 @@ import java.util.*
  * A definition is the center piece - add a seed value to it and it can generate a value for the attribute it defines.
  */
 
-data class CustomAttribute(override val definition: AttributeDefinition,
-                           val seed: Long) : Attribute {
+data class CustomAttribute(
+    override val definition: AttributeDefinition,
+    val seed: Long
+) : Attribute {
     constructor(path: String, config: AttributeConfig, seed: Long)
-            : this(StandardAttributeDefinition(path, config.type, config.searchable, config.generationStrategy, config.dataStore), seed)
+            : this(
+        StandardAttributeDefinition(
+            path,
+            config.type,
+            config.searchable,
+            config.generationStrategy,
+            config.dataStore
+        ), seed
+    )
 
     override val value: String
         get() = when (definition.generationStrategy) {
@@ -56,17 +66,22 @@ data class CustomAttribute(override val definition: AttributeDefinition,
         val maxDate = LocalDate.of(2017, 1, 1)
         val maxDays: Int = ChronoUnit.DAYS.between(minDate, maxDate).toInt()
 
-        fun getCustomAttributeDefinitions(extendedObj: String, seed: Long, customAttributeConfigs: Map<String, AttributeConfig>?,
-                                          generatedAttributeConfig: GeneratedAttributeConfig?): Set<AttributeDefinition> {
+        fun getCustomAttributeDefinitions(
+            extendedObj: String, seed: Long, customAttributeConfigs: Map<String, AttributeConfig>?,
+            generatedAttributeConfig: GeneratedAttributeConfig?
+        ): Set<AttributeDefinition> {
             // predefined custom attributes
             val predefinedAttributes = customAttributeConfigs?.map {
-                StandardAttributeDefinition("$extendedObj.${it.key}",
-                        it.value.type, it.value.searchable, it.value.generationStrategy, it.value.dataStore)
+                StandardAttributeDefinition(
+                    "$extendedObj.${it.key}",
+                    it.value.type, it.value.searchable, it.value.generationStrategy, it.value.dataStore
+                )
             }?.toSet()
                     ?: emptySet()
 
             // generated custom attributes
-            val generatedAttributesConfig = RandomAttributeDefinition.fromConfig(extendedObj, generatedAttributeConfig, seed)
+            val generatedAttributesConfig =
+                RandomAttributeDefinition.fromConfig(extendedObj, generatedAttributeConfig, seed)
             return predefinedAttributes + generatedAttributesConfig
         }
     }

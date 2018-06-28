@@ -21,15 +21,21 @@ class CustomerTest {
         val regions = listOf(SupportedZone.Generic)
         val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = regions)
 
-        assertEquals(elementCount, customerGenerator.objects.count(),
-                "Number of generated customers should equal configured element count")
+        assertEquals(
+            elementCount, customerGenerator.objects.count(),
+            "Number of generated customers should equal configured element count"
+        )
     }
 
     @Test
     fun testCustomerAddressCount() {
         val minAddressCount = 3
         val maxAddressCount = 7
-        val customerConfig = CustomerConfiguration(minAddressCount = minAddressCount, maxAddressCount = maxAddressCount, initialSeed = seed)
+        val customerConfig = CustomerConfiguration(
+            minAddressCount = minAddressCount,
+            maxAddressCount = maxAddressCount,
+            initialSeed = seed
+        )
         val regions = listOf(SupportedZone.Generic)
         val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = regions)
 
@@ -69,7 +75,12 @@ class CustomerTest {
         val type = AttributeConfig.DataType.STRING
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
         val dataStore = "foobar"
-        val attributeConfig = AttributeConfig(type = type, generationStrategy = generationStrategy, dataStore = dataStore, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            generationStrategy = generationStrategy,
+            dataStore = dataStore,
+            searchable = false
+        )
         val customAttribute: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
         val customerConfig = CustomerConfiguration(customAttributes = customAttribute, initialSeed = seed)
         val regions = listOf(SupportedZone.Generic)
@@ -91,7 +102,8 @@ class CustomerTest {
         val elementCount = 20
         val generatedAttributesConfig = GeneratedAttributeConfig(elementCount = elementCount)
         val customerConfig = CustomerConfiguration(generatedAttributes = generatedAttributesConfig, initialSeed = seed)
-        val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
+        val customerGenerator =
+            CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
 
         customerGenerator.objects.forEach { customer ->
             assertEquals(elementCount, customer.customAttributes.size)
@@ -103,7 +115,8 @@ class CustomerTest {
         val passwd = "CloudIs4LetterWord!"
 
         val customerConfig = CustomerConfiguration(prehashPasswords = true, initialSeed = seed)
-        val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
+        val customerGenerator =
+            CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
 
         customerGenerator.objects.forEach { customer ->
             assertFalse(passwd == customer.password)
@@ -116,7 +129,8 @@ class CustomerTest {
         val passwd = "CloudIs4LetterWord!"
 
         val customerConfig = CustomerConfiguration(prehashPasswords = false, initialSeed = seed)
-        val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
+        val customerGenerator =
+            CustomerGenerator(configuration = customerConfig, regions = listOf(SupportedZone.Generic))
 
         customerGenerator.objects.forEach { customer ->
             assertEquals(passwd, customer.password)

@@ -13,17 +13,17 @@ import com.salesforce.comdagen.RenderConfig
 
 @JsonRootName("shipping")
 data class ShippingConfiguration(
-        val minPrice: Float = 0.01F,
+    val minPrice: Float = 0.01F,
 
-        val maxPrice: Float = 50.0F,
+    val maxPrice: Float = 50.0F,
 
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        override val elementCount: Int = 5,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "shipping.xml",
-        override val outputDir: String = "",
-        override val templateName: String = "shipping.ftlx"
+    override val elementCount: Int = 5,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "shipping.xml",
+    override val outputDir: String = "",
+    override val templateName: String = "shipping.ftlx"
 ) : RenderConfig, ExtendableObjectConfig

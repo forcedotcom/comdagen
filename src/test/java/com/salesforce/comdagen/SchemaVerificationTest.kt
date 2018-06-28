@@ -42,14 +42,23 @@ class SchemaVerificationTest {
 
         val templateFileName = "customers.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(customerGenerator)
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${customerConfig.outputDir}/${customerConfig.getFileName()}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${customerConfig.outputDir}/${customerConfig.getFileName()}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -68,15 +77,24 @@ class SchemaVerificationTest {
 
         val templateFileName = "pricebooks.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(pricebookGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${pricebookConfig.outputDir}/${pricebookConfig.getFileName()}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${pricebookConfig.outputDir}/${pricebookConfig.getFileName()}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -96,15 +114,24 @@ class SchemaVerificationTest {
 
         val templateFileName = "catalogs.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(catalogGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${catalogConfig.outputDir}/$catalogId/${catalogConfig.outputFilePattern}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${catalogConfig.outputDir}/$catalogId/${catalogConfig.outputFilePattern}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -116,22 +143,34 @@ class SchemaVerificationTest {
     @Test
     fun testInventoryValid() {
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
-        val inventoryConfig = InventoryConfiguration(inventoryRecords = InventoryRecordConfiguration(initialSeed = seed), initialSeed = seed)
+        val inventoryConfig = InventoryConfiguration(
+            inventoryRecords = InventoryRecordConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
         val inventoryGenerator = InventoryGenerator(inventoryConfig, catalogConfig)
 
         val v = getValidator("/schema/inventory.xsd")
 
         val templateFileName = "inventories.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(inventoryGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${inventoryConfig.outputDir}/${inventoryConfig.getFileName()}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${inventoryConfig.outputDir}/${inventoryConfig.getFileName()}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -149,15 +188,24 @@ class SchemaVerificationTest {
 
         val templateFileName = "coupons.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(couponGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${couponConfig.outputDir}/${couponConfig.outputFilePattern}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${couponConfig.outputDir}/${couponConfig.outputFilePattern}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -176,15 +224,24 @@ class SchemaVerificationTest {
 
         val templateFileName = "customer-groups.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
         producer.render(customerGroupGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${customerGroupConfig.outputDir}/${customerGroupConfig.outputFilePattern}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${customerGroupConfig.outputDir}/${customerGroupConfig.outputFilePattern}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -197,13 +254,21 @@ class SchemaVerificationTest {
     fun testMetaValid() {
         val regions = listOf(SupportedZone.Generic, SupportedZone.Chinese)
 
-        val catalogConfig = CatalogListConfiguration(generatedAttributes = GeneratedAttributeConfig(20), initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", generatedAttributes = GeneratedAttributeConfig(20), initialSeed = seed)
-        val customerConfig = CustomerConfiguration(generatedAttributes = GeneratedAttributeConfig(30), initialSeed = seed)
+        val catalogConfig =
+            CatalogListConfiguration(generatedAttributes = GeneratedAttributeConfig(20), initialSeed = seed)
+        val pricebookConfig = PricebookConfiguration(
+            id = "pricebook",
+            generatedAttributes = GeneratedAttributeConfig(20),
+            initialSeed = seed
+        )
+        val customerConfig =
+            CustomerConfiguration(generatedAttributes = GeneratedAttributeConfig(30), initialSeed = seed)
 
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
         val customerGenerator = CustomerGenerator(configuration = customerConfig, regions = regions)
 
         val v = getValidator("/schema/metadata.xsd")
@@ -211,14 +276,19 @@ class SchemaVerificationTest {
 
         val templateFileName = "system-objecttype-extensions.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
-        Files.copy(javaClass.getResourceAsStream("/templates/search2.ftlx"), inputDir.newFile("search2.ftlx").toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/search2.ftlx"), inputDir.newFile("search2.ftlx").toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 
-        val customAttributes: Map<String, Set<AttributeDefinition>> = catalogGenerator.metadata + pricebookGenerator.metadata + customerGenerator.metadata
+        val customAttributes: Map<String, Set<AttributeDefinition>> =
+            catalogGenerator.metadata + pricebookGenerator.metadata + customerGenerator.metadata
 
         producer.renderMeta(customAttributes = customAttributes, regions = regions.toSet())
 
@@ -237,20 +307,33 @@ class SchemaVerificationTest {
     @Test
     fun testPromotionsValid() {
         val catalog = CatalogGenerator(CatalogListConfiguration(initialSeed = seed)).objects.first()
-        val customerGroupIds = CustomerGroupGenerator(CustomerGroupConfiguration(initialSeed = seed), CustomerConfiguration(initialSeed = seed)).objects.map { it.id }.toList()
-        val shippingMethods = ShippingGenerator(ShippingConfiguration(initialSeed = seed)).objects.map { it.id }.toList()
+        val customerGroupIds = CustomerGroupGenerator(
+            CustomerGroupConfiguration(initialSeed = seed),
+            CustomerConfiguration(initialSeed = seed)
+        ).objects.map { it.id }.toList()
+        val shippingMethods =
+            ShippingGenerator(ShippingConfiguration(initialSeed = seed)).objects.map { it.id }.toList()
 
-        val promotionConfig = PromotionConfiguration(campaigns = CampaignConfiguration(initialSeed = seed), productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                orderConfig = OrderPromotionConfiguration(initialSeed = seed), shippingConfig = ShippingPromotionConfiguration(initialSeed = seed), initialSeed = seed)
-        val promotionGenerator = PromotionGenerator(configuration = promotionConfig, catalog = catalog,
-                customerGroups = customerGroupIds, shippingMethods = shippingMethods)
+        val promotionConfig = PromotionConfiguration(
+            campaigns = CampaignConfiguration(initialSeed = seed),
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            orderConfig = OrderPromotionConfiguration(initialSeed = seed),
+            shippingConfig = ShippingPromotionConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
+        val promotionGenerator = PromotionGenerator(
+            configuration = promotionConfig, catalog = catalog,
+            customerGroups = customerGroupIds, shippingMethods = shippingMethods
+        )
 
         val v = getValidator("/schema/promotion.xsd")
 
         val templateFileName = "promotions.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 
@@ -258,7 +341,14 @@ class SchemaVerificationTest {
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "${promotionConfig.outputDir}/${promotionConfig.outputFilePattern}")))
+                v.validate(
+                    StreamSource(
+                        File(
+                            outputDir.root,
+                            "${promotionConfig.outputDir}/${promotionConfig.outputFilePattern}"
+                        )
+                    )
+                )
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -276,8 +366,10 @@ class SchemaVerificationTest {
 
         val templateFileName = "shipping.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 
@@ -303,8 +395,10 @@ class SchemaVerificationTest {
 
         val templateFileName = "stores.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 
@@ -330,8 +424,10 @@ class SchemaVerificationTest {
 
         val templateFileName = "sortingrules.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 
@@ -362,8 +458,10 @@ class SchemaVerificationTest {
 
         val templateFileName = "redirect-urls.ftlx"
         val template = inputDir.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val producer = XMLOutputProducer(inputDir.root, outputDir.root)
 

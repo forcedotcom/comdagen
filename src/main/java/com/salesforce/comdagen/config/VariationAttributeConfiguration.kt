@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class VariationAttributeConfiguration(
-        @JsonProperty("name")
-        val name: String,
+    @JsonProperty("name")
+    val name: String,
 
-        @JsonProperty("values")
-        val values: List<String>,
+    @JsonProperty("values")
+    val values: List<String>,
 
-        @JsonProperty
-        val probability: Float = 1.0f
+    @JsonProperty
+    val probability: Float = 1.0f
 ) {
     init {
         require(probability in 0.0..1.0, { "Probability for $name must be in [0,1]" })

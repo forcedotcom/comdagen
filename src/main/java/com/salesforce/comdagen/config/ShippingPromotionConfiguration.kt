@@ -10,18 +10,18 @@ package com.salesforce.comdagen.config
 import com.salesforce.comdagen.ExtendableObjectConfig
 
 data class ShippingPromotionConfiguration(
-        override val elementCount: Int = 5,
+    override val elementCount: Int = 5,
 
-        val minDiscount: Int = 1,
+    val minDiscount: Int = 1,
 
-        val maxDiscount: Int = 50,
+    val maxDiscount: Int = 50,
 
-        val minThreshold: Float = 0.01F,
+    val minThreshold: Float = 0.01F,
 
-        val maxThreshold: Float = 200.0F,
-        override val initialSeed: Long,
+    val maxThreshold: Float = 200.0F,
+    override val initialSeed: Long,
 
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null
+    override val generatedAttributes: GeneratedAttributeConfig? = null
 ) : ExtendableObjectConfig

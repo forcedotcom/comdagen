@@ -12,8 +12,8 @@ import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.SortingRule
 import com.salesforce.comdagen.model.SortingRuleAssignment
 
-data class SortingRuleGenerator(override val configuration: SortingRuleConfiguration)
-    : Generator<SortingRuleConfiguration, SortingRule> {
+data class SortingRuleGenerator(override val configuration: SortingRuleConfiguration) :
+    Generator<SortingRuleConfiguration, SortingRule> {
 
     override val creatorFunc = { _: Int, seed: Long -> SortingRule(seed) }
 

@@ -19,56 +19,56 @@ import com.salesforce.comdagen.SupportedZone
  * files that will be included and parsed as YAML files.
  */
 data class SiteConfiguration(
-        /**
-         * Optional site name, if null site name is "Site ${index}"
-         */
-        val siteName: String?,
+    /**
+     * Optional site name, if null site name is "Site ${index}"
+     */
+    val siteName: String?,
 
-        val siteDescription: String? = null,
+    val siteDescription: String? = null,
 
-        override val initialSeed: Long = 1234,
+    override val initialSeed: Long = 1234,
 
-        val regions: List<SupportedZone> = listOf(SupportedZone.Generic),
+    val regions: List<SupportedZone> = listOf(SupportedZone.Generic),
 
-        val currencies: List<SupportedCurrency> = listOf(SupportedCurrency.USD),
+    val currencies: List<SupportedCurrency> = listOf(SupportedCurrency.USD),
 
-        @JsonProperty("navigationCatalog")
-        val navigationCatalogConfig: NavigationCatalogConfiguration? = null,
+    @JsonProperty("navigationCatalog")
+    val navigationCatalogConfig: NavigationCatalogConfiguration? = null,
 
-        val customCartridges: List<String> = listOf("sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"),
+    val customCartridges: List<String> = listOf("sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"),
 
-        val staticFiles: List<String>? = null,
+    val staticFiles: List<String>? = null,
 
-        // default for config files is to not generate anything
-        val pricebookConfig: String? = null,
+    // default for config files is to not generate anything
+    val pricebookConfig: String? = null,
 
-        val catalogConfig: String? = null,
+    val catalogConfig: String? = null,
 
-        val customerConfig: String? = null,
+    val customerConfig: String? = null,
 
-        val couponConfig: String? = null,
+    val couponConfig: String? = null,
 
-        val inventoryConfig: String? = null,
+    val inventoryConfig: String? = null,
 
-        val customerGroupConfig: String? = null,
+    val customerGroupConfig: String? = null,
 
-        val promotionConfig: String? = null,
+    val promotionConfig: String? = null,
 
-        val shippingConfig: String? = null,
+    val shippingConfig: String? = null,
 
-        val sourceCodeConfig: String? = null,
+    val sourceCodeConfig: String? = null,
 
-        val storeConfig: String? = null,
+    val storeConfig: String? = null,
 
-        val sortingRuleConfig: String? = null,
+    val sortingRuleConfig: String? = null,
 
-        val redirectUrlConfig: String? = null,
+    val redirectUrlConfig: String? = null,
 
-        override val outputFilePattern: String = "site.xml",
+    override val outputFilePattern: String = "site.xml",
 
-        override val outputDir: String = "sites",
+    override val outputDir: String = "sites",
 
-        override val elementCount: Int = 1, // single site only ever has elementCount=1
+    override val elementCount: Int = 1, // single site only ever has elementCount=1
 
-        override val templateName: String = "site.ftlx"
+    override val templateName: String = "site.ftlx"
 ) : RenderConfig 

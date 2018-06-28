@@ -16,13 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @property thereofSearchable the first element(s) of [elementCount] will be indexed (and thus searchable)
  */
 data class GeneratedAttributeConfig(
-        @JsonProperty
-        val elementCount: Int = 10,
+    @JsonProperty
+    val elementCount: Int = 10,
 
-        @JsonProperty
-        val thereofSearchable: Int = 0
+    @JsonProperty
+    val thereofSearchable: Int = 0
 ) {
     init {
-        require(thereofSearchable <= elementCount, { "searchable attributes count must be lower/equal than total number of attributes" })
+        require(
+            thereofSearchable <= elementCount,
+            { "searchable attributes count must be lower/equal than total number of attributes" })
     }
 }

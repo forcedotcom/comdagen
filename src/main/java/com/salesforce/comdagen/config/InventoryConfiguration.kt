@@ -15,17 +15,17 @@ import com.salesforce.comdagen.RenderConfig
 @JsonRootName("inventories")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class InventoryConfiguration(
-        val inventoryRecords: InventoryRecordConfiguration,
+    val inventoryRecords: InventoryRecordConfiguration,
 
-        val coverage: Float = 1.0F,
+    val coverage: Float = 1.0F,
 
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        override val elementCount: Int = 1,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "inventories\${i}.xml",
-        override val outputDir: String = "inventory-lists",
-        override val templateName: String = "inventories.ftlx"
+    override val elementCount: Int = 1,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "inventories\${i}.xml",
+    override val outputDir: String = "inventory-lists",
+    override val templateName: String = "inventories.ftlx"
 ) : RenderConfig, ExtendableObjectConfig

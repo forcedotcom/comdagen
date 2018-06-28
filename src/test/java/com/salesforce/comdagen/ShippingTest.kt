@@ -44,7 +44,12 @@ class ShippingTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
         val shippingConfig = ShippingConfiguration(customAttributes = customAttributesConfig, initialSeed = seed)
@@ -64,7 +69,8 @@ class ShippingTest {
     fun testShippingMethodGeneratedAttributes() {
         val elementCount = 15
 
-        val shippingConfig = ShippingConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
+        val shippingConfig =
+            ShippingConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
         val shippingGenerator = ShippingGenerator(shippingConfig)
 
         shippingGenerator.objects.forEach { shippingMethod ->

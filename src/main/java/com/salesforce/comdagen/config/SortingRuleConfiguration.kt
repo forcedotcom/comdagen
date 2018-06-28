@@ -14,9 +14,9 @@ import com.salesforce.comdagen.RenderConfig
 @JsonRootName("sortingrules")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SortingRuleConfiguration(
-        override val elementCount: Int = 1,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "sort.xml",
-        override val outputDir: String = "",
-        override val templateName: String = "sortingrules.ftlx"
+    override val elementCount: Int = 1,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "sort.xml",
+    override val outputDir: String = "",
+    override val templateName: String = "sortingrules.ftlx"
 ) : RenderConfig

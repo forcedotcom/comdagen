@@ -10,27 +10,27 @@ package com.salesforce.comdagen.config
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class CategoryConfiguration(
-        /**
-         * number of categories per catalog
-         */
-        @JsonProperty
-        val elementCount: Int = 50,
+    /**
+     * number of categories per catalog
+     */
+    @JsonProperty
+    val elementCount: Int = 50,
 
-        /**
-         * depth of the category tree
-         */
-        @JsonProperty
-        val categoryTreeDepth: Int = 5,
+    /**
+     * depth of the category tree
+     */
+    @JsonProperty
+    val categoryTreeDepth: Int = 5,
 
-        /**
-         * breadth of the category tree
-         */
-        @JsonProperty
-        val categoryTreeBreadth: Int = 10,
+    /**
+     * breadth of the category tree
+     */
+    @JsonProperty
+    val categoryTreeBreadth: Int = 10,
 
-        /**
-         * category landing page template
-         */
-        @JsonProperty
-        val categoryTemplate: String? = null
+    /**
+     * category landing page template
+     */
+    @JsonProperty
+    val categoryTemplate: String? = null
 )

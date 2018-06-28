@@ -30,8 +30,10 @@ abstract class Promotion(private val seed: Long) {
     abstract val customAttributes: List<CustomAttribute>
 }
 
-data class ProductPromotion(private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
-                            private val config: ProductPromotionConfiguration) : Promotion(seed) {
+data class ProductPromotion(
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val config: ProductPromotionConfiguration
+) : Promotion(seed) {
     val discountedCategory: String
         get() = categoryIds[Random(seed).nextInt(categoryIds.size)]
 
@@ -45,8 +47,10 @@ data class ProductPromotion(private val seed: Long, private val categoryIds: Lis
         get() = config.attributeDefinitions("Promotion").map { CustomAttribute(it, seed) }
 }
 
-data class OrderPromotion(private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
-                          private val config: OrderPromotionConfiguration) : Promotion(seed) {
+data class OrderPromotion(
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val config: OrderPromotionConfiguration
+) : Promotion(seed) {
     val discount: Int
         get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
 
@@ -63,8 +67,10 @@ data class OrderPromotion(private val seed: Long, private val categoryIds: List<
         get() = config.attributeDefinitions("Promotion").map { CustomAttribute(it, seed) }
 }
 
-data class ShippingPromotion(private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
-                             private val config: ShippingPromotionConfiguration, private val shippingIds: List<String>) : Promotion(seed) {
+data class ShippingPromotion(
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val config: ShippingPromotionConfiguration, private val shippingIds: List<String>
+) : Promotion(seed) {
     val qualifyingCategory: String
         get() = categoryIds[Random(seed).nextInt(categoryIds.size)]
 
@@ -84,9 +90,11 @@ data class ShippingPromotion(private val seed: Long, private val categoryIds: Li
         get() = config.attributeDefinitions("Promotion").map { CustomAttribute(it, seed) }
 }
 
-data class Campaign(private val seed: Long, private val attributeDefinitions: Set<AttributeDefinition>,
-                    private val config: CampaignConfiguration, private val couponIds: List<String> = emptyList(),
-                    private val customerGroupIds: List<String> = emptyList(), private val sourceCodeIds: List<String> = emptyList()) {
+data class Campaign(
+    private val seed: Long, private val attributeDefinitions: Set<AttributeDefinition>,
+    private val config: CampaignConfiguration, private val couponIds: List<String> = emptyList(),
+    private val customerGroupIds: List<String> = emptyList(), private val sourceCodeIds: List<String> = emptyList()
+) {
     val id: String
         get() = "comdagen-${Math.abs(seed) + "campaignId".hashCode()}"
 

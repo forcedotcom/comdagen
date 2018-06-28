@@ -15,9 +15,10 @@ import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Inventory
 import java.util.*
 
-data class InventoryGenerator(override val configuration: InventoryConfiguration,
-                              private val catalogConfiguration: CatalogListConfiguration)
-    : Generator<InventoryConfiguration, Inventory> {
+data class InventoryGenerator(
+    override val configuration: InventoryConfiguration,
+    private val catalogConfiguration: CatalogListConfiguration
+) : Generator<InventoryConfiguration, Inventory> {
 
     override val objects: Sequence<Inventory>
         get() {
@@ -28,14 +29,26 @@ data class InventoryGenerator(override val configuration: InventoryConfiguration
             val seeds = (1..configuration.elementCount).map { rng.nextLong() }
 
             return seeds.asSequence().mapIndexed { idx, seed ->
-                val productIds = GeneratorHelper.getPartialProductSequence(seed, catalogConfiguration.totalProductCount(), configuration.coverage, allProducts)
-                Inventory(productIds, seed, configuration, metadata["ProductInventoryList"].orEmpty(), metadata["ProductInventoryRecord"].orEmpty(),
-                        idx, catalogConfiguration.hashCode())
+                val productIds = GeneratorHelper.getPartialProductSequence(
+                    seed,
+                    catalogConfiguration.totalProductCount(),
+                    configuration.coverage,
+                    allProducts
+                )
+                Inventory(
+                    productIds,
+                    seed,
+                    configuration,
+                    metadata["ProductInventoryList"].orEmpty(),
+                    metadata["ProductInventoryRecord"].orEmpty(),
+                    idx,
+                    catalogConfiguration.hashCode()
+                )
             }
         }
 
     override val metadata: Map<String, Set<AttributeDefinition>> = mapOf(
-            "ProductInventoryList" to configuration.attributeDefinitions(),
-            "ProductInventoryRecord" to configuration.attributeDefinitions()
+        "ProductInventoryList" to configuration.attributeDefinitions(),
+        "ProductInventoryRecord" to configuration.attributeDefinitions()
     )
 }

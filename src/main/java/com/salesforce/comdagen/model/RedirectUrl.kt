@@ -40,7 +40,8 @@ sealed class RedirectUrl {
  *
  * @property categoryAssignment defines connection between category (source) and product (target)
  */
-data class ProductRedirectUrl(override val seed: Long, private val categoryAssignment: CategoryAssignment) : RedirectUrl() {
+data class ProductRedirectUrl(override val seed: Long, private val categoryAssignment: CategoryAssignment) :
+    RedirectUrl() {
     val productCategoryId: String
         get() = categoryAssignment.category.id
 

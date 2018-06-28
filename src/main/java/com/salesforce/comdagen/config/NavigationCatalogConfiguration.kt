@@ -12,19 +12,19 @@ import com.fasterxml.jackson.annotation.JsonRootName
 
 @JsonRootName("navigation-catalog")
 data class NavigationCatalogConfiguration(
-        val coverage: Float = 1.0F,
+    val coverage: Float = 1.0F,
 
-        val templateName: String = "catalogs.ftlx",
+    val templateName: String = "catalogs.ftlx",
 
-        @JsonProperty("categories")
-        override val categoryConfig: CategoryConfiguration = CategoryConfiguration(),
+    @JsonProperty("categories")
+    override val categoryConfig: CategoryConfiguration = CategoryConfiguration(),
 
-        override val generatedAttributes: GeneratedAttributeConfig?,
+    override val generatedAttributes: GeneratedAttributeConfig?,
 
-        override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
+    override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
 
-        /** Not used. See [coverage]. */
-        override val elementCount: Int = 0,
+    /** Not used. See [coverage]. */
+    override val elementCount: Int = 0,
 
-        override val initialSeed: Long
+    override val initialSeed: Long
 ) : CatalogConfiguration

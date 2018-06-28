@@ -17,10 +17,11 @@ import java.util.*
  * @param categoryAssignments list of product category assignments used for product redirects (optional)
  * @param categories list of generated categories to generate category redirects for (optional)
  */
-data class RedirectUrlGenerator(override val configuration: RedirectUrlConfiguration,
-                                private val categories: List<Category>? = null,
-                                private val categoryAssignments: Sequence<CategoryAssignment> = emptySequence())
-    : Generator<RedirectUrlConfiguration, RedirectUrl> {
+data class RedirectUrlGenerator(
+    override val configuration: RedirectUrlConfiguration,
+    private val categories: List<Category>? = null,
+    private val categoryAssignments: Sequence<CategoryAssignment> = emptySequence()
+) : Generator<RedirectUrlConfiguration, RedirectUrl> {
 
     override val objects: Sequence<RedirectUrl>
         get() {
@@ -32,11 +33,16 @@ data class RedirectUrlGenerator(override val configuration: RedirectUrlConfigura
             // generate product redirects by taking from categoryAssignments, constructing N redirects from category to
             // product
             val productRedirects =
-                    categoryAssignments.take(configuration.productRedirects).map { ProductRedirectUrl(rng.nextLong(), it) }
+                categoryAssignments.take(configuration.productRedirects).map { ProductRedirectUrl(rng.nextLong(), it) }
 
             // generate category redirects if categories list is not null
             val categoryRedirects = if (categories != null)
-                (1..configuration.categoryRedirects).asSequence().map { CategoryRedirectUrl(rng.nextLong(), categories) } else emptySequence()
+                (1..configuration.categoryRedirects).asSequence().map {
+                    CategoryRedirectUrl(
+                        rng.nextLong(),
+                        categories
+                    )
+                } else emptySequence()
 
             return staticRedirects.plus(productRedirects).plus(categoryRedirects)
         }

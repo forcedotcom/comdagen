@@ -1,127 +1,102 @@
 package com.salesforce.comdagen;
 
+import org.w3c.dom.ls.LSInput;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.w3c.dom.ls.LSInput;
-
 public class Input
-    implements LSInput
-{
+        implements LSInput {
 
     private String publicId;
 
     private String systemId;
+    private BufferedInputStream inputStream;
 
-    public String getPublicId()
-    {
+    public Input(String publicId, String sysId, InputStream input) {
+        this.publicId = publicId;
+        this.systemId = sysId;
+        this.inputStream = new BufferedInputStream(input);
+    }
+
+    public String getPublicId() {
         return publicId;
     }
 
-    public void setPublicId( String publicId )
-    {
+    public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
 
-    public String getBaseURI()
-    {
+    public String getBaseURI() {
         return null;
+    }
+
+    public void setBaseURI(String baseURI) {
+
     }
 
     @Override
-    public InputStream getByteStream()
-    {
+    public InputStream getByteStream() {
         return null;
     }
 
-    public boolean getCertifiedText()
-    {
+    public void setByteStream(InputStream byteStream) {
+    }
+
+    public boolean getCertifiedText() {
         return false;
     }
 
-    public Reader getCharacterStream()
-    {
+    public void setCertifiedText(boolean certifiedText) {
+    }
+
+    public Reader getCharacterStream() {
         return null;
     }
 
-    public String getEncoding()
-    {
+    public void setCharacterStream(Reader characterStream) {
+    }
+
+    public String getEncoding() {
         return null;
     }
 
-    public String getStringData()
-    {
-        synchronized ( inputStream )
-        {
-            try
-            {
+    public void setEncoding(String encoding) {
+    }
+
+    public String getStringData() {
+        synchronized (inputStream) {
+            try {
                 byte[] input = new byte[inputStream.available()];
-                inputStream.read( input );
-                String contents = new String( input );
+                inputStream.read(input);
+                String contents = new String(input);
                 return contents;
-            }
-            catch ( IOException e )
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println( "Exception " + e );
+                System.out.println("Exception " + e);
                 return null;
             }
         }
     }
 
-    public void setBaseURI( String baseURI )
-    {
-
+    public void setStringData(String stringData) {
     }
 
-    public void setByteStream( InputStream byteStream )
-    {
-    }
-
-    public void setCertifiedText( boolean certifiedText )
-    {
-    }
-
-    public void setCharacterStream( Reader characterStream )
-    {
-    }
-
-    public void setEncoding( String encoding )
-    {
-    }
-
-    public void setStringData( String stringData )
-    {
-    }
-
-    public String getSystemId()
-    {
+    public String getSystemId() {
         return systemId;
     }
 
-    public void setSystemId( String systemId )
-    {
+    public void setSystemId(String systemId) {
         this.systemId = systemId;
     }
 
-    public BufferedInputStream getInputStream()
-    {
+    public BufferedInputStream getInputStream() {
         return inputStream;
     }
 
-    public void setInputStream( BufferedInputStream inputStream )
-    {
+    public void setInputStream(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
-    }
-
-    private BufferedInputStream inputStream;
-
-    public Input( String publicId, String sysId, InputStream input )
-    {
-        this.publicId = publicId;
-        this.systemId = sysId;
-        this.inputStream = new BufferedInputStream( input );
     }
 }

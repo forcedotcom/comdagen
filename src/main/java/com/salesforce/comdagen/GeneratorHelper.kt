@@ -17,11 +17,17 @@ object GeneratorHelper {
 
     private val productIds: MutableMap<CatalogListConfiguration, Sequence<String>> = mutableMapOf()
 
-    fun getProductIds(catalogConfig: CatalogListConfiguration, regions: List<SupportedZone> = listOf(SupportedZone.Generic)): Sequence<String> {
+    fun getProductIds(
+        catalogConfig: CatalogListConfiguration,
+        regions: List<SupportedZone> = listOf(SupportedZone.Generic)
+    ): Sequence<String> {
         return productIds.getOrPut(catalogConfig) { generateProductIds(catalogConfig) }
     }
 
-    private fun generateProductIds(catalogConfig: CatalogListConfiguration, regions: List<SupportedZone> = listOf(SupportedZone.Generic)): Sequence<String> {
+    private fun generateProductIds(
+        catalogConfig: CatalogListConfiguration,
+        regions: List<SupportedZone> = listOf(SupportedZone.Generic)
+    ): Sequence<String> {
         val rng = Random(catalogConfig.initialSeed)
         // can not use rng inside the sequence, as re-running the sequence will use the advanced state of the RNG and
         // generate a different sequence.
@@ -29,13 +35,18 @@ object GeneratorHelper {
         val seeds = (1..catalogConfig.elementCount).map { rng.nextLong() }
 
         // get product ids for each catalog configured in catalogConfig
-        return seeds.asSequence().flatMap { catalogSeed -> generateProductIdsForCatalog(catalogSeed, catalogConfig, regions) }
+        return seeds.asSequence()
+            .flatMap { catalogSeed -> generateProductIdsForCatalog(catalogSeed, catalogConfig, regions) }
     }
 
     /**
      * Generate sequence of product ids. Be careful in how you specify the seed: this _must_ match what [MasterCatalog.products] etc do.
      */
-    private fun generateProductIdsForCatalog(seed: Long, catalogConfig: CatalogListConfiguration, regions: List<SupportedZone>)
+    private fun generateProductIdsForCatalog(
+        seed: Long,
+        catalogConfig: CatalogListConfiguration,
+        regions: List<SupportedZone>
+    )
             : Sequence<String> {
 
         // get standard product ids
@@ -74,10 +85,16 @@ object GeneratorHelper {
         return standardProducts + variantProducts + bundles + productSets
     }
 
-    fun getPartialProductSequence(seed: Long, totalProductCount: Int, coverage: Float, allProductIds: Sequence<String>): Sequence<String> {
+    fun getPartialProductSequence(
+        seed: Long,
+        totalProductCount: Int,
+        coverage: Float,
+        allProductIds: Sequence<String>
+    ): Sequence<String> {
         return if (coverage < 1f) {
             val productsNotCovered = Random(seed).nextInt(
-                    (totalProductCount * (1 - coverage)).toInt())
+                (totalProductCount * (1 - coverage)).toInt()
+            )
             allProductIds.drop(productsNotCovered).take((totalProductCount * coverage).toInt())
         } else {
             allProductIds

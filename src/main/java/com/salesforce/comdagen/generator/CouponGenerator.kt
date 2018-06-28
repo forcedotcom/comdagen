@@ -11,8 +11,7 @@ import com.salesforce.comdagen.config.CouponConfiguration
 import com.salesforce.comdagen.model.*
 import java.util.*
 
-data class CouponGenerator(override val configuration: CouponConfiguration)
-    : Generator<CouponConfiguration, Coupon> {
+data class CouponGenerator(override val configuration: CouponConfiguration) : Generator<CouponConfiguration, Coupon> {
 
     override val objects: Sequence<Coupon>
         get() {

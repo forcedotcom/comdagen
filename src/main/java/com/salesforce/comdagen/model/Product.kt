@@ -62,11 +62,12 @@ sealed class Product {
  * @property extraAttributes custom attribute configurations
  * @property customAttributes custom attributes of this product
  */
-data class StandardProduct(override val seed: Long,
-                           override val regions: List<SupportedZone>,
-                           val sharedOptions: List<ProductOption>, val localOptions: List<ProductOption>,
-                           private val extraAttributes: Set<AttributeDefinition>)
-    : Product() {
+data class StandardProduct(
+    override val seed: Long,
+    override val regions: List<SupportedZone>,
+    val sharedOptions: List<ProductOption>, val localOptions: List<ProductOption>,
+    private val extraAttributes: Set<AttributeDefinition>
+) : Product() {
     val customAttributes
         get() = extraAttributes.map { CustomAttribute(it, seed + it.id.hashCode()) }
 
@@ -83,10 +84,11 @@ data class StandardProduct(override val seed: Long,
  * @property variants list of product variants
  * @property localVariationAttributes variation attributes defined by master product
  */
-data class MasterProduct(override val seed: Long,
-                         override val regions: List<SupportedZone>,
-                         private val config: VariationProductConfiguration)
-    : Product() {
+data class MasterProduct(
+    override val seed: Long,
+    override val regions: List<SupportedZone>,
+    private val config: VariationProductConfiguration
+) : Product() {
 
     val variants: List<VariationProduct>
         get() = generateVariants()
@@ -111,14 +113,19 @@ data class MasterProduct(override val seed: Long,
         // first connect each id to each value (we need this to construct CustomAttribute later)
         // then build a Set (so we can leverage google's solution) of each value list (so one set per attribute definition)
         // the output is a list of custom attribute definitions for each required variant
-        val idToValueMap = variationAttributes.map { attrDef -> attrDef.dataStore.map { attrVal -> attrDef.id to attrVal }.toSet() }
+        val idToValueMap =
+            variationAttributes.map { attrDef -> attrDef.dataStore.map { attrVal -> attrDef.id to attrVal }.toSet() }
         return Sets.cartesianProduct(idToValueMap)
-                .map { VariationProduct(rng.nextLong(), regions, it.map { (k, v) -> getCustomAttribute(k, v) }) }
+            .map { VariationProduct(rng.nextLong(), regions, it.map { (k, v) -> getCustomAttribute(k, v) }) }
     }
 
     private fun getCustomAttribute(name: String, value: String) =
-            CustomAttribute("product.$name", AttributeConfig(AttributeConfig.DataType.STRING,
-                    false, AttributeConfig.GenerationStrategy.STATIC, value), 0)
+        CustomAttribute(
+            "product.$name", AttributeConfig(
+                AttributeConfig.DataType.STRING,
+                false, AttributeConfig.GenerationStrategy.STATIC, value
+            ), 0
+        )
 }
 
 /**
@@ -126,9 +133,10 @@ data class MasterProduct(override val seed: Long,
  *
  * @property customAttributes List of variation attributes and there values
  */
-data class VariationProduct(override val seed: Long, override val regions: List<SupportedZone>,
-                            val customAttributes: List<CustomAttribute>)
-    : Product()
+data class VariationProduct(
+    override val seed: Long, override val regions: List<SupportedZone>,
+    val customAttributes: List<CustomAttribute>
+) : Product()
 
 /**
  * Represents a single product bundle
@@ -137,17 +145,19 @@ data class VariationProduct(override val seed: Long, override val regions: List<
  *
  * @property bundledProducts Map with standard products as key and there quantity as value
  */
-data class BundleProduct(override val seed: Long, override val regions: List<SupportedZone>,
-                         private val config: BundleProductConfiguration,
-                         private val catalog: MasterCatalog)
-    : Product() {
+data class BundleProduct(
+    override val seed: Long, override val regions: List<SupportedZone>,
+    private val config: BundleProductConfiguration,
+    private val catalog: MasterCatalog
+) : Product() {
     val bundledProducts: Map<Product, Int>
         get() {
             val rng = Random(seed)
 
             val productList = catalog.getAllProducts()
 
-            val elementCount = rng.nextInt(config.maxBundledProducts - config.minBundledProducts) + config.minBundledProducts
+            val elementCount =
+                rng.nextInt(config.maxBundledProducts - config.minBundledProducts) + config.minBundledProducts
 
             val startIdx = rng.nextInt(productList.size - elementCount)
 
@@ -164,10 +174,11 @@ data class BundleProduct(override val seed: Long, override val regions: List<Sup
         }
 }
 
-data class ProductSet(override val seed: Long, override val regions: List<SupportedZone>,
-                      private val config: ProductSetConfiguration,
-                      private val catalog: MasterCatalog)
-    : Product() {
+data class ProductSet(
+    override val seed: Long, override val regions: List<SupportedZone>,
+    private val config: ProductSetConfiguration,
+    private val catalog: MasterCatalog
+) : Product() {
     val products: List<Product>
         get() {
             val rng = Random(seed)
@@ -183,8 +194,10 @@ data class ProductSet(override val seed: Long, override val regions: List<Suppor
 /**
  * Represents a shared or local product option
  */
-data class ProductOption(private val seed: Long, private val config: ProductOptionConfiguration,
-                         private val currencies: List<SupportedCurrency>) : AttributeDefinition {
+data class ProductOption(
+    private val seed: Long, private val config: ProductOptionConfiguration,
+    private val currencies: List<SupportedCurrency>
+) : AttributeDefinition {
     override val id: String
         get() = "comdagen-option-${Math.abs(seed)}"
 
@@ -236,8 +249,10 @@ data class ProductOption(private val seed: Long, private val config: ProductOpti
 /**
  * Represents a value of a product option
  */
-class OptionValue(private val seed: Long, private val config: ProductOptionConfiguration,
-                  private val currencies: List<SupportedCurrency>, val default: Boolean = false) {
+class OptionValue(
+    private val seed: Long, private val config: ProductOptionConfiguration,
+    private val currencies: List<SupportedCurrency>, val default: Boolean = false
+) {
     val id: String
         get() = "comdagen-option-value-${Math.abs(seed)}"
 

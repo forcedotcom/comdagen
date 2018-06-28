@@ -29,9 +29,15 @@ import java.util.*
  * @property catalogHashCode hash code of the catalog configuration, used to differentiate inventory lists based on different
  *                        catalogs
  */
-class Inventory(private val productIds: Sequence<String>, private val seed: Long, private val config: InventoryConfiguration,
-                private val inventoryExtraAttributes: Set<AttributeDefinition>, private val recordExtraAttributes: Set<AttributeDefinition>,
-                private val index: Int, private val catalogHashCode: Int) {
+class Inventory(
+    private val productIds: Sequence<String>,
+    private val seed: Long,
+    private val config: InventoryConfiguration,
+    private val inventoryExtraAttributes: Set<AttributeDefinition>,
+    private val recordExtraAttributes: Set<AttributeDefinition>,
+    private val index: Int,
+    private val catalogHashCode: Int
+) {
 
     val defaultInstock: Boolean
         get() = false
@@ -51,7 +57,14 @@ class Inventory(private val productIds: Sequence<String>, private val seed: Long
     val inventoryRecords: Sequence<InventoryRecord>
         get() {
             val rng = Random(seed)
-            return productIds.map { InventoryRecord(rng.nextLong(), it, recordExtraAttributes, config.inventoryRecords) }
+            return productIds.map {
+                InventoryRecord(
+                    rng.nextLong(),
+                    it,
+                    recordExtraAttributes,
+                    config.inventoryRecords
+                )
+            }
         }
 
 }
@@ -65,8 +78,10 @@ class Inventory(private val productIds: Sequence<String>, private val seed: Long
  *
  * @property config configuration of the inventory record
  */
-class InventoryRecord(private val seed: Long, val productId: String, private val attributeDefinitions: Set<AttributeDefinition>,
-                      private val config: InventoryRecordConfiguration) {
+class InventoryRecord(
+    private val seed: Long, val productId: String, private val attributeDefinitions: Set<AttributeDefinition>,
+    private val config: InventoryRecordConfiguration
+) {
 
     val allocation: Int
         get() = Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
