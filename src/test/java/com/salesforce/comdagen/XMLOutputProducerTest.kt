@@ -25,8 +25,10 @@ class XMLOutputProducerTest {
         // prepare input directory
         val templateFileName = "test.ftlx"
         val template = inputFolder.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/" + templateFileName), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/" + templateFileName), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val outputProducer = XMLOutputProducer(inputFolder.root, outputFolder.root)
 
@@ -45,8 +47,10 @@ class XMLOutputProducerTest {
         // prepare input directory
         val templateFileName = "test.ftlx"
         val template = inputFolder.newFile(templateFileName)
-        Files.copy(javaClass.getResourceAsStream("/templates/" + templateFileName), template.toPath(),
-                StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            javaClass.getResourceAsStream("/templates/" + templateFileName), template.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
 
         val outputProducer = XMLOutputProducer(inputFolder.root, outputFolder.root)
 
@@ -57,7 +61,10 @@ class XMLOutputProducerTest {
 
         // check proper encoding
         val fileContent = File(outputFolder.root, "output.xml").readText()
-        assertThat(fileContent, containsString(
-                "\\&quot;0\\&quot; &amp;&amp; value&lt;\\&quot;10\\&quot; ?\\&quot;valid\\&quot;:\\&quot;error\\&quot;"))
+        assertThat(
+            fileContent, containsString(
+                "\\&quot;0\\&quot; &amp;&amp; value&lt;\\&quot;10\\&quot; ?\\&quot;valid\\&quot;:\\&quot;error\\&quot;"
+            )
+        )
     }
 }

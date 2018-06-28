@@ -18,62 +18,62 @@ import com.salesforce.comdagen.RenderConfig
 @JsonRootName("catalogs")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class CatalogListConfiguration(
-        /**
-         * The number of master catalogs.
-         */
-        override val elementCount: Int = 5,
+    /**
+     * The number of master catalogs.
+     */
+    override val elementCount: Int = 5,
 
-        override val initialSeed: Long,
+    override val initialSeed: Long,
 
-        @JsonProperty("categories")
-        override val categoryConfig: CategoryConfiguration = CategoryConfiguration(),
+    @JsonProperty("categories")
+    override val categoryConfig: CategoryConfiguration = CategoryConfiguration(),
 
-        /**
-         * configuration for product generation
-         */
-        val products: ProductConfiguration = ProductConfiguration(elementCount = 100, initialSeed = initialSeed),
+    /**
+     * configuration for product generation
+     */
+    val products: ProductConfiguration = ProductConfiguration(elementCount = 100, initialSeed = initialSeed),
 
-        /**
-         * configuration for variation master products
-         */
-        val variationProducts: List<VariationProductConfiguration> = emptyList(),
+    /**
+     * configuration for variation master products
+     */
+    val variationProducts: List<VariationProductConfiguration> = emptyList(),
 
-        /**
-         * configuration for product bundles
-         */
-        val bundleConfig: BundleProductConfiguration? = null,
+    /**
+     * configuration for product bundles
+     */
+    val bundleConfig: BundleProductConfiguration? = null,
 
-        /**
-         * configuration for product sets
-         */
-        val productSets: ProductSetConfiguration? = null,
+    /**
+     * configuration for product sets
+     */
+    val productSets: ProductSetConfiguration? = null,
 
-        /**
-         * Define custom attributes for the generated _products_.
-         */
-        override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
+    /**
+     * Define custom attributes for the generated _products_.
+     */
+    override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
 
-        /**
-         * configuration for randomly generated custom attributes
-         */
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    /**
+     * configuration for randomly generated custom attributes
+     */
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        /**
-         * configure shared variation attributes for catalog
-         */
-        val sharedVariationAttributes: List<VariationAttributeConfiguration> = emptyList(),
+    /**
+     * configure shared variation attributes for catalog
+     */
+    val sharedVariationAttributes: List<VariationAttributeConfiguration> = emptyList(),
 
-        /**
-         * configuration for shared product options
-         */
-        val sharedOptions: ProductOptionConfiguration? = null,
+    /**
+     * configuration for shared product options
+     */
+    val sharedOptions: ProductOptionConfiguration? = null,
 
 
-        override val outputFilePattern: String = "catalog.xml",
+    override val outputFilePattern: String = "catalog.xml",
 
-        override val outputDir: String = "catalogs",
+    override val outputDir: String = "catalogs",
 
-        override val templateName: String = "catalogs.ftlx"
+    override val templateName: String = "catalogs.ftlx"
 
 ) : RenderConfig, CatalogConfiguration {
 

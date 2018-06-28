@@ -12,8 +12,8 @@ import com.salesforce.comdagen.config.SourceCodeConfiguration
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.SourceCodeGroup
 
-data class SourceCodeGenerator(override val configuration: SourceCodeConfiguration)
-    : Generator<SourceCodeConfiguration, SourceCodeGroup> {
+data class SourceCodeGenerator(override val configuration: SourceCodeConfiguration) :
+    Generator<SourceCodeConfiguration, SourceCodeGroup> {
 
     override val creatorFunc = { _: Int, seed: Long -> SourceCodeGroup(seed, configuration) }
 

@@ -69,7 +69,11 @@ class RedirectUrlTest {
         val categories = catalogGenerator.objects.toList().flatMap { it.categories }
         val categoryAssignments = catalogGenerator.objects.flatMap { it.categoryAssignments }
 
-        val generator = RedirectUrlGenerator(RedirectUrlConfiguration(initialSeed = seed), categories = categories, categoryAssignments = categoryAssignments)
+        val generator = RedirectUrlGenerator(
+            RedirectUrlConfiguration(initialSeed = seed),
+            categories = categories,
+            categoryAssignments = categoryAssignments
+        )
 
         generator.objects.forEach { redirectUrl ->
             when (redirectUrl) {
@@ -96,7 +100,11 @@ class RedirectUrlTest {
         val categories = catalogGenerator.objects.toList().flatMap { it.categories }
         val categoryAssignments = catalogGenerator.objects.flatMap { it.categoryAssignments }
 
-        val generator = RedirectUrlGenerator(RedirectUrlConfiguration(initialSeed = seed), categories = categories, categoryAssignments = categoryAssignments)
+        val generator = RedirectUrlGenerator(
+            RedirectUrlConfiguration(initialSeed = seed),
+            categories = categories,
+            categoryAssignments = categoryAssignments
+        )
 
         generator.objects.forEach { redirectUrl ->
             when (redirectUrl) {
@@ -113,7 +121,10 @@ class RedirectUrlTest {
 
         val categoryAssignments = catalogGenerator.objects.flatMap { it.categoryAssignments }
 
-        val generator = RedirectUrlGenerator(RedirectUrlConfiguration(initialSeed = seed), categoryAssignments = categoryAssignments)
+        val generator = RedirectUrlGenerator(
+            RedirectUrlConfiguration(initialSeed = seed),
+            categoryAssignments = categoryAssignments
+        )
 
         // we make this a Set because we might have duplicate source ids and the test works on a set, too
         val sourceIds = generator.objects.map { (it as? ProductRedirectUrl)?.productCategoryId }.filterNotNull().toSet()

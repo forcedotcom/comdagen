@@ -26,12 +26,16 @@ import com.salesforce.comdagen.config.AttributeConfig.GenerationStrategy.*
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AttributeConfig
-constructor(val type: AttributeConfig.DataType, val searchable: Boolean, val generationStrategy: AttributeConfig.GenerationStrategy,
-            /**
-             * Contains the value to be used for this attribute. Interpretation varies depending on the
-             * [.generationStrategy].
-             */
-            val dataStore: Any) {
+constructor(
+    val type: AttributeConfig.DataType,
+    val searchable: Boolean,
+    val generationStrategy: AttributeConfig.GenerationStrategy,
+    /**
+     * Contains the value to be used for this attribute. Interpretation varies depending on the
+     * [.generationStrategy].
+     */
+    val dataStore: Any
+) {
     enum class DataType(private val text: String) {
         BOOLEAN("boolean"), STRING("string"), DATE("date"), EMAIL("email");
 
@@ -65,12 +69,14 @@ constructor(val type: AttributeConfig.DataType, val searchable: Boolean, val gen
 
         @JsonCreator
         @JvmStatic
-        fun parseConfig(@JsonProperty("type") type: DataType,
-                        @JsonProperty("data") generationStrategy: GenerationStrategy,
-                        @JsonProperty("staticValue") staticValue: String?,
-                        @JsonProperty("counter") counterConfig: Counter?,
-                        @JsonProperty("list") listConfig: List<String>?,
-                        @JsonProperty("searchable") searchable: Boolean = false): AttributeConfig {
+        fun parseConfig(
+            @JsonProperty("type") type: DataType,
+            @JsonProperty("data") generationStrategy: GenerationStrategy,
+            @JsonProperty("staticValue") staticValue: String?,
+            @JsonProperty("counter") counterConfig: Counter?,
+            @JsonProperty("list") listConfig: List<String>?,
+            @JsonProperty("searchable") searchable: Boolean = false
+        ): AttributeConfig {
             // note that we fail with NPE when the matching data gen strategy isn't specified
             when (generationStrategy) {
                 STATIC -> return AttributeConfig(type, searchable, STATIC, staticValue!!)

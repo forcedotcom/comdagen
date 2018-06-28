@@ -10,9 +10,9 @@ package com.salesforce.comdagen.config
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class SystemCodeConfig(
-        @JsonProperty("minCodes")
-        val minCodes: Int = 1,
+    @JsonProperty("minCodes")
+    val minCodes: Int = 1,
 
-        @JsonProperty("maxCodes")
-        val maxCodes: Int = 1000
+    @JsonProperty("maxCodes")
+    val maxCodes: Int = 1000
 )

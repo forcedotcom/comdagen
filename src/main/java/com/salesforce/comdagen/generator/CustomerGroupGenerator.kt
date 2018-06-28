@@ -15,9 +15,10 @@ import com.salesforce.comdagen.model.CustomerGroup
 import com.salesforce.comdagen.model.GroupAssignment
 import java.util.*
 
-data class CustomerGroupGenerator(override val configuration: CustomerGroupConfiguration,
-                                  private val customerConfig: CustomerConfiguration)
-    : Generator<CustomerGroupConfiguration, CustomerGroup> {
+data class CustomerGroupGenerator(
+    override val configuration: CustomerGroupConfiguration,
+    private val customerConfig: CustomerConfiguration
+) : Generator<CustomerGroupConfiguration, CustomerGroup> {
 
     override val creatorFunc = { _: Int, seed: Long -> CustomerGroup(seed, metadata["CustomerGroup"].orEmpty()) }
 
@@ -26,13 +27,14 @@ data class CustomerGroupGenerator(override val configuration: CustomerGroupConfi
             val groups = objects
             val rng = Random(configuration.initialSeed)
             return groups.flatMap { group ->
-                val customerCount = rng.nextInt(configuration.maxCustomers - configuration.minCustomers) + configuration.minCustomers
+                val customerCount =
+                    rng.nextInt(configuration.maxCustomers - configuration.minCustomers) + configuration.minCustomers
                 (1..customerCount).asSequence().map { GroupAssignment(group.id, getRandomCustomer(rng.nextInt())) }
             }
         }
 
     override val metadata: Map<String, Set<AttributeDefinition>> = mapOf(
-            "CustomerGroup" to configuration.attributeDefinitions("CustomerGroup")
+        "CustomerGroup" to configuration.attributeDefinitions("CustomerGroup")
     )
 
     private fun getRandomCustomer(seed: Int): Int {

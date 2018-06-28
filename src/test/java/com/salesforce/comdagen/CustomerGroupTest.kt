@@ -21,7 +21,8 @@ class CustomerGroupTest {
         val elementCount = 30
         val customerConfig = CustomerConfiguration(initialSeed = seed)
         val customerGroupConfig = CustomerGroupConfiguration(elementCount = elementCount, initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
+        val customerGroupGenerator =
+            CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
 
         assertEquals(elementCount, customerGroupGenerator.objects.count())
     }
@@ -32,9 +33,12 @@ class CustomerGroupTest {
         val maxCustomers = 15
         val elementCount = 10
         val customerConfig = CustomerConfiguration(initialSeed = seed)
-        val customerGroupConfig = CustomerGroupConfiguration(minCustomers = minCustomers, maxCustomers = maxCustomers,
-                elementCount = elementCount, initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
+        val customerGroupConfig = CustomerGroupConfiguration(
+            minCustomers = minCustomers, maxCustomers = maxCustomers,
+            elementCount = elementCount, initialSeed = seed
+        )
+        val customerGroupGenerator =
+            CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
 
         customerGroupGenerator.objects.forEach { group ->
             val assignmentCount: Int = customerGroupGenerator.assignments.count { it.groupId == group.id }
@@ -50,11 +54,19 @@ class CustomerGroupTest {
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
         val dataStore = "foobar"
 
-        val attributeConfig = AttributeConfig(type = type, generationStrategy = generationStrategy, dataStore = dataStore, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            generationStrategy = generationStrategy,
+            dataStore = dataStore,
+            searchable = false
+        )
         val customAttribute: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
         val customerGroupConfig = CustomerGroupConfiguration(customAttributes = customAttribute, initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = CustomerConfiguration(initialSeed = seed))
+        val customerGroupGenerator = CustomerGroupGenerator(
+            configuration = customerGroupConfig,
+            customerConfig = CustomerConfiguration(initialSeed = seed)
+        )
 
         assertEquals(customAttribute.values.size, customerGroupGenerator.metadata.values.sumBy { it.size })
 
@@ -71,8 +83,12 @@ class CustomerGroupTest {
     @Test
     fun testCustomerGroupGeneratedAttributes() {
         val elementCount = 15
-        val customerGroupConfig = CustomerGroupConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = CustomerConfiguration(initialSeed = seed))
+        val customerGroupConfig =
+            CustomerGroupConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
+        val customerGroupGenerator = CustomerGroupGenerator(
+            configuration = customerGroupConfig,
+            customerConfig = CustomerConfiguration(initialSeed = seed)
+        )
 
         customerGroupGenerator.objects.forEach { group ->
             assertEquals(elementCount, group.customAttributes.size)

@@ -12,13 +12,13 @@ import com.salesforce.comdagen.config.ShippingConfiguration
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.ShippingMethod
 
-data class ShippingGenerator(override val configuration: ShippingConfiguration)
-    : Generator<ShippingConfiguration, ShippingMethod> {
+data class ShippingGenerator(override val configuration: ShippingConfiguration) :
+    Generator<ShippingConfiguration, ShippingMethod> {
 
     override val creatorFunc = { idx: Int, seed: Long -> ShippingMethod(seed, configuration, default = (idx == 1)) }
 
     override val metadata: Map<String, Set<AttributeDefinition>>
         get() = mapOf(
-                "ShippingMethod" to configuration.attributeDefinitions()
+            "ShippingMethod" to configuration.attributeDefinitions()
         )
 }

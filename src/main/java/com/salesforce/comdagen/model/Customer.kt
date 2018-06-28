@@ -14,8 +14,10 @@ import com.salesforce.comdagen.config.CustomerConfiguration
 import java.time.LocalDate
 import java.util.*
 
-class Profile(private val seed: Long, private val config: CustomerConfiguration,
-              private val region: SupportedZone) {
+class Profile(
+    private val seed: Long, private val config: CustomerConfiguration,
+    private val region: SupportedZone
+) {
     val firstName: String
         get() = RandomData.getRandomFirstName(region, seed + "firstName".hashCode())
 
@@ -37,8 +39,10 @@ class Profile(private val seed: Long, private val config: CustomerConfiguration,
     }
 }
 
-class Address(val id: Long, private val seed: Long, private val config: CustomerConfiguration,
-              private val region: SupportedZone) {
+class Address(
+    val id: Long, private val seed: Long, private val config: CustomerConfiguration,
+    private val region: SupportedZone
+) {
     val firstName: String
         get() = RandomData.getRandomFirstName(region, seed + "firstName".hashCode())
 
@@ -72,8 +76,10 @@ class Address(val id: Long, private val seed: Long, private val config: Customer
 /**
  * Represents a single customer
  */
-class Customer(val id: Int, private val seed: Long, private val config: CustomerConfiguration, val region: SupportedZone,
-               val attributeDefinitions: Set<AttributeDefinition>) {
+class Customer(
+    val id: Int, private val seed: Long, private val config: CustomerConfiguration, val region: SupportedZone,
+    val attributeDefinitions: Set<AttributeDefinition>
+) {
     val profile
         get() = Profile(seed, config, region)
 

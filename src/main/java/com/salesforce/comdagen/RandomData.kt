@@ -97,7 +97,7 @@ object RandomData {
         } else {
             val book = BOOKS.getOrPut(region, {
                 RandomData::class.java
-                        .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
+                    .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
             })
             val rawStart = Random(seed).nextInt(Math.max(book.length - 500, 0))
             val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
@@ -115,11 +115,15 @@ object RandomData {
         }
     }
 
-    fun getRandomEmail(seed: Long) = RandomStringUtils.random(12, 0, 0, true, false, null, Random(seed)) + "@$emailDomain"
+    fun getRandomEmail(seed: Long) =
+        RandomStringUtils.random(12, 0, 0, true, false, null, Random(seed)) + "@$emailDomain"
 
     fun getRandomCouponCode(seed: Long): String {
         val rng = Random(seed)
-        return "${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}".toUpperCase()
+        return "${getRandomString(rng.nextLong(), 4)}-${getRandomString(
+            rng.nextLong(),
+            4
+        )}-${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}".toUpperCase()
     }
 
     private fun getRandomString(seed: Long, length: Int): String {
@@ -133,7 +137,7 @@ object RandomData {
     fun bookCite(seed: Long, length: Int = 1000, region: SupportedZone = SupportedZone.Generic): String {
         val book = BOOKS.getOrPut(region, {
             RandomData::class.java
-                    .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
+                .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
         })
 
         val rawStart = Random(seed).nextInt(Math.max(book.length - length, 0))
@@ -143,11 +147,11 @@ object RandomData {
     }
 
     private fun exists(resourceFileName: String) =
-            RandomData::class.java.getResource("/contentfiles/$resourceFileName") != null
+        RandomData::class.java.getResource("/contentfiles/$resourceFileName") != null
 
     /**
      * Grab resource file identified by `resourceFileName` in `/contentfiles/` and convert it to a list of lines.
      */
     private fun contentFileAsList(resourceFileName: String) =
-            RandomData::class.java.getResourceAsStream("/contentfiles/$resourceFileName").bufferedReader().readLines()
+        RandomData::class.java.getResourceAsStream("/contentfiles/$resourceFileName").bufferedReader().readLines()
 }

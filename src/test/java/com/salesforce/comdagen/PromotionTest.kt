@@ -14,13 +14,19 @@ class PromotionTest {
 
     private val seed: Long = 1234
     private val catalog = CatalogGenerator(CatalogListConfiguration(initialSeed = seed)).objects.first()
-    private val shippingMethods = ShippingGenerator(ShippingConfiguration(initialSeed = seed)).objects.toList().map { it.id }
+    private val shippingMethods =
+        ShippingGenerator(ShippingConfiguration(initialSeed = seed)).objects.toList().map { it.id }
 
     @Test
     fun testPromotionElementCount() {
         val elementCount = 100
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(elementCount = 100, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(
+                elementCount = 100,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         assertEquals(elementCount, promotionGenerator.objects.count())
@@ -31,8 +37,14 @@ class PromotionTest {
         val minPromotions = 3
         val maxPromotions = 7
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(elementCount = 100, initialSeed = seed),
-                campaigns = CampaignConfiguration(minPromotions = minPromotions, maxPromotions = maxPromotions, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(elementCount = 100, initialSeed = seed),
+            campaigns = CampaignConfiguration(
+                minPromotions = minPromotions,
+                maxPromotions = maxPromotions,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         // test if all promotions have one campaign assigned to them
@@ -42,7 +54,8 @@ class PromotionTest {
 
         // test if each campaign has the configured amount of promotions assigned
         promotionGenerator.campaigns.forEach { campaign ->
-            val campaignAssignments: List<CampaignPromotionAssignment> = promotionGenerator.assignments.filter { it.campaign == campaign }.toList()
+            val campaignAssignments: List<CampaignPromotionAssignment> =
+                promotionGenerator.assignments.filter { it.campaign == campaign }.toList()
 
             assertTrue(campaignAssignments.size >= minPromotions)
             assertTrue(campaignAssignments.size <= maxPromotions)
@@ -52,7 +65,12 @@ class PromotionTest {
     @Test
     fun testProductPromotionElementCount() {
         val elementCount = 150
-        val promotionConfiguration = PromotionConfiguration(productConfig = ProductPromotionConfiguration(elementCount = elementCount, initialSeed = seed), initialSeed = seed)
+        val promotionConfiguration = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(
+                elementCount = elementCount,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfiguration, catalog)
 
         assertEquals(elementCount, promotionGenerator.objects.count { it is ProductPromotion })
@@ -63,7 +81,13 @@ class PromotionTest {
         val minDiscount = 10
         val maxDiscount = 70
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(minDiscount = minDiscount, maxDiscount = maxDiscount, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(
+                minDiscount = minDiscount,
+                maxDiscount = maxDiscount,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -76,7 +100,10 @@ class PromotionTest {
 
     @Test
     fun testProductPromotionDiscountedCategory() {
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         // test if discounted category is a category of the sites catalog
@@ -94,11 +121,19 @@ class PromotionTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(
-                customAttributes = customAttributesConfig, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(
+                customAttributes = customAttributesConfig, initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -117,8 +152,11 @@ class PromotionTest {
     fun testProductPromotionGeneratedAttributes() {
         val elementCount = 15
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(
-                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(
+                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -131,7 +169,10 @@ class PromotionTest {
     @Test
     fun testOrderPromotionElementCount() {
         val elementCount = 100
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(elementCount, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            orderConfig = OrderPromotionConfiguration(elementCount, initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         assertEquals(elementCount, promotionGenerator.objects.count { it is OrderPromotion })
@@ -141,7 +182,13 @@ class PromotionTest {
     fun testOrderPromotionDiscountRange() {
         val minDiscount = 5
         val maxDiscount = 70
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(minDiscount = minDiscount, maxDiscount = maxDiscount, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            orderConfig = OrderPromotionConfiguration(
+                minDiscount = minDiscount,
+                maxDiscount = maxDiscount,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -157,7 +204,13 @@ class PromotionTest {
         val minThreshold = 1.00F
         val maxThreshold = 100.0F
 
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(minThreshold = minThreshold, maxThreshold = maxThreshold, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            orderConfig = OrderPromotionConfiguration(
+                minThreshold = minThreshold,
+                maxThreshold = maxThreshold,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -170,7 +223,8 @@ class PromotionTest {
 
     @Test
     fun testOrderPromotionQualifyingCategory() {
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(initialSeed = seed), initialSeed = seed)
+        val promotionConfig =
+            PromotionConfiguration(orderConfig = OrderPromotionConfiguration(initialSeed = seed), initialSeed = seed)
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         // test if qualifying category of order promotions exist in catalog
@@ -188,11 +242,19 @@ class PromotionTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(
-                customAttributes = customAttributesConfig, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            orderConfig = OrderPromotionConfiguration(
+                customAttributes = customAttributesConfig, initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -211,8 +273,11 @@ class PromotionTest {
     fun testOrderPromotionGeneratedAttributes() {
         val elementCount = 15
 
-        val promotionConfig = PromotionConfiguration(orderConfig = OrderPromotionConfiguration(
-                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            orderConfig = OrderPromotionConfiguration(
+                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -225,7 +290,10 @@ class PromotionTest {
     @Test
     fun testShippingPromotionElementCount() {
         val elementCount = 100
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(elementCount, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(elementCount, initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         assertEquals(elementCount, promotionGenerator.objects.count { it is ShippingPromotion })
@@ -235,7 +303,13 @@ class PromotionTest {
     fun testShippingPromotionDiscountRange() {
         val minDiscount = 5
         val maxDiscount = 70
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(minDiscount = minDiscount, maxDiscount = maxDiscount, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(
+                minDiscount = minDiscount,
+                maxDiscount = maxDiscount,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -251,7 +325,13 @@ class PromotionTest {
         val minThreshold = 1.00F
         val maxThreshold = 100.0F
 
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(minThreshold = minThreshold, maxThreshold = maxThreshold, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(
+                minThreshold = minThreshold,
+                maxThreshold = maxThreshold,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -264,7 +344,10 @@ class PromotionTest {
 
     @Test
     fun testShippingPromotionQualifyingCategory() {
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -276,7 +359,10 @@ class PromotionTest {
 
     @Test
     fun testShippingPromotionShippingMethod() {
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -293,11 +379,19 @@ class PromotionTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(
-                customAttributes = customAttributesConfig, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(
+                customAttributes = customAttributesConfig, initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -316,8 +410,11 @@ class PromotionTest {
     fun testShippingPromotionGeneratedAttributes() {
         val elementCount = 15
 
-        val promotionConfig = PromotionConfiguration(shippingConfig = ShippingPromotionConfiguration(
-                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            shippingConfig = ShippingPromotionConfiguration(
+                generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog)
 
         promotionGenerator.objects.forEach { promotion ->
@@ -337,12 +434,20 @@ class PromotionTest {
         val customerGroupGenerator = CustomerGroupGenerator(customerGroupConfig, customerConfig)
 
         val customerGroupIds = customerGroupGenerator.objects.map { it.id }.toList()
-                .plus(listOf("Everyone", "Registered", "Unregistered"))
+            .plus(listOf("Everyone", "Registered", "Unregistered"))
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                campaigns = CampaignConfiguration(minCustomerGroups = minGroups, maxCustomerGroups = maxGroups, initialSeed = seed), initialSeed = seed)
-        val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog,
-                customerGroups = customerGroupIds)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            campaigns = CampaignConfiguration(
+                minCustomerGroups = minGroups,
+                maxCustomerGroups = maxGroups,
+                initialSeed = seed
+            ), initialSeed = seed
+        )
+        val promotionGenerator = PromotionGenerator(
+            promotionConfig, catalog = catalog,
+            customerGroups = customerGroupIds
+        )
 
         promotionGenerator.campaigns.forEach { campaign ->
             assertTrue(campaign.customerGroups.size >= minGroups)
@@ -364,8 +469,11 @@ class PromotionTest {
 
         val couponIds = couponGenerator.objects.map { it.id }.toList()
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                campaigns = CampaignConfiguration(minCoupons = minCoupons, maxCoupons = maxCoupons, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            campaigns = CampaignConfiguration(minCoupons = minCoupons, maxCoupons = maxCoupons, initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog, couponIds = couponIds)
 
         promotionGenerator.campaigns.forEach { campaign ->
@@ -388,8 +496,11 @@ class PromotionTest {
 
         val sourceCodeIds = sourceCodeGenerator.objects.map { it.id }.toList()
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                campaigns = CampaignConfiguration(minSourceCodes = minCodes, maxSourceCodes = maxCodes, initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            campaigns = CampaignConfiguration(minSourceCodes = minCodes, maxSourceCodes = maxCodes, initialSeed = seed),
+            initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog, sourceCodeIds = sourceCodeIds)
 
         promotionGenerator.campaigns.forEach { campaign ->
@@ -409,12 +520,21 @@ class PromotionTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                campaigns = CampaignConfiguration(customAttributes = customAttributesConfig, initialSeed = seed), initialSeed = seed)
-        val promotionGenerator = PromotionGenerator(promotionConfig, catalog = catalog, shippingMethods = shippingMethods)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            campaigns = CampaignConfiguration(customAttributes = customAttributesConfig, initialSeed = seed),
+            initialSeed = seed
+        )
+        val promotionGenerator =
+            PromotionGenerator(promotionConfig, catalog = catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.campaigns.forEach { campaign ->
             assertEquals(customAttributesConfig.values.size, campaign.customAttributes.size)
@@ -430,8 +550,13 @@ class PromotionTest {
     fun testCampaignGeneratedAttributes() {
         val elementCount = 15
 
-        val promotionConfig = PromotionConfiguration(productConfig = ProductPromotionConfiguration(initialSeed = seed),
-                campaigns = CampaignConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed), initialSeed = seed)
+        val promotionConfig = PromotionConfiguration(
+            productConfig = ProductPromotionConfiguration(initialSeed = seed),
+            campaigns = CampaignConfiguration(
+                generatedAttributes = GeneratedAttributeConfig(elementCount),
+                initialSeed = seed
+            ), initialSeed = seed
+        )
         val promotionGenerator = PromotionGenerator(promotionConfig, catalog, shippingMethods = shippingMethods)
 
         promotionGenerator.campaigns.forEach { campaign ->

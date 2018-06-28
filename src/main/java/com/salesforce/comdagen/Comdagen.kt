@@ -44,7 +44,10 @@ class Comdagen {
     @Option(name = "--xlt", usage = "Export a txt file with generated product names")
     private var xltExport: Boolean = false
 
-    @Option(name = "--names-output", usage = "Specify product names txt file pattern ('\${locale}' get's replaced by locale name)")
+    @Option(
+        name = "--names-output",
+        usage = "Specify product names txt file pattern ('\${locale}' get's replaced by locale name)"
+    )
     private var outputNames = "./output/productnames_\${site}_\${locale}.txt"
 
     @Throws(IOException::class)
@@ -83,7 +86,8 @@ class Comdagen {
 
         if (!sitesConfigFile!!.isFile || !sitesConfigFile!!.canRead()) {
             throw InvalidSpecificationException(
-                    "Must provide a readable sites config file (given location: $sitesConfigFile)")
+                "Must provide a readable sites config file (given location: $sitesConfigFile)"
+            )
         }
 
         // load sites configuration
@@ -107,7 +111,8 @@ class Comdagen {
             val allRegions = siteGenerator.configuration.sites.flatMap { it.regions.toList() }.toSet()
 
             // group sites by region
-            val regionToSites = allRegions.associate { zone -> zone to siteGenerator.objects.filter { it.regions.contains(zone) } }
+            val regionToSites =
+                allRegions.associate { zone -> zone to siteGenerator.objects.filter { it.regions.contains(zone) } }
 
             // create one output file per site and region
             regionToSites.forEach { zone, sites ->
@@ -115,8 +120,10 @@ class Comdagen {
                     // remove '/' and '\' from file name
                     val siteName = site.name.replace("/", "").replace("\\", "")
 
-                    val outputFile = File(outputNames.replace("\${site}", siteName)
-                            .replace("\${locale}", zone.countryCode))
+                    val outputFile = File(
+                        outputNames.replace("\${site}", siteName)
+                            .replace("\${locale}", zone.countryCode)
+                    )
                     outputFile.printWriter().use { out ->
                         site.navigationCatalog.assignedProducts.forEach { product ->
                             out.println(product.name[zone])
@@ -134,9 +141,9 @@ class Comdagen {
 
         /** Used for parsing the generator config files.  */
         val OBJECT_MAPPER = ObjectMapper(YAMLFactory())
-                .registerModule(KotlinModule())
-                .addMixIn(Configuration::class.java, SeedInheritanceMixin::class.java)
-                .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
+            .registerModule(KotlinModule())
+            .addMixIn(Configuration::class.java, SeedInheritanceMixin::class.java)
+            .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
 
         @Throws(IOException::class)
         @JvmStatic

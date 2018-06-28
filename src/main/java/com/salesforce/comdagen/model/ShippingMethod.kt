@@ -12,7 +12,11 @@ import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.ShippingConfiguration
 import java.util.*
 
-data class ShippingMethod(private val seed: Long, private val config: ShippingConfiguration, val default: Boolean = false) {
+data class ShippingMethod(
+    private val seed: Long,
+    private val config: ShippingConfiguration,
+    val default: Boolean = false
+) {
     val priceTable: List<AmountEntry>
         get() {
             val priceTableSeed = seed + "priceTable".hashCode()
@@ -37,7 +41,12 @@ data class ShippingMethod(private val seed: Long, private val config: ShippingCo
         get() = config.attributeDefinitions().map { CustomAttribute(it, seed) }
 }
 
-data class AmountEntry(private val seed: Long, private val config: ShippingConfiguration, val orderValue: Float, private val factor: Int) {
+data class AmountEntry(
+    private val seed: Long,
+    private val config: ShippingConfiguration,
+    val orderValue: Float,
+    private val factor: Int
+) {
     val amount: Float
         get() = Random(seed).nextFloat() * ((config.maxPrice - config.minPrice) + config.minPrice) * factor
 }

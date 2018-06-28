@@ -19,66 +19,66 @@ import com.salesforce.comdagen.SupportedCurrency
 @JsonRootName("pricebooks")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PricebookConfiguration(
-        /**
-         * pricebook id (must be unique)
-         */
-        val id: String,
+    /**
+     * pricebook id (must be unique)
+     */
+    val id: String,
 
-        /**
-         * PriceTables for how many products should get generated?
-         * >= 1 -> generate pricetables for all products
-         * 0.75 -> generate pricetables for 75% of the products
-         */
-        val coverage: Float = 1f,
+    /**
+     * PriceTables for how many products should get generated?
+     * >= 1 -> generate pricetables for all products
+     * 0.75 -> generate pricetables for 75% of the products
+     */
+    val coverage: Float = 1f,
 
-        /**
-         * minimum amount value in USD
-         */
-        val minAmount: Double = 0.01,
+    /**
+     * minimum amount value in USD
+     */
+    val minAmount: Double = 0.01,
 
-        /**
-         * maximum amount value in USD
-         */
-        val maxAmount: Double = 2000.0,
+    /**
+     * maximum amount value in USD
+     */
+    val maxAmount: Double = 2000.0,
 
-        /**
-         * minimum number of values per product
-         */
-        val minAmountCount: Int = 1,
+    /**
+     * minimum number of values per product
+     */
+    val minAmountCount: Int = 1,
 
-        /**
-         * maximum number of values per product
-         */
-        val maxAmountCount: Int = 5,
+    /**
+     * maximum number of values per product
+     */
+    val maxAmountCount: Int = 5,
 
-        /**
-         * overwrites site currencies
-         */
-        val currencies: List<SupportedCurrency>? = null,
+    /**
+     * overwrites site currencies
+     */
+    val currencies: List<SupportedCurrency>? = null,
 
-        /**
-         * is this pricebook a sales pricebook?
-         */
-        val sales: Boolean = false,
+    /**
+     * is this pricebook a sales pricebook?
+     */
+    val sales: Boolean = false,
 
-        /**
-         * custom attributes for pricebooks
-         */
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    /**
+     * custom attributes for pricebooks
+     */
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        /**
-         * randomly generate custom attributes
-         */
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    /**
+     * randomly generate custom attributes
+     */
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        /**
-         * child pricebooks get generated for each parent pricebook
-         */
-        val children: List<PricebookConfiguration>? = null,
+    /**
+     * child pricebooks get generated for each parent pricebook
+     */
+    val children: List<PricebookConfiguration>? = null,
 
-        override val elementCount: Int = 1,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "pricebooks\${i}.xml",
-        override val outputDir: String = "pricebooks",
-        override val templateName: String = "pricebooks.ftlx"
+    override val elementCount: Int = 1,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "pricebooks\${i}.xml",
+    override val outputDir: String = "pricebooks",
+    override val templateName: String = "pricebooks.ftlx"
 ) : RenderConfig, ExtendableObjectConfig

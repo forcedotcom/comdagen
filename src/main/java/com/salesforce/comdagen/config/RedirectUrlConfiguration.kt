@@ -15,15 +15,15 @@ import com.salesforce.comdagen.RenderConfig
 @JsonRootName("redirectUrls")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RedirectUrlConfiguration(
-        @JsonProperty("productRedirects")
-        val productRedirects: Int = 10,
+    @JsonProperty("productRedirects")
+    val productRedirects: Int = 10,
 
-        @JsonProperty("categoryRedirects")
-        val categoryRedirects: Int = 10,
+    @JsonProperty("categoryRedirects")
+    val categoryRedirects: Int = 10,
 
-        override val elementCount: Int = 10,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "redirect-urls.xml",
-        override val outputDir: String = "",
-        override val templateName: String = "redirect-urls.ftlx"
+    override val elementCount: Int = 10,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "redirect-urls.xml",
+    override val outputDir: String = "",
+    override val templateName: String = "redirect-urls.ftlx"
 ) : RenderConfig

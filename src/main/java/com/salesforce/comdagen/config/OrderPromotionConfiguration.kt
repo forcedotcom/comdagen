@@ -13,29 +13,29 @@ import com.salesforce.comdagen.ExtendableObjectConfig
  * Configure order promotion generation
  */
 data class OrderPromotionConfiguration(
-        override val elementCount: Int = 5,
+    override val elementCount: Int = 5,
 
-        /**
-         * min order discount in percent
-         */
-        val minDiscount: Int = 1,
-        /**
-         * max order discount in percent
-         */
-        val maxDiscount: Int = 50,
+    /**
+     * min order discount in percent
+     */
+    val minDiscount: Int = 1,
+    /**
+     * max order discount in percent
+     */
+    val maxDiscount: Int = 50,
 
-        /**
-         * min order amount to enable promotion (in USD)
-         */
-        val minThreshold: Float = 0.01F,
+    /**
+     * min order amount to enable promotion (in USD)
+     */
+    val minThreshold: Float = 0.01F,
 
-        /**
-         * max order amount to enable promotion (in USD)
-         */
-        val maxThreshold: Float = 200.00F,
-        override val initialSeed: Long,
+    /**
+     * max order amount to enable promotion (in USD)
+     */
+    val maxThreshold: Float = 200.00F,
+    override val initialSeed: Long,
 
-        override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val customAttributes: Map<String, AttributeConfig>? = null,
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null
+    override val generatedAttributes: GeneratedAttributeConfig? = null
 ) : ExtendableObjectConfig

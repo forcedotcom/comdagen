@@ -13,17 +13,17 @@ import com.salesforce.comdagen.RenderConfig
 
 @JsonRootName("sourcecodes")
 data class SourceCodeConfiguration(
-        val minCodes: Int = 1,
+    val minCodes: Int = 1,
 
-        val maxCodes: Int = 10,
+    val maxCodes: Int = 10,
 
-        override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
+    override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
 
-        override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val generatedAttributes: GeneratedAttributeConfig? = null,
 
-        override val elementCount: Int = 10,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "sourcecodes.xml",
-        override val outputDir: String = "",
-        override val templateName: String = "sourcecodes.ftlx"
+    override val elementCount: Int = 10,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "sourcecodes.xml",
+    override val outputDir: String = "",
+    override val templateName: String = "sourcecodes.ftlx"
 ) : RenderConfig, ExtendableObjectConfig

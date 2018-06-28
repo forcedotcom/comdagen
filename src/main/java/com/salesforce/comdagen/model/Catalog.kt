@@ -24,9 +24,11 @@ import kotlin.collections.ArrayList
  * @property catalogIndex index of the catalog which owns the category
  * @property categoryIndex index of the category in the catalog
  */
-data class Category(val parent: Category?, private val seed: Long, val config: CatalogConfiguration,
-                    private val catalogIndex: Int, private val categoryIndex: Int, val template: String?,
-                    private val regions: List<SupportedZone>) {
+data class Category(
+    val parent: Category?, private val seed: Long, val config: CatalogConfiguration,
+    private val catalogIndex: Int, private val categoryIndex: Int, val template: String?,
+    private val regions: List<SupportedZone>
+) {
     val id: String
         get() = "${name.values.first()}_L${catalogIndex}_$categoryIndex"
 
@@ -52,8 +54,10 @@ data class Category(val parent: Category?, private val seed: Long, val config: C
 data class CategoryAssignment(val product: Product, val category: Category)
 
 
-abstract class Catalog(protected val seed: Long, private val config: CatalogConfiguration, private val catalogIndex: Int,
-                       protected val regions: List<SupportedZone>) {
+abstract class Catalog(
+    protected val seed: Long, private val config: CatalogConfiguration, private val catalogIndex: Int,
+    protected val regions: List<SupportedZone>
+) {
 
     open val id: Long
         get() = Math.abs(seed + "catalogId".hashCode())
@@ -92,15 +96,23 @@ abstract class Catalog(protected val seed: Long, private val config: CatalogConf
             var depth = 1
             while (depth <= treeDepth && categories.size < categoryConfig.elementCount) {
                 var breadth = 0
-                while (breadth < pow(treeBreadth.toDouble(), depth.toDouble()) && categories.size < categoryConfig.elementCount) {
+                while (breadth < pow(
+                        treeBreadth.toDouble(),
+                        depth.toDouble()
+                    ) && categories.size < categoryConfig.elementCount
+                ) {
                     // parent of a perfect k-ary tree is at floor((i-1)/k) and the list size before node insertion gives
                     // (i-1).
                     // java integer division happily gives us floor() for free
                     val parentIdx = (categories.size / treeBreadth) - 1
 
                     // first category level should have 'root' as parent
-                    categories.add(Category(if (parentIdx == -1) null else categories[parentIdx], rng.nextLong(), config,
-                            catalogIndex, categoryIndex, categoryConfig.categoryTemplate, regions))
+                    categories.add(
+                        Category(
+                            if (parentIdx == -1) null else categories[parentIdx], rng.nextLong(), config,
+                            catalogIndex, categoryIndex, categoryConfig.categoryTemplate, regions
+                        )
+                    )
 
                     categoryIndex++
                     breadth++
@@ -113,8 +125,10 @@ abstract class Catalog(protected val seed: Long, private val config: CatalogConf
     abstract val categoryAssignments: Sequence<CategoryAssignment>
 
     companion object {
-        fun constructCategoryAssignments(products: Sequence<Product>, categories: List<Category>, seed: Long,
-                                         coverage: Float = 1.0F): Sequence<CategoryAssignment> {
+        fun constructCategoryAssignments(
+            products: Sequence<Product>, categories: List<Category>, seed: Long,
+            coverage: Float = 1.0F
+        ): Sequence<CategoryAssignment> {
 
             val rng = Random(seed + "categoryAssignments".hashCode())
             val coverageRng = Random(seed + "assignmentCoverage".hashCode())
@@ -130,7 +144,7 @@ abstract class Catalog(protected val seed: Long, private val config: CatalogConf
                 // assign master and variation products to the same category
                 if (product is MasterProduct) {
                     product.variants.map { variantProduct -> CategoryAssignment(variantProduct, category) }.asSequence()
-                            .plusElement(CategoryAssignment(product, category))
+                        .plusElement(CategoryAssignment(product, category))
                 } else {
                     sequenceOf(CategoryAssignment(product, category))
                 }
@@ -141,16 +155,17 @@ abstract class Catalog(protected val seed: Long, private val config: CatalogConf
          * Calculate the maximum number of nodes in a k-ary tree
          */
         private fun treeSize(treeDepth: Int, treeBreadth: Int) =
-                ((pow(treeBreadth.toDouble(), treeDepth.toDouble()) - 1) / (treeBreadth - 1)).toInt()
+            ((pow(treeBreadth.toDouble(), treeDepth.toDouble()) - 1) / (treeBreadth - 1)).toInt()
     }
 }
 
 /**
  * Represents a single catalog.
  */
-class MasterCatalog(seed: Long, val config: CatalogListConfiguration, catalogIndex: Int,
-                    private val currencies: List<SupportedCurrency>, regions: List<SupportedZone>)
-    : Catalog(seed, config, catalogIndex, regions) {
+class MasterCatalog(
+    seed: Long, val config: CatalogListConfiguration, catalogIndex: Int,
+    private val currencies: List<SupportedCurrency>, regions: List<SupportedZone>
+) : Catalog(seed, config, catalogIndex, regions) {
 
     val generatedProductAttributes = config.products.attributeDefinitions()
 
@@ -164,29 +179,32 @@ class MasterCatalog(seed: Long, val config: CatalogListConfiguration, catalogInd
                 } else {
                     0.0f to 0
                 }),
-                        /* local options */ if (config.products.options != null) {
-                    rng.nextFloat() to rng.nextLong()
-                } else {
-                    0.0f to 0L
-                })
+                    /* local options */ if (config.products.options != null) {
+                        rng.nextFloat() to rng.nextLong()
+                    } else {
+                        0.0f to 0L
+                    }
+                )
             } // materialize so we don't re-use RNG state
 
             return seeds.mapIndexed { idx, (shared, local) ->
                 val sharedOptions =
-                        if (config.sharedOptions != null && shared.first < config.sharedOptions.probability) {
-                            sharedOptions.subList(0, shared.second)
-                        } else {
-                            emptyList()
-                        }
+                    if (config.sharedOptions != null && shared.first < config.sharedOptions.probability) {
+                        sharedOptions.subList(0, shared.second)
+                    } else {
+                        emptyList()
+                    }
                 val localOptions =
-                        if (config.products.options != null && local.first < config.products.options.probability) {
-                            ProductOption.generateProductOptions(config.products.options, currencies, local.second)
-                        } else {
-                            emptyList()
-                        }
+                    if (config.products.options != null && local.first < config.products.options.probability) {
+                        ProductOption.generateProductOptions(config.products.options, currencies, local.second)
+                    } else {
+                        emptyList()
+                    }
 
-                StandardProduct(seed + "product${idx + 1}".hashCode(), regions, sharedOptions,
-                        localOptions, generatedProductAttributes)
+                StandardProduct(
+                    seed + "product${idx + 1}".hashCode(), regions, sharedOptions,
+                    localOptions, generatedProductAttributes
+                )
             }.asSequence()
         }
 
@@ -220,14 +238,20 @@ class MasterCatalog(seed: Long, val config: CatalogListConfiguration, catalogInd
         }
 
     val sharedOptions: List<ProductOption>
-        get() = ProductOption.generateProductOptions(config.sharedOptions, currencies, seed + "sharedOptions".hashCode())
+        get() = ProductOption.generateProductOptions(
+            config.sharedOptions,
+            currencies,
+            seed + "sharedOptions".hashCode()
+        )
 
     val sharedVariationAttributes: List<AttributeDefinition>
         get() = config.sharedVariationAttributes.map { VariationAttribute(it.name, it.values) }
 
     override val categoryAssignments: Sequence<CategoryAssignment>
-        get() = Catalog.constructCategoryAssignments(products.plus(masterProducts).plus(bundles).plus(productSets),
-                categories, seed + "categoryAssignments".hashCode())
+        get() = Catalog.constructCategoryAssignments(
+            products.plus(masterProducts).plus(bundles).plus(productSets),
+            categories, seed + "categoryAssignments".hashCode()
+        )
 
     /**
      * All individual SKUs customers would buy off a catalog.
@@ -238,10 +262,11 @@ class MasterCatalog(seed: Long, val config: CatalogListConfiguration, catalogInd
     }
 }
 
-class NavigationCatalog(seed: Long, private val config: NavigationCatalogConfiguration, catalogIndex: Int,
-                        private val masterCatalogs: Sequence<MasterCatalog>, private val siteName: String,
-                        regions: List<SupportedZone> = listOf(SupportedZone.Generic))
-    : Catalog(seed, config, catalogIndex, regions) {
+class NavigationCatalog(
+    seed: Long, private val config: NavigationCatalogConfiguration, catalogIndex: Int,
+    private val masterCatalogs: Sequence<MasterCatalog>, private val siteName: String,
+    regions: List<SupportedZone> = listOf(SupportedZone.Generic)
+) : Catalog(seed, config, catalogIndex, regions) {
 
     override val id: Long
         get() = Math.abs(seed + siteName.hashCode())
@@ -252,7 +277,12 @@ class NavigationCatalog(seed: Long, private val config: NavigationCatalogConfigu
                 it.products.plus(it.masterProducts).plus(it.bundles).plus(it.productSets)
             }
 
-            return Catalog.constructCategoryAssignments(products, categories, seed + "categoryAssignments".hashCode(), config.coverage)
+            return Catalog.constructCategoryAssignments(
+                products,
+                categories,
+                seed + "categoryAssignments".hashCode(),
+                config.coverage
+            )
         }
 
     val assignedProducts: Sequence<Product>

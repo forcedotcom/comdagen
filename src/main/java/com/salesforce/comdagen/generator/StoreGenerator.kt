@@ -12,8 +12,7 @@ import com.salesforce.comdagen.config.StoreConfiguration
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Store
 
-data class StoreGenerator(override val configuration: StoreConfiguration)
-    : Generator<StoreConfiguration, Store> {
+data class StoreGenerator(override val configuration: StoreConfiguration) : Generator<StoreConfiguration, Store> {
 
     override val creatorFunc = { _: Int, seed: Long -> Store(seed, configuration) }
 

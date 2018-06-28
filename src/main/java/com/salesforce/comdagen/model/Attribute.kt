@@ -61,10 +61,11 @@ interface AttributeDefinition {
  * A attribute configuration for randomly generated values. They are entirely determined by the concrete attribute
  * implementation, so they don't have any [dataStore].
  */
-data class RandomAttributeDefinition(override val path: String,
-                                     override val type: AttributeConfig.DataType,
-                                     override val searchable: Boolean)
-    : AttributeDefinition {
+data class RandomAttributeDefinition(
+    override val path: String,
+    override val type: AttributeConfig.DataType,
+    override val searchable: Boolean
+) : AttributeDefinition {
     override val generationStrategy: AttributeConfig.GenerationStrategy
         get() = RANDOM
 
@@ -101,9 +102,11 @@ data class RandomAttributeDefinition(override val path: String,
             val rng = Random(seed + "customAttributes".hashCode())
             val isNewSeed = seenSeeds.add("$extendedObj:$seed")
             return (1..config.elementCount.toLong()).map {
-                RandomAttributeDefinition(nextId(extendedObj, rng, isNewSeed),
-                        AttributeConfig.DataType.values()[(Math.abs(rng.nextLong()) % AttributeConfig.DataType.values().size).toInt()],
-                        it <= config.thereofSearchable)
+                RandomAttributeDefinition(
+                    nextId(extendedObj, rng, isNewSeed),
+                    AttributeConfig.DataType.values()[(Math.abs(rng.nextLong()) % AttributeConfig.DataType.values().size).toInt()],
+                    it <= config.thereofSearchable
+                )
             }.toSet()
         }
 
@@ -119,9 +122,10 @@ data class RandomAttributeDefinition(override val path: String,
     }
 }
 
-data class StandardAttributeDefinition(override val path: String,
-                                       override val type: AttributeConfig.DataType,
-                                       override val searchable: Boolean,
-                                       override val generationStrategy: AttributeConfig.GenerationStrategy,
-                                       override val dataStore: Any)
-    : AttributeDefinition
+data class StandardAttributeDefinition(
+    override val path: String,
+    override val type: AttributeConfig.DataType,
+    override val searchable: Boolean,
+    override val generationStrategy: AttributeConfig.GenerationStrategy,
+    override val dataStore: Any
+) : AttributeDefinition

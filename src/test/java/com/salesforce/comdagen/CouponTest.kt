@@ -24,12 +24,16 @@ class CouponTest {
         val systemCodeCouponsCount = 50
 
         val systemCodeConfig = SystemCodeConfig()
-        val couponConfig = CouponConfiguration(elementCount = codeListCouponsCount, singleCodeCoupons = singleCodeCouponsCount,
-                systemCodeCoupons = systemCodeCouponsCount, systemCodes = systemCodeConfig, initialSeed = seed)
+        val couponConfig = CouponConfiguration(
+            elementCount = codeListCouponsCount, singleCodeCoupons = singleCodeCouponsCount,
+            systemCodeCoupons = systemCodeCouponsCount, systemCodes = systemCodeConfig, initialSeed = seed
+        )
         val couponGenerator = CouponGenerator(configuration = couponConfig)
 
-        assertEquals(codeListCouponsCount + singleCodeCouponsCount + systemCodeCouponsCount,
-                couponGenerator.objects.count())
+        assertEquals(
+            codeListCouponsCount + singleCodeCouponsCount + systemCodeCouponsCount,
+            couponGenerator.objects.count()
+        )
     }
 
     @Test
@@ -38,7 +42,12 @@ class CouponTest {
         val minCodes = 15
         val maxCodes = 75
 
-        val couponConfig = CouponConfiguration(elementCount = elementCount, minCodes = minCodes, maxCodes = maxCodes, initialSeed = seed)
+        val couponConfig = CouponConfiguration(
+            elementCount = elementCount,
+            minCodes = minCodes,
+            maxCodes = maxCodes,
+            initialSeed = seed
+        )
         val couponGenerator = CouponGenerator(configuration = couponConfig)
 
         couponGenerator.objects.forEach { coupon ->
@@ -56,7 +65,8 @@ class CouponTest {
         val maxCodes = 75
 
         val systemCodeConfig = SystemCodeConfig(minCodes = minCodes, maxCodes = maxCodes)
-        val couponConfig = CouponConfiguration(systemCodeCoupons = elementCount, systemCodes = systemCodeConfig, initialSeed = seed)
+        val couponConfig =
+            CouponConfiguration(systemCodeCoupons = elementCount, systemCodes = systemCodeConfig, initialSeed = seed)
         val couponGenerator = CouponGenerator(configuration = couponConfig)
 
         couponGenerator.objects.forEach { coupon ->
@@ -71,7 +81,12 @@ class CouponTest {
     fun testCouponCodeUniqueness() {
         val elementCount = 100
 
-        val couponConfig = CouponConfiguration(elementCount = elementCount, singleCodeCoupons = 0, systemCodeCoupons = 0, initialSeed = seed)
+        val couponConfig = CouponConfiguration(
+            elementCount = elementCount,
+            singleCodeCoupons = 0,
+            systemCodeCoupons = 0,
+            initialSeed = seed
+        )
         val couponGenerator = CouponGenerator(configuration = couponConfig)
 
         val codes = couponGenerator.objects.toList().flatMap {

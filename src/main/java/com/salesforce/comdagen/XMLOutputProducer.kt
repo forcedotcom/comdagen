@@ -38,9 +38,13 @@ class XMLOutputProducer
  * @throws IOException if the template dir can't be resolved an IOException is thrown
  */
 @Throws(IOException::class)
-constructor(private val templateDir: File = File("./templates"), private val outputDir: File = File("./output/generated")) {
+constructor(
+    private val templateDir: File = File("./templates"),
+    private val outputDir: File = File("./output/generated")
+) {
 
-    private val freemarkerConfig: freemarker.template.Configuration = Configuration(freemarker.template.Configuration.VERSION_2_3_25)
+    private val freemarkerConfig: freemarker.template.Configuration =
+        Configuration(freemarker.template.Configuration.VERSION_2_3_25)
     private val staticImagesNameWithPath: List<String> = listOf(
         "/images/baseImage.jpg",
         "/images/baseLarge.jpg",
@@ -49,6 +53,7 @@ constructor(private val templateDir: File = File("./templates"), private val out
         "/images/baseSwatch.jpg",
         "/images/baseThumb.jpg"
     )
+
     init {
         /* configure template engine */
         // encoding for templates
@@ -73,11 +78,11 @@ constructor(private val templateDir: File = File("./templates"), private val out
 
     class SequenceWrapper(incompatibleImprovements: Version) : DefaultObjectWrapper(incompatibleImprovements) {
         override fun handleUnknownType(obj: Any): TemplateModel =
-                if (obj is Sequence<*>) {
-                    DefaultIteratorAdapter.adapt(obj.iterator(), this)
-                } else {
-                    super.handleUnknownType(obj)
-                }
+            if (obj is Sequence<*>) {
+                DefaultIteratorAdapter.adapt(obj.iterator(), this)
+            } else {
+                super.handleUnknownType(obj)
+            }
     }
 
     /**
@@ -102,19 +107,27 @@ constructor(private val templateDir: File = File("./templates"), private val out
     private fun render(templateName: String, generator: Generator<*, *>, currentGeneratorIndex: Int = 0) {
         val modelData = mapOf("gen" to generator)
         File("$outputDir/${generator.configuration.outputDir}").apply { mkdirs() }
-        produce(templateName, "${generator.configuration.outputDir}/${generator.configuration.getFileName(currentGeneratorIndex)}", modelData)
+        produce(
+            templateName,
+            "${generator.configuration.outputDir}/${generator.configuration.getFileName(currentGeneratorIndex)}",
+            modelData
+        )
     }
 
     @Throws(IOException::class)
     private fun render(templateName: String, generator: CatalogGenerator) {
         val catalogs = generator.objects
         catalogs.forEachIndexed { index, catalog ->
-            val modelData = mapOf("catalog" to catalog, "index" to index,
-                    "configuration" to generator.configuration)
+            val modelData = mapOf(
+                "catalog" to catalog, "index" to index,
+                "configuration" to generator.configuration
+            )
             File("$outputDir/${generator.configuration.outputDir}/${catalog.id}").apply { mkdirs() }
             copyResources(staticImagesNameWithPath, File(outputDir, "/catalogs/${catalog.id}/static/default/"))
-            produce(templateName,
-                    "${generator.configuration.outputDir}/${catalog.id}/${generator.configuration.getFileName()}", modelData)
+            produce(
+                templateName,
+                "${generator.configuration.outputDir}/${catalog.id}/${generator.configuration.getFileName()}", modelData
+            )
         }
     }
 
@@ -122,17 +135,25 @@ constructor(private val templateDir: File = File("./templates"), private val out
     private fun renderNavigationCatalog(templateName: String, navigationCatalog: NavigationCatalog) {
         val modelData = mapOf("catalog" to navigationCatalog, "index" to 0)
         File("$outputDir/catalogs/${navigationCatalog.id}").apply { mkdirs() }
-        produce(templateName,
-                "catalogs/${navigationCatalog.id}/catalog.xml", modelData)
+        produce(
+            templateName,
+            "catalogs/${navigationCatalog.id}/catalog.xml", modelData
+        )
     }
 
     @Throws(IOException::class)
-    fun renderMeta(templateName: String = "system-objecttype-extensions.ftlx", customAttributes: Map<String, Set<AttributeDefinition>>, regions: Set<SupportedZone>) {
+    fun renderMeta(
+        templateName: String = "system-objecttype-extensions.ftlx",
+        customAttributes: Map<String, Set<AttributeDefinition>>,
+        regions: Set<SupportedZone>
+    ) {
         File("$outputDir/meta").apply { mkdirs() }
         produce(templateName, "meta/system-objecttype-extensions.xml", mapOf("customAttributes" to customAttributes))
-        produce("search2.ftlx", "search2.xml",
-                mapOf("searchableAttributes" to customAttributes.flatMap { it.value.filter { it.searchable } },
-                        "locales" to regions.map { it.locale }))
+        produce(
+            "search2.ftlx", "search2.xml",
+            mapOf("searchableAttributes" to customAttributes.flatMap { it.value.filter { it.searchable } },
+                "locales" to regions.map { it.locale })
+        )
     }
 
     @Throws(IOException::class)
@@ -152,8 +173,10 @@ constructor(private val templateDir: File = File("./templates"), private val out
             LOGGER.info("Start rendering site ${it.id} with template $siteTemplateName")
             val siteModelData = mapOf("site" to it)
             File("$outputDir/${generator.configuration.outputDir}/${it.id}").apply { mkdirs() }
-            produce(siteTemplateName,
-                    "${generator.configuration.outputDir}/${it.id}/site.xml", siteModelData)
+            produce(
+                siteTemplateName,
+                "${generator.configuration.outputDir}/${it.id}/site.xml", siteModelData
+            )
 
             // render preferences.xml
             LOGGER.info("Start rendering preferences for site ${it.id} with template $preferencesTemplateName")
@@ -172,8 +195,10 @@ constructor(private val templateDir: File = File("./templates"), private val out
             if (it.inventoryGenerator != null) {
                 preferencesModelData["inventoryLists"] = it.inventoryGenerator.objects.map { it.listId }.toList()
             }
-            produce(preferencesTemplateName,
-                    "${generator.configuration.outputDir}/${it.id}/preferences.xml", preferencesModelData)
+            produce(
+                preferencesTemplateName,
+                "${generator.configuration.outputDir}/${it.id}/preferences.xml", preferencesModelData
+            )
 
             // copy site specific static files to site output directory
             if (it.staticFiles.isNotEmpty()) {
@@ -191,7 +216,11 @@ constructor(private val templateDir: File = File("./templates"), private val out
             if (it.customerGroupGenerator != null) {
                 LOGGER.info("Start rendering customer-groups for site ${it.id} with template ${it.customerGroupGenerator.generatorTemplate}")
                 val customerGroupData = mapOf("gen" to it.customerGroupGenerator)
-                produce(it.customerGroupGenerator.generatorTemplate, "sites/${it.id}/customer-groups.xml", customerGroupData)
+                produce(
+                    it.customerGroupGenerator.generatorTemplate,
+                    "sites/${it.id}/customer-groups.xml",
+                    customerGroupData
+                )
 
                 customerGroupGenerators.add(it.customerGroupGenerator)
             }
@@ -320,15 +349,18 @@ constructor(private val templateDir: File = File("./templates"), private val out
                 + customerGroupGenerators
                 + shippingGenerators
                 + storeGenerators)
-                .forEach {
-                    it.metadata.forEach { extendingObject, attributeDefs ->
-                        customAttributes.merge(extendingObject, attributeDefs, { u, v -> u + v })
-                    }
+            .forEach {
+                it.metadata.forEach { extendingObject, attributeDefs ->
+                    customAttributes.merge(extendingObject, attributeDefs, { u, v -> u + v })
                 }
+            }
 
         // render meta
         LOGGER.info("Start rendering meta")
-        renderMeta(customAttributes = customAttributes, regions = generator.configuration.sites.flatMap { it.regions }.toSet())
+        renderMeta(
+            customAttributes = customAttributes,
+            regions = generator.configuration.sites.flatMap { it.regions }.toSet()
+        )
     }
 
     /**

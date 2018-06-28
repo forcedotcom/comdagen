@@ -92,5 +92,11 @@ interface RenderConfig : Configuration {
 
 }
 
-inline fun <reified T : ExtendableObjectConfig> T.attributeDefinitions(objName: String = T::class.java.name) = CustomAttribute.getCustomAttributeDefinitions(objName, this.initialSeed, this.customAttributes, this.generatedAttributes)
+inline fun <reified T : ExtendableObjectConfig> T.attributeDefinitions(objName: String = T::class.java.name) =
+    CustomAttribute.getCustomAttributeDefinitions(
+        objName,
+        this.initialSeed,
+        this.customAttributes,
+        this.generatedAttributes
+    )
 

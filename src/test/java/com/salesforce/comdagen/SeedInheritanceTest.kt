@@ -20,12 +20,13 @@ import kotlin.test.fail
 class SeedInheritanceTest {
 
     val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
-            .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
-            .addMixIn(Configuration::class.java, SeedInheritanceMixin::class.java)
-            .readerFor(ConfList::class.java)
+        .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
+        .addMixIn(Configuration::class.java, SeedInheritanceMixin::class.java)
+        .readerFor(ConfList::class.java)
 
     class Conf(override val elementCount: Int, override val initialSeed: Long) : Configuration
-    class ConfList(override val elementCount: Int, override val initialSeed: Long, val subConf: List<Conf>?) : Configuration
+    class ConfList(override val elementCount: Int, override val initialSeed: Long, val subConf: List<Conf>?) :
+        Configuration
 
     @Test
     fun `test ListInheritance With Default`() {
@@ -116,7 +117,9 @@ ConfList:
             e
         }
         when (result) {
-            is Throwable -> assert(result.cause is InvalidSpecificationException, { "Expected: ${InvalidSpecificationException::class.simpleName}, got: $result" })
+            is Throwable -> assert(
+                result.cause is InvalidSpecificationException,
+                { "Expected: ${InvalidSpecificationException::class.simpleName}, got: $result" })
             else -> fail("Expected ${InvalidSpecificationException::class.simpleName}, got $result")
         }
     }

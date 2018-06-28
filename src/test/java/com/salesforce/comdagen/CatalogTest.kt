@@ -40,8 +40,10 @@ class CatalogTest {
         val categoryBreadth = 2
         val categoryCount = 50
 
-        val categoryConfig = CategoryConfiguration(elementCount = categoryCount, categoryTreeBreadth = categoryBreadth,
-                categoryTreeDepth = categoryDepth)
+        val categoryConfig = CategoryConfiguration(
+            elementCount = categoryCount, categoryTreeBreadth = categoryBreadth,
+            categoryTreeDepth = categoryDepth
+        )
 
         val catalogConfig = CatalogListConfiguration(categoryConfig = categoryConfig, initialSeed = seed)
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
@@ -57,8 +59,10 @@ class CatalogTest {
         val categoryBreadth = 0
         val categoryCount = 10
 
-        val categoryConfig = CategoryConfiguration(elementCount = categoryCount, categoryTreeDepth = categoryDepth,
-                categoryTreeBreadth = categoryBreadth)
+        val categoryConfig = CategoryConfiguration(
+            elementCount = categoryCount, categoryTreeDepth = categoryDepth,
+            categoryTreeBreadth = categoryBreadth
+        )
 
         val catalogConfig = CatalogListConfiguration(categoryConfig = categoryConfig, initialSeed = seed)
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
@@ -74,8 +78,9 @@ class CatalogTest {
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val products: List<Product> = catalogGenerator.objects.flatMap {
-            it.products.asSequence().plus(it.masterProducts).plus(it.masterProducts.flatMap { it.variants.asSequence() })
-                    .plus(it.bundles)
+            it.products.asSequence().plus(it.masterProducts)
+                .plus(it.masterProducts.flatMap { it.variants.asSequence() })
+                .plus(it.bundles)
         }.toList()
 
         // Check if generated catalogs contain duplicate product ids
@@ -99,11 +104,13 @@ class CatalogTest {
         val bundleConfig = BundleProductConfiguration()
         val variationConfig = VariationProductConfiguration()
         val sharedVariationAttributes = listOf(
-                VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
-                VariationAttributeConfiguration("size", listOf("1", "2", "3"))
+            VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
+            VariationAttributeConfiguration("size", listOf("1", "2", "3"))
         )
-        val catalogConfig = CatalogListConfiguration(bundleConfig = bundleConfig, variationProducts = listOf(variationConfig),
-                sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            bundleConfig = bundleConfig, variationProducts = listOf(variationConfig),
+            sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
@@ -123,7 +130,10 @@ class CatalogTest {
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
-            assertEquals(emptyList(), catalog.bundles.flatMap { it.bundledProducts.keys } - catalog.products, "Bundle products not in the catalog")
+            assertEquals(
+                emptyList(),
+                catalog.bundles.flatMap { it.bundledProducts.keys } - catalog.products,
+                "Bundle products not in the catalog")
         }
     }
 
@@ -143,7 +153,8 @@ class CatalogTest {
     fun testCatalogBundledProductCount() {
         val minBundledProducts = 4
         val maxBundledProducts = 10
-        val bundleConfig = BundleProductConfiguration(minBundledProducts = minBundledProducts, maxBundledProducts = maxBundledProducts)
+        val bundleConfig =
+            BundleProductConfiguration(minBundledProducts = minBundledProducts, maxBundledProducts = maxBundledProducts)
         val catalogConfig = CatalogListConfiguration(bundleConfig = bundleConfig, initialSeed = seed)
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
@@ -206,12 +217,14 @@ class CatalogTest {
         val variationCount = 20
 
         val sharedVariationAttributesConfig = listOf(
-                VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
-                VariationAttributeConfiguration("size", listOf("1", "2", "3", "4"))
+            VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
+            VariationAttributeConfiguration("size", listOf("1", "2", "3", "4"))
         )
         val variationConfig = VariationProductConfiguration(elementCount = variationCount)
-        val catalogConfig = CatalogListConfiguration(variationProducts = listOf(variationConfig),
-                sharedVariationAttributes = sharedVariationAttributesConfig, initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            variationProducts = listOf(variationConfig),
+            sharedVariationAttributes = sharedVariationAttributesConfig, initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
@@ -222,18 +235,21 @@ class CatalogTest {
     @Test
     fun testCatalogVariantsCount() {
         val sharedVariationAttributesConfig = listOf(
-                VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
-                VariationAttributeConfiguration("size", listOf("1", "2", "3", "4"))
+            VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
+            VariationAttributeConfiguration("size", listOf("1", "2", "3", "4"))
         )
 
         // how many different value combinations are possible
-        val variationAttributeValueCount = sharedVariationAttributesConfig.map { it.values.size }.reduce { total, next ->
-            total * next
-        }
+        val variationAttributeValueCount =
+            sharedVariationAttributesConfig.map { it.values.size }.reduce { total, next ->
+                total * next
+            }
 
         val variationConfig = VariationProductConfiguration(sharedVariationAttributes = listOf("color", "size"))
-        val catalogConfig = CatalogListConfiguration(variationProducts = listOf(variationConfig),
-                sharedVariationAttributes = sharedVariationAttributesConfig, initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            variationProducts = listOf(variationConfig),
+            sharedVariationAttributes = sharedVariationAttributesConfig, initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
@@ -259,16 +275,22 @@ class CatalogTest {
         val numberOfProductMasters = 10
         val variationValues = listOf("S", "M", "L")
 
-        val variationConfig = VariationProductConfiguration(elementCount = numberOfProductMasters, localVariationAttributes = listOf(
-                VariationAttributeConfiguration("size", variationValues, probability = 1.0f)))
+        val variationConfig = VariationProductConfiguration(
+            elementCount = numberOfProductMasters, localVariationAttributes = listOf(
+                VariationAttributeConfiguration("size", variationValues, probability = 1.0f)
+            )
+        )
         val catalogConfig = CatalogListConfiguration(
-                elementCount = 1,
-                products = ProductConfiguration(elementCount = 0 /* to make it easier to compute */, initialSeed = seed),
-                variationProducts = listOf(variationConfig), initialSeed = seed)
+            elementCount = 1,
+            products = ProductConfiguration(elementCount = 0 /* to make it easier to compute */, initialSeed = seed),
+            variationProducts = listOf(variationConfig), initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
-            assertEquals(numberOfProductMasters * variationValues.size, catalog.masterProducts.sumBy { it.variants.size })
+            assertEquals(
+                numberOfProductMasters * variationValues.size,
+                catalog.masterProducts.sumBy { it.variants.size })
         }
     }
 
@@ -277,12 +299,16 @@ class CatalogTest {
         val numberOfProductMasters = 10
         val variationValues = listOf("S", "M", "L")
 
-        val variationConfig = VariationProductConfiguration(elementCount = numberOfProductMasters, localVariationAttributes = listOf(
-                VariationAttributeConfiguration("size", variationValues, probability = 0f)))
+        val variationConfig = VariationProductConfiguration(
+            elementCount = numberOfProductMasters, localVariationAttributes = listOf(
+                VariationAttributeConfiguration("size", variationValues, probability = 0f)
+            )
+        )
         val catalogConfig = CatalogListConfiguration(
-                elementCount = 1,
-                products = ProductConfiguration(elementCount = 0 /* to make it easier to compute */, initialSeed = seed),
-                variationProducts = listOf(variationConfig), initialSeed = seed)
+            elementCount = 1,
+            products = ProductConfiguration(elementCount = 0 /* to make it easier to compute */, initialSeed = seed),
+            variationProducts = listOf(variationConfig), initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         catalogGenerator.objects.forEach { catalog ->
@@ -403,8 +429,10 @@ class CatalogTest {
     // #108
     @Test
     fun `products are identical under iteration`() {
-        val catalogConfig = CatalogListConfiguration(elementCount = 1, initialSeed = seed,
-                products = ProductConfiguration(initialSeed = seed, options = ProductOptionConfiguration()))
+        val catalogConfig = CatalogListConfiguration(
+            elementCount = 1, initialSeed = seed,
+            products = ProductConfiguration(initialSeed = seed, options = ProductOptionConfiguration())
+        )
         val catalogGenerator = CatalogGenerator(catalogConfig)
 
         val seq = catalogGenerator.objects.first().products

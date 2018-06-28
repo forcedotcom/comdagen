@@ -18,12 +18,17 @@ class PricebookTest {
 
     @Test
     fun testPricebookGeneratesCorrectProductIds() {
-        val catalogConfig = CatalogListConfiguration(products = ProductConfiguration(elementCount = 100, initialSeed = seed), initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            products = ProductConfiguration(elementCount = 100, initialSeed = seed),
+            initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val pricebookConfig = PricebookConfiguration(id = "pricebook", initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val catalogProductIds: List<String> = catalogGenerator.objects.flatMap { it.products.map { it.id } }.toList()
         val pricebookProductIds: List<String> = pricebookGenerator.objects.flatMap {
@@ -40,21 +45,25 @@ class PricebookTest {
     @Test
     fun testPricebookEntriesMatchesWithProductCount() {
         val sharedVariationAttributes = listOf(
-                VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
-                VariationAttributeConfiguration("size", listOf("1", "2", "3"))
+            VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
+            VariationAttributeConfiguration("size", listOf("1", "2", "3"))
         )
         val masterProductConfig = VariationProductConfiguration()
-        val catalogConfig = CatalogListConfiguration(variationProducts = listOf(masterProductConfig),
-                sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            variationProducts = listOf(masterProductConfig),
+            sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val pricebookConfig = PricebookConfiguration(id = "pricebook", initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val productCount: Int = catalogGenerator.objects.map {
             it.products.count() + it.masterProducts.map { it.variants.size }
-                    .reduce { total, next -> total + next }
+                .reduce { total, next -> total + next }
         }.reduce { total, next -> total + next }
 
         pricebookGenerator.objects.forEach { pricebook ->
@@ -65,25 +74,30 @@ class PricebookTest {
     @Test
     fun testPricebookContainsProductVariations() {
         val sharedVariationAttributes = listOf(
-                VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
-                VariationAttributeConfiguration("size", listOf("1", "2", "3"))
+            VariationAttributeConfiguration("color", listOf("blue", "red", "green")),
+            VariationAttributeConfiguration("size", listOf("1", "2", "3"))
         )
         val masterProductConfig = VariationProductConfiguration()
 
-        val catalogConfig = CatalogListConfiguration(variationProducts = listOf(masterProductConfig),
-                sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed)
+        val catalogConfig = CatalogListConfiguration(
+            variationProducts = listOf(masterProductConfig),
+            sharedVariationAttributes = sharedVariationAttributes, initialSeed = seed
+        )
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val pricebookConfig = PricebookConfiguration(id = "pricebook", initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val catalogVariationIds: List<String> = catalogGenerator.objects.flatMap {
             it.masterProducts.asSequence().flatMap {
                 it.variants.asSequence().map { it.id }
             }
         }.toList()
-        val catalogMasterIds: List<String> = catalogGenerator.objects.flatMap { it.masterProducts.asSequence().map { it.id } }.toList()
+        val catalogMasterIds: List<String> =
+            catalogGenerator.objects.flatMap { it.masterProducts.asSequence().map { it.id } }.toList()
 
         val pricebookProductIds: List<String> = pricebookGenerator.objects.flatMap {
             it.pricetables.asSequence().map {
@@ -93,14 +107,18 @@ class PricebookTest {
 
         // check if pricebook contains all product variations
         catalogVariationIds.forEach {
-            assertTrue(pricebookProductIds.contains(it),
-                    "Pricebook should contain all product variations")
+            assertTrue(
+                pricebookProductIds.contains(it),
+                "Pricebook should contain all product variations"
+            )
         }
 
         // check that pricebook does not contain pricetables for variation master products
         catalogMasterIds.forEach {
-            assertFalse(pricebookProductIds.contains(it),
-                    "Pricebook should not contain variation master products")
+            assertFalse(
+                pricebookProductIds.contains(it),
+                "Pricebook should not contain variation master products"
+            )
         }
     }
 
@@ -111,8 +129,10 @@ class PricebookTest {
         val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
 
         val pricebookConfig = PricebookConfiguration(id = "pricebook", initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val productSetIds: List<String> = catalogGenerator.objects.toList().flatMap { catalog ->
             catalog.productSets.map { it.id }
@@ -130,14 +150,18 @@ class PricebookTest {
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val pricebookConfig = PricebookConfiguration(id = "pricebook", initialSeed = seed)
         val currencies = listOf(SupportedCurrency.USD, SupportedCurrency.EUR, SupportedCurrency.CNY)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = currencies)
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = currencies
+        )
 
         val generatedCurrencies: List<String> = pricebookGenerator.objects.map { it.currency }.toList()
 
         currencies.forEach {
-            assertTrue(generatedCurrencies.contains(it.toString()),
-                    "Pricebooks should get generated for all provided currencies")
+            assertTrue(
+                generatedCurrencies.contains(it.toString()),
+                "Pricebooks should get generated for all provided currencies"
+            )
         }
     }
 
@@ -145,10 +169,13 @@ class PricebookTest {
     fun testShouldGenerateSalesPricebooks() {
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val salesPricebookConfig = PricebookConfiguration(id = "sales", sales = true, initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", children = listOf(salesPricebookConfig), initialSeed = seed)
+        val pricebookConfig =
+            PricebookConfiguration(id = "pricebook", children = listOf(salesPricebookConfig), initialSeed = seed)
         val currencies = listOf(SupportedCurrency.USD)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         assertEquals(currencies.size * 2, pricebookGenerator.objects.toList().size, "Should generate 2 pricebooks")
 
@@ -167,8 +194,10 @@ class PricebookTest {
         val elementCount = 20
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val pricebookConfig = PricebookConfiguration(id = "pricebook", elementCount = elementCount, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         assertEquals(elementCount, pricebookGenerator.objects.count())
     }
@@ -178,10 +207,16 @@ class PricebookTest {
         val elementCount = 20
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val pricebookConfig = PricebookConfiguration(id = "pricebook", elementCount = elementCount, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD, SupportedCurrency.CNY, SupportedCurrency.EUR))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig,
+            currencies = listOf(SupportedCurrency.USD, SupportedCurrency.CNY, SupportedCurrency.EUR)
+        )
 
-        assertEquals(pricebookGenerator.objects.toList().size, pricebookGenerator.objects.toList().distinctBy { it.id }.size)
+        assertEquals(
+            pricebookGenerator.objects.toList().size,
+            pricebookGenerator.objects.toList().distinctBy { it.id }.size
+        )
     }
 
     @Test
@@ -189,8 +224,10 @@ class PricebookTest {
         val coverage = 0.25f
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
         val pricebookConfig = PricebookConfiguration(id = "pricebook", coverage = coverage, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val shouldCount = (coverage * GeneratorHelper.getProductIds(catalogConfig).count()).toInt()
         val isCount = (pricebookGenerator.objects.flatMap { it.pricetables }).count()
@@ -204,9 +241,16 @@ class PricebookTest {
         val maxAmountCount = 10
 
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", minAmountCount = minAmountCount, maxAmountCount = maxAmountCount, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookConfig = PricebookConfiguration(
+            id = "pricebook",
+            minAmountCount = minAmountCount,
+            maxAmountCount = maxAmountCount,
+            initialSeed = seed
+        )
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         val pricetables = pricebookGenerator.objects.flatMap { it.pricetables.asSequence() }
 
@@ -222,12 +266,16 @@ class PricebookTest {
         val maxAmount = 5000.0
 
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", minAmount = minAmount, maxAmount = maxAmount, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookConfig =
+            PricebookConfiguration(id = "pricebook", minAmount = minAmount, maxAmount = maxAmount, initialSeed = seed)
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         // get all amounts with quantity = 1
-        val amounts: Sequence<Amount> = pricebookGenerator.objects.flatMap { it.pricetables.asSequence().map { it.amounts[0] } }
+        val amounts: Sequence<Amount> =
+            pricebookGenerator.objects.flatMap { it.pricetables.asSequence().map { it.amounts[0] } }
 
         amounts.forEach {
             assert(it.amount >= minAmount)
@@ -240,9 +288,15 @@ class PricebookTest {
         val customAttributeElementCount = 30
 
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", generatedAttributes = GeneratedAttributeConfig(customAttributeElementCount), initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookConfig = PricebookConfiguration(
+            id = "pricebook",
+            generatedAttributes = GeneratedAttributeConfig(customAttributeElementCount),
+            initialSeed = seed
+        )
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         pricebookGenerator.objects.forEach { pricebook ->
             assertEquals(customAttributeElementCount, pricebook.customAttributes.size)
@@ -256,13 +310,21 @@ class PricebookTest {
         val dataStore = "foobar"
         val generationStrategy = AttributeConfig.GenerationStrategy.STATIC
 
-        val attributeConfig = AttributeConfig(type = type, dataStore = dataStore, generationStrategy = generationStrategy, searchable = false)
+        val attributeConfig = AttributeConfig(
+            type = type,
+            dataStore = dataStore,
+            generationStrategy = generationStrategy,
+            searchable = false
+        )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
         val catalogConfig = CatalogListConfiguration(initialSeed = seed)
-        val pricebookConfig = PricebookConfiguration(id = "pricebook", customAttributes = customAttributesConfig, initialSeed = seed)
-        val pricebookGenerator = PricebookGenerator(configuration = pricebookConfig,
-                catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD))
+        val pricebookConfig =
+            PricebookConfiguration(id = "pricebook", customAttributes = customAttributesConfig, initialSeed = seed)
+        val pricebookGenerator = PricebookGenerator(
+            configuration = pricebookConfig,
+            catalogConfiguration = catalogConfig, currencies = listOf(SupportedCurrency.USD)
+        )
 
         pricebookGenerator.objects.forEach { pricebook ->
             assertEquals(customAttributesConfig.values.size, pricebook.customAttributes.size)

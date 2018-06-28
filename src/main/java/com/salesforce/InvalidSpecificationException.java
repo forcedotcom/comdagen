@@ -10,10 +10,8 @@ package com.salesforce;
  * the specification was invalid and why.
  */
 public class InvalidSpecificationException
-    extends RuntimeException
-{
-    public InvalidSpecificationException( String message )
-    {
-        super( message );
+        extends RuntimeException {
+    public InvalidSpecificationException(String message) {
+        super(message);
     }
 }

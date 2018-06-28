@@ -27,10 +27,12 @@ import java.util.*
  * @property currency price book defines prices for one currency
  * @property customAttributes list of custom attributes
  */
-abstract class Pricebook(protected val config: PricebookConfiguration, val currency: String, protected val seed: Long,
-                         private val attributeDefinitions: Set<AttributeDefinition>,
-                         private val productIds: Sequence<String>,
-                         private val index: Int, private val catalogHashCode: Int) {
+abstract class Pricebook(
+    protected val config: PricebookConfiguration, val currency: String, protected val seed: Long,
+    private val attributeDefinitions: Set<AttributeDefinition>,
+    private val productIds: Sequence<String>,
+    private val index: Int, private val catalogHashCode: Int
+) {
     val pricetables: Sequence<PriceTable>
         get() {
             val rng = Random(seed)
@@ -68,8 +70,10 @@ abstract class Pricebook(protected val config: PricebookConfiguration, val curre
  *
  * @author ojauch
  */
-class Amount(private val seed: Long, private val config: PricebookConfiguration, val quantity: Int,
-             private val currency: String, private val sale: Boolean) {
+class Amount(
+    private val seed: Long, private val config: PricebookConfiguration, val quantity: Int,
+    private val currency: String, private val sale: Boolean
+) {
     val amount: Double
         get() {
             val rng = Random(seed)
@@ -102,8 +106,10 @@ class Amount(private val seed: Long, private val config: PricebookConfiguration,
  *
  * @author ojauch
  */
-class PriceTable(val productId: String, private val seed: Long, private val config: PricebookConfiguration,
-                 private val currency: String, private val sale: Boolean) {
+class PriceTable(
+    val productId: String, private val seed: Long, private val config: PricebookConfiguration,
+    private val currency: String, private val sale: Boolean
+) {
     val amounts: List<Amount>
         get() {
             val rng = Random(seed)
@@ -119,10 +125,11 @@ class PriceTable(val productId: String, private val seed: Long, private val conf
 /**
  * Root of several price books.
  */
-class ParentPriceBook(productIds: Sequence<String>,
-                      seed: Long, attributeDefinitions: Set<AttributeDefinition>, config: PricebookConfiguration,
-                      currency: String, index: Int, catalogHashCode: Int)
-    : Pricebook(config, currency, seed, attributeDefinitions, productIds, index, catalogHashCode)
+class ParentPriceBook(
+    productIds: Sequence<String>,
+    seed: Long, attributeDefinitions: Set<AttributeDefinition>, config: PricebookConfiguration,
+    currency: String, index: Int, catalogHashCode: Int
+) : Pricebook(config, currency, seed, attributeDefinitions, productIds, index, catalogHashCode)
 
 /**
  * Represents a single pricebook that has a parent pricebook, for example a sales pricebook that defines
@@ -136,9 +143,16 @@ class ParentPriceBook(productIds: Sequence<String>,
  *
  * @param currency currency of the defined prices
  */
-class ChildPricebook(private val parentPriceBook: ParentPriceBook, productIds: Sequence<String>, seed: Long, attributeDefinitions: Set<AttributeDefinition>, config: PricebookConfiguration,
-                     currency: String, index: Int, catalogHashCode: Int)
-    : Pricebook(config, currency, seed, attributeDefinitions, productIds, index, catalogHashCode) {
+class ChildPricebook(
+    private val parentPriceBook: ParentPriceBook,
+    productIds: Sequence<String>,
+    seed: Long,
+    attributeDefinitions: Set<AttributeDefinition>,
+    config: PricebookConfiguration,
+    currency: String,
+    index: Int,
+    catalogHashCode: Int
+) : Pricebook(config, currency, seed, attributeDefinitions, productIds, index, catalogHashCode) {
 
     // by default child price books are for sales (get 10% discount applied)
     override val salePriceBook: Boolean

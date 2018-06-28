@@ -19,19 +19,19 @@ import com.salesforce.comdagen.RenderConfig
 @JsonRootName("promotions")
 data class PromotionConfiguration(
 
-        // TODO why do we have three different classes for promotions instead of three instances of the same class?
-        val productConfig: ProductPromotionConfiguration? = null,
+    // TODO why do we have three different classes for promotions instead of three instances of the same class?
+    val productConfig: ProductPromotionConfiguration? = null,
 
-        val orderConfig: OrderPromotionConfiguration? = null,
+    val orderConfig: OrderPromotionConfiguration? = null,
 
-        val shippingConfig: ShippingPromotionConfiguration? = null,
+    val shippingConfig: ShippingPromotionConfiguration? = null,
 
-        val campaigns: CampaignConfiguration? = null,
+    val campaigns: CampaignConfiguration? = null,
 
-        /** Not used currently. Specify in the appropriate sub-config. */
-        override val elementCount: Int = 0,
-        override val initialSeed: Long,
-        override val outputFilePattern: String = "promotions.xml",
-        override val outputDir: String = "",
-        override val templateName: String = "promotions.ftlx"
+    /** Not used currently. Specify in the appropriate sub-config. */
+    override val elementCount: Int = 0,
+    override val initialSeed: Long,
+    override val outputFilePattern: String = "promotions.xml",
+    override val outputDir: String = "",
+    override val templateName: String = "promotions.ftlx"
 ) : RenderConfig
