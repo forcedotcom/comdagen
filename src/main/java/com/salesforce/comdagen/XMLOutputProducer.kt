@@ -17,6 +17,8 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 import java.io.OutputStreamWriter
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.util.*
 
 /**
@@ -39,7 +41,14 @@ class XMLOutputProducer
 constructor(private val templateDir: File = File("./templates"), private val outputDir: File = File("./output/generated")) {
 
     private val freemarkerConfig: freemarker.template.Configuration = Configuration(freemarker.template.Configuration.VERSION_2_3_25)
-
+    private val staticImagesNameWithPath: List<String> = listOf(
+        "/images/baseImage.jpg",
+        "/images/baseLarge.jpg",
+        "/images/baseMedium.jpg",
+        "/images/baseSmall.jpg",
+        "/images/baseSwatch.jpg",
+        "/images/baseThumb.jpg"
+    )
     init {
         /* configure template engine */
         // encoding for templates
@@ -103,6 +112,7 @@ constructor(private val templateDir: File = File("./templates"), private val out
             val modelData = mapOf("catalog" to catalog, "index" to index,
                     "configuration" to generator.configuration)
             File("$outputDir/${generator.configuration.outputDir}/${catalog.id}").apply { mkdirs() }
+            copyResources(staticImagesNameWithPath, File(outputDir, "/catalogs/${catalog.id}/static/default/"))
             produce(templateName,
                     "${generator.configuration.outputDir}/${catalog.id}/${generator.configuration.getFileName()}", modelData)
         }
@@ -332,10 +342,43 @@ constructor(private val templateDir: File = File("./templates"), private val out
         filePaths.forEach { path ->
             val file = File(templateDir, "static/$path")
 
-            if (file.isDirectory) {
-                file.copyRecursively(File(outputDir, file.name), overwrite = true)
+            if (file.exists()) {
+                if (file.isDirectory) {
+                    file.copyRecursively(File(outputDir, file.name), overwrite = true)
+                } else {
+                    file.copyTo(File(outputDir, file.name), overwrite = true)
+                }
             } else {
-                file.copyTo(File(outputDir, file.name), overwrite = true)
+                LOGGER.info("Invalid Path -> " + file.toString());
+            }
+        }
+    }
+
+
+    /**
+     * Copy all artifacts given from the jar file to a destination directory.
+     */
+    private fun copyResources(from: List<String>, target: File) {
+        from.forEach { fileName ->
+            copyResource(fileName, File(target, fileName))
+        }
+    }
+
+
+    /**
+     * Copies a single file  with the supplied to the output directory it will check for the file in path that is sent
+     * @param fileName name of the file that needs to be copied
+     * @param outputDir copies file to this directory
+     */
+    private fun copyResource(fileName: String, outputDir: File) {
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+        javaClass.getResourceAsStream(fileName).use { input ->
+            if (input != null) {
+                Files.copy(input, outputDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            } else {
+                LOGGER.warn("File not found at : ${fileName}")
             }
         }
     }

@@ -25,8 +25,8 @@
         <#else>
             <parent>root</parent>
         </#if>
-        <thumbnail>image/category/thumb/madgen-Accounting_Clerk_null_L1_C0.jpg</thumbnail>
-        <image>image/category/regular/madgen-Accounting_Clerk_null_L1_C0.jpg</image>
+        <thumbnail>images/baseThumb.jpg</thumbnail>
+        <image>images/baseImage.jpg</image>
         <#if category.template??>
         <template>${category.template}</template>
         </#if>
@@ -105,13 +105,13 @@
         <searchable-flag>true</searchable-flag>
         <images>
             <image-group view-type="large">
-                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseLarge.jpg"></image>
             </image-group>
             <image-group view-type="medium">
-                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseMedium.jpg"></image>
             </image-group>
             <image-group view-type="small">
-                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseSmall.jpg"></image>
             </image-group>
         </images>
         <tax-class-id>standard</tax-class-id>
@@ -226,13 +226,13 @@
         <searchable-flag>true</searchable-flag>
         <images>
             <image-group view-type="large">
-                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseLarge.jpg"></image>
             </image-group>
             <image-group view-type="medium">
-                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseMedium.jpg"></image>
             </image-group>
             <image-group view-type="small">
-                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseSmall.jpg"></image>
             </image-group>
         </images>
         <tax-class-id>standard</tax-class-id>
@@ -310,13 +310,13 @@
         <searchable-flag>true</searchable-flag>
         <images>
             <image-group view-type="large">
-                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseLarge.jpg"></image>
             </image-group>
             <image-group view-type="medium">
-                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseMedium.jpg"></image>
             </image-group>
             <image-group view-type="small">
-                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseSmall.jpg"></image>
             </image-group>
         </images>
         <tax-class-id>standard</tax-class-id>
@@ -367,13 +367,13 @@
         <searchable-flag>true</searchable-flag>
         <images>
             <image-group view-type="large">
-                <image path="large/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseLarge.jpg"></image>
             </image-group>
             <image-group view-type="medium">
-                <image path="medium/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseMedium.jpg"></image>
             </image-group>
             <image-group view-type="small">
-                <image path="small/0/madgen-MasterCatalog_PRODUCT_0.jpg"></image>
+                <image path="images/baseSmall.jpg"></image>
             </image-group>
         </images>
         <tax-class-id>standard</tax-class-id>
