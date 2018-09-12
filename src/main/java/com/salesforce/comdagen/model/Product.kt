@@ -33,16 +33,16 @@ sealed class Product {
         get() = regions.associateBy({ it }, { RandomData.getRandomNoun(seed + "name".hashCode(), it) })
 
     val shortDescription: Map<SupportedZone, String>
-        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "shortDescription".hashCode(), 500, it) })
+        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "shortDescription".hashCode(), 200, it) })
 
     val longDescription: Map<SupportedZone, String>
-        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "longDescription".hashCode(), 2_000, it) })
+        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "longDescription".hashCode(), 1000, it) })
 
     val pageTitle: Map<SupportedZone, String>
         get() = regions.associateBy({ it }, { RandomData.getRandomNoun(seed + "pageTitle".hashCode(), it) })
 
     val pageDescription: Map<SupportedZone, String>
-        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "pageDescription".hashCode(), 2_000, it) })
+        get() = regions.associateBy({ it }, { RandomData.bookCite(seed + "pageDescription".hashCode(), 128, it) })
 
     open fun hasOptions(): Boolean {
         return false
