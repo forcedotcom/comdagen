@@ -31,7 +31,7 @@ abstract class Promotion(private val seed: Long) {
 }
 
 data class ProductPromotion(
-    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: String,
     private val config: ProductPromotionConfiguration
 ) : Promotion(seed) {
     val discountedCategory: String
@@ -48,7 +48,7 @@ data class ProductPromotion(
 }
 
 data class OrderPromotion(
-    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: String,
     private val config: OrderPromotionConfiguration
 ) : Promotion(seed) {
     val discount: Int
@@ -68,7 +68,7 @@ data class OrderPromotion(
 }
 
 data class ShippingPromotion(
-    private val seed: Long, private val categoryIds: List<String>, val catalogId: Long,
+    private val seed: Long, private val categoryIds: List<String>, val catalogId: String,
     private val config: ShippingPromotionConfiguration, private val shippingIds: List<String>
 ) : Promotion(seed) {
     val qualifyingCategory: String

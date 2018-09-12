@@ -49,7 +49,7 @@
             <discounted-products>
                 <included-products>
                     <condition-group>
-                        <category-condition catalog-id="${promotion.catalogId?c}">
+                        <category-condition catalog-id="${promotion.catalogId}">
                             <category-id>${promotion.discountedCategory}</category-id>
                         </category-condition>
                     </condition-group>
@@ -75,7 +75,7 @@
             <qualifying-products>
                 <included-products>
                     <condition-group>
-                        <category-condition catalog-id="${promotion.catalogId?c}">
+                        <category-condition catalog-id="${promotion.catalogId}">
                             <category-id>${promotion.qualifyingCategory}</category-id>
                         </category-condition>
                     </condition-group>
@@ -95,7 +95,7 @@
             <qualifying-products>
                 <included-products>
                     <condition-group>
-                        <category-condition catalog-id="${promotion.catalogId?c}">
+                        <category-condition catalog-id="${promotion.catalogId}">
                             <category-id>${promotion.qualifyingCategory}</category-id>
                         </category-condition>
                     </condition-group>

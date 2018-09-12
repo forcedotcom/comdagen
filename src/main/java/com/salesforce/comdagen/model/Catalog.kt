@@ -59,8 +59,8 @@ abstract class Catalog(
     protected val regions: List<SupportedZone>
 ) {
 
-    open val id: Long
-        get() = Math.abs(seed + "catalogId".hashCode())
+    open val id: String
+        get() = this.javaClass.simpleName + "_" + Math.abs(seed + "catalogId".hashCode())
 
     val name: Map<SupportedZone, String>
         get() = regions.associateBy({ it }, { RandomData.getRandomNoun(seed + "name".hashCode(), it) })
@@ -268,8 +268,8 @@ class NavigationCatalog(
     regions: List<SupportedZone> = listOf(SupportedZone.Generic)
 ) : Catalog(seed, config, catalogIndex, regions) {
 
-    override val id: Long
-        get() = Math.abs(seed + siteName.hashCode())
+    override val id: String
+        get() = this.javaClass.simpleName + "_" + Math.abs(seed + siteName.hashCode())
 
     override val categoryAssignments: Sequence<CategoryAssignment>
         get() {

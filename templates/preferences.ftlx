@@ -20,7 +20,7 @@
             <preference preference-id="ProductChangeFrequency">daily</preference>
             <preference preference-id="ProductPriority">0.5</preference>
             <#if navigationCatalog??>
-            <preference preference-id="SiteCatalog">${navigationCatalog?c}</preference>
+            <preference preference-id="SiteCatalog">${navigationCatalog}</preference>
             </#if>
             <#if currencies??>
             <preference preference-id="SiteCurrencies">${currencies?join(":")}</preference>
