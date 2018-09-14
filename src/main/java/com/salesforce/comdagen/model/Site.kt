@@ -28,8 +28,8 @@ class Site(
         get() = config.regions
 
     val id: String
-        // Delete all non alphanumeric characters in siteName.
-        get() =  if(config.siteName != null) config.siteName.replace("[^A-Za-z0-9]".toRegex(),"") else "Site_" + internID.toString()
+    // Delete all non alphanumeric characters in siteName.
+        get() = if (config.siteName != null) config.siteName.replace("[^A-Za-z0-9]".toRegex(), "") else "Site_" + internID.toString()
 
     val name: String
         get() = config.siteName ?: "Site $id"
