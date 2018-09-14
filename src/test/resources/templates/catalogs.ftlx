@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="${catalog.id?c}">
+<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="${catalog.id}">
     <category category-id="root">
         <display-name xml:lang="x-default">Root Category</display-name>
         <refinement-definitions>
@@ -158,7 +158,7 @@
                 </#list>
             </variants>
         </variations>
-        <classification-category catalog-id="${catalog.id?c}">root</classification-category>
+        <classification-category catalog-id="${catalog.id}">root</classification-category>
     </product>
     <#list masterProduct.variants as variant>
         <product product-id="${variant.id}">
@@ -285,7 +285,7 @@
                 </#list>
             </options>
         </#if>
-        <classification-category catalog-id="${catalog.id?c}">root</classification-category>
+        <classification-category catalog-id="${catalog.id}">root</classification-category>
     </product>
 </#list>
 
