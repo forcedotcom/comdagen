@@ -99,7 +99,7 @@ object RandomData {
                 RandomData::class.java
                     .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
             })
-            val rawStart = Random(seed).nextInt(Math.max(book.length - 500, 0))
+            val rawStart = if (book.length - 500 < 1) 0 else Random(seed).nextInt(book.length - 500)
             val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
             return book.substring(startIndex, book.indexOf(" ", startIndex))
         }
@@ -140,7 +140,7 @@ object RandomData {
                 .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
         })
 
-        val rawStart = Random(seed).nextInt(Math.max(book.length - length, 0))
+        val rawStart = if (book.length - length < 1) 0 else Random(seed).nextInt(book.length - length)
         val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
 
         return book.substring(startIndex, Math.min(startIndex + length, book.length))
