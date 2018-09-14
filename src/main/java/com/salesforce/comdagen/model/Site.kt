@@ -15,7 +15,7 @@ import com.salesforce.comdagen.generator.*
 import java.io.File
 
 class Site(
-    val id: Int,
+    private val internID: Int,
     private val seed: Long,
     private val defaults: SiteConfiguration?,
     private val config: SiteConfiguration,
@@ -26,6 +26,10 @@ class Site(
 
     val regions
         get() = config.regions
+
+    val id: String
+    // Delete all non alphanumeric characters in siteName.
+        get() = if (config.siteName != null) config.siteName.replace("[^A-Za-z0-9]".toRegex(), "") else "Site_" + internID.toString()
 
     val name: String
         get() = config.siteName ?: "Site $id"
