@@ -95,11 +95,14 @@ object RandomData {
             val list = NOUNS.getOrPut(region, { contentFileAsList(source) })
             return list[(Math.abs(seed) % list.size).toInt()]
         } else {
+            val maxWordLength = 500 // totally arbitrary guess
             val book = BOOKS.getOrPut(region, {
                 RandomData::class.java
                     .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
             })
-            val rawStart = Random(seed).nextInt(Math.max(book.length - 500, 0))
+            val rawStart =
+                if (book.length > maxWordLength) Random(seed).nextInt(book.length - maxWordLength)
+                else 0
             val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
             return book.substring(startIndex, book.indexOf(" ", startIndex))
         }
@@ -140,7 +143,9 @@ object RandomData {
                 .getResourceAsStream("/contentfiles/books_${region.countryCode}.txt").reader().readText()
         })
 
-        val rawStart = Random(seed).nextInt(Math.max(book.length - length, 0))
+        val rawStart =
+            if (book.length > length) Random(seed).nextInt(book.length - length)
+            else 0
         val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
 
         return book.substring(startIndex, Math.min(startIndex + length, book.length))
