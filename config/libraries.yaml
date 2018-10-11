@@ -1,0 +1,7 @@
+libraryConfig:
+  # For now only generate one library
+  elementCount: 1
+  # root folder for libraries
+  outputDir: "libraries"
+  initialSeed: 1234
+  libraryId: "comdagenSharedLbrary"
