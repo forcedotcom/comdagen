@@ -2,34 +2,51 @@ package com.salesforce.comdagen.model
 
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.SupportedZone
-import com.salesforce.comdagen.attributeDefinitions
-import com.salesforce.comdagen.config.AttributeConfig
 import com.salesforce.comdagen.config.ContentConfiguration
-import com.salesforce.comdagen.config.GlobalLibraryConfiguration
 import com.salesforce.comdagen.config.LibraryConfiguration
 import java.io.File
 
 
-
-//TODO: What do I really need here??
-data class Library(private val seed: Long,
+data class Library(
+    /**
+     * This internId is necessary to set a unique libraryId when
+     * none is defined in the configuration file. The internId
+     * will be related to the order in which the libraries are
+     * generated.
+     */
+    private val internId: Int,
+    private val seed: Long,
                    private val config: LibraryConfiguration,
                    private val configDir: File) {
-val libraryId: String get() = config.libraryId ?: "hashID" + this.hashCode().toString()
+    val libraryId: String get() = config.libraryId ?: "Library_"+internId.toString()
+
+
+    val contentAssets: List<Content>
+        get() {
+            val x = (1..config.contentAssetCount).map {
+                Content(
+                    it,
+                    seed,
+                    config.defaultContentAssetConfig,
+                    SupportedZone.values().asList()
+                )
+            }
+            return x
+        }
+
 
 }
 
 
-// TODO: Implement IndexedLibrary
-
-
-data class Content(val initialSeed: Long,
-                   //val elementCount: Int = 1,
-                   private val contentId: String,
+data class Content(
+    private val internId: Int,
+    val initialSeed: Long,
                    val contentConfig: ContentConfiguration,
                    val regions: List<SupportedZone>
 ) {
 
+    //TODO: contentId is always null?? dont use get() here for ftlx
+    val contentId: String get() = contentConfig.contentId ?: "ContentId_"+internId.toString()
 
     val name: Map<SupportedZone, String> get() = regions.associateBy({ it }, { RandomData.getRandomNoun(initialSeed, it) })
 
@@ -53,6 +70,6 @@ data class Content(val initialSeed: Long,
 //        }
 }
 
-data class Folder(val initialSeed: Long){
+data class Folder(val initialSeed: Long) {
     //TODO: Implement
 }

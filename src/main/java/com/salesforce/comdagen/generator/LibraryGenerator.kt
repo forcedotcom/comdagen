@@ -5,19 +5,18 @@ import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Library
 import java.io.File
 
-data class LibraryGenerator(override val configuration: LibraryConfiguration, val configDir: File) :
+data class LibraryGenerator(
+    override val configuration: LibraryConfiguration,
+
+    val configDir: File
+) :
         Generator<LibraryConfiguration, Library> {
-
-    //TODO: Implement generation of libraries with index
     override val objects: Sequence<Library>
-        get() {
-            // Test implementation
-            var libraries: Sequence<Library> = emptySequence()
-            libraries = libraries.plus(sequenceOf(Library(configuration.initialSeed, configuration, configDir)))
-            return libraries
-        }
+        get() = (1..configuration.elementCount).map {
+            Library(it, configuration.initialSeed, configuration, configDir)
+        }.asSequence()
 
-    //TODO: Implement creatorFunc
+    override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration, configDir) }
 
 
     override val metadata: Map<String, Set<AttributeDefinition>>

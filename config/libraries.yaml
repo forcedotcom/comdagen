@@ -1,7 +1,23 @@
 libraryConfig:
-  # For now only generate one library
-  elementCount: 1
+
   # root folder for libraries
   outputDir: "libraries"
   initialSeed: 1234
-  libraryId: "comdagenSharedLbrary"
+  # Either define a libraryId OR define a number of libraries
+  # to be generated
+  # libraryId: "comdagenSharedLbrary"
+  elementCount: 3
+  contentAssetCount: 100
+
+  contentAssetDefaults:
+    initialSeed: 1234
+    #contentId: "Testcontent"
+    onlineFlag: true
+    searchableFlag: true
+    #For content so: body or css..
+    #        customAttributes:
+    #          enableCompare:
+    #            type: boolean
+    #            data: static
+    #            staticValue: true
+    classificationFolder: "root"

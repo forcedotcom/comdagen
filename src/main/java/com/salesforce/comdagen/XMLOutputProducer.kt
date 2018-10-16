@@ -99,6 +99,7 @@ constructor(
         when (generator) {
             is CatalogGenerator -> render(generator.generatorTemplate, generator)
             is SiteGenerator -> render(generator.generatorTemplate, generator.preferencesTemplate, generator)
+            is LibraryGenerator -> render(generator.generatorTemplate, generator)
             else -> render(generator.generatorTemplate, generator, currentGeneratorIndex)
         }
     }
@@ -155,6 +156,27 @@ constructor(
                 "locales" to regions.map { it.locale })
         )
     }
+
+    @Throws(IOException::class)
+    fun render(templateName: String, generator: LibraryGenerator) {
+        val libraries = generator.objects
+        //TODO: Do I need index here?
+        // For each library
+        libraries.forEachIndexed { index, library ->
+            val modelData = mapOf(
+                "library" to library, "index" to index,
+                "configuration" to generator.configuration, "contentAssets" to library.contentAssets
+            )
+            File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
+            LOGGER.info("Start rendering library ${library.libraryId} with template $templateName")
+            produce(
+                templateName,
+                "${generator.configuration.outputDir}/${library.libraryId}/${library.libraryId}.xml",
+                modelData
+            )
+        }
+    }
+
 
     @Throws(IOException::class)
     private fun render(siteTemplateName: String, preferencesTemplateName: String, generator: SiteGenerator) {
