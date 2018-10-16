@@ -162,11 +162,14 @@ constructor(
         val libraries = generator.objects
         //TODO: Do I need index here?
         // For each library
-        libraries.forEachIndexed { index, library ->
+        libraries.forEach { library ->
             val modelData = mapOf(
-                "library" to library, "index" to index,
-                "configuration" to generator.configuration, "contentAssets" to library.contentAssets
+                "library" to library,
+                "configuration" to generator.configuration,
+                "contentAssets" to library.contentAssets,
+                "folders" to generator.configuration.folders
             )
+            // Generate the specified output folder and a folder named by the libraryId containing the library xml
             File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
             LOGGER.info("Start rendering library ${library.libraryId} with template $templateName")
             produce(
@@ -403,7 +406,7 @@ constructor(
                     file.copyTo(File(outputDir, file.name), overwrite = true)
                 }
             } else {
-                LOGGER.info("Invalid Path -> " + file.toString());
+                LOGGER.info("Invalid Path -> " + file.toString())
             }
         }
     }

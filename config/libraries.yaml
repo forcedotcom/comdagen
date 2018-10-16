@@ -1,16 +1,19 @@
 libraryConfig:
-
   # root folder for libraries
   outputDir: "libraries"
   initialSeed: 1234
   # Either define a libraryId OR define a number of libraries
   # to be generated
-  # libraryId: "comdagenSharedLbrary"
-  elementCount: 3
-  contentAssetCount: 100
+  libraryId: "ComdagenSharedLibrary"
+  #elementCount: 3
+  contentAssetCount: 10
 
+  # This overrides generated settings
   contentAssetDefaults:
+    importModeDelete: false
     initialSeed: 1234
+    # Either use random contentIds or ContentId_<number>
+    useRandomContentIds: false
     #contentId: "Testcontent"
     onlineFlag: true
     searchableFlag: true
@@ -21,3 +24,25 @@ libraryConfig:
     #            data: static
     #            staticValue: true
     classificationFolder: "root"
+
+  # Folders
+  folders:
+  - folderId: "comdagensharedcontent"
+    initialSeed: 1234
+    displayName: "Comdagen generated content"
+    description: "This folder contains comadgen generated content"
+    onlineFlag: true
+    # Parentfolder
+    parent: "root"
+  #        customAttributes:
+  #          enableCompare:
+  #            type: boolean
+  #            data: static
+  #            staticValue: true
+  - folderId: "comdagensharedca"
+    initialSeed: 1234
+    displayName: "Comdagen generated content assets"
+    description: "This folder contains comadgen generated content assets"
+    onlineFlag: true
+    # Parentfolder
+    parent: "comdagensharedcontent"
