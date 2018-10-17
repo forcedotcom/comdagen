@@ -46,6 +46,9 @@ data class Library(
             }
         }
 
+    // Is this the ComdagenSharedLibrary?
+    val comdagenShared: Boolean get() = internId == 0
+
     val folders: List<Folder>
         get() {
             val rng = Random(seed + "folders".hashCode())

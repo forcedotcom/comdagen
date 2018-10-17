@@ -23,7 +23,26 @@ data class LibraryGenerator(
     override val objects: Sequence<Library>
         get() = (1..configuration.elementCount).map {
             Library(it, configuration.initialSeed, configuration, configDir)
-        }.asSequence()
+            // Add custom ComdagenSharedLibrary
+        }.plus(
+            Library(
+                0,
+                configuration.initialSeed,
+                LibraryConfiguration(
+                    configuration.initialSeed,
+                    "ComdagenSharedLibrary",
+                    configuration.contentAssetCount,
+                    emptyList(),
+                    emptyList(),
+                    configuration.defaultContentAssetConfig,
+                    1,
+                    "ComdagenSharedLibrary.xml",
+                    "libraries",
+                    configuration.templateName
+                ),
+                configDir
+            )
+        ).asSequence()
 
     override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration, configDir) }
 

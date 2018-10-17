@@ -435,7 +435,7 @@ constructor(
             if (input != null) {
                 Files.copy(input, outputDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } else {
-                LOGGER.warn("File not found at : ${fileName}")
+                LOGGER.warn("File not found at : $fileName")
             }
         }
     }

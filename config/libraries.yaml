@@ -4,12 +4,18 @@ libraryConfig:
   initialSeed: 1234
   # Either define a libraryId OR define a number of libraries
   # to be generated
-  libraryId: "ComdagenSharedLibrary"
-  #elementCount: 3
+  #libraryId: "ComdagenSharedLibrary"
+  elementCount: 3
   contentAssetCount: 10
+
+  # The default comdagen content folder root/ComdagenContent/ComdagenContentAssets
+  # will always be created in each library
+  # Furthermore library ComdagenSharedLibrary will always be created
+
 
   # This overrides generated settings
   contentAssetDefaults:
+    # Hmm this seems to not create ca when set to true. Might be a replace only mode
     importModeDelete: false
     initialSeed: 1234
     # Either use random contentIds or ContentId_<number>
@@ -17,12 +23,6 @@ libraryConfig:
     #contentId: "Testcontent"
     onlineFlag: true
     searchableFlag: true
-    #For content so: body or css..
-    #        customAttributes:
-    #          enableCompare:
-    #            type: boolean
-    #            data: static
-    #            staticValue: true
     classificationFolder: "root"
 
   # Folders
@@ -34,11 +34,7 @@ libraryConfig:
     onlineFlag: true
     # Parentfolder
     parent: "root"
-  #        customAttributes:
-  #          enableCompare:
-  #            type: boolean
-  #            data: static
-  #            staticValue: true
+
   - folderId: "comdagensharedca"
     initialSeed: 1234
     displayName: "Comdagen generated content assets"

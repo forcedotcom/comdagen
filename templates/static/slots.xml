@@ -131,7 +131,8 @@ Here you will find answers to your questions about shopping at our online store,
         <enabled-flag>true</enabled-flag>
         <content>
             <content-assets>
-                <content-asset content-id="home-cycle"/>
+                <!-- This is a custom Comdagen content asset -->
+                <content-asset content-id="ComdagenSummary"/>
             </content-assets>
         </content>
     </slot-configuration>
