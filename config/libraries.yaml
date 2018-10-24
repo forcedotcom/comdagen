@@ -4,9 +4,12 @@ libraryConfig:
   initialSeed: 1234
   # Either define a libraryId OR define a number of libraries
   # to be generated
-  #libraryId: "ComdagenSharedLibrary"
-  elementCount: 3
+  #BUG: Creates and overwrites the same libraryId
+  libraryId: "TEEESTlibrary"
+  elementCount: 5
+
   contentAssetCount: 10
+  folderCount: 10
 
   # The default comdagen content folder root/ComdagenContent/ComdagenContentAssets
   # will always be created in each library
@@ -18,27 +21,39 @@ libraryConfig:
     # Hmm this seems to not create ca when set to true. Might be a replace only mode
     importModeDelete: false
     initialSeed: 1234
-    # Either use random contentIds or ContentId_<number>
+    # Either use random contentIds or ContentId_<number> when generating random content assets
     useRandomContentIds: false
     #contentId: "Testcontent"
     onlineFlag: true
     searchableFlag: true
     classificationFolder: "root"
 
+  folderDefaults:
+    initialSeed: 1234
+    onlineFlag: false
+    # Use randomly generated folderIds instead of Folder_<index>
+    randomFolderIds: false
+    # Parentfolder
+    parent: "ComdagenContentAssets"
+
+
+  # Creating specific content assets and abstractFolders
+
   # Folders
   folders:
-  - folderId: "comdagensharedcontent"
-    initialSeed: 1234
+  # If no folderId is given a randomized generated one is being used
+  - initialSeed: 1234
     displayName: "Comdagen generated content"
     description: "This folder contains comadgen generated content"
     onlineFlag: true
-    # Parentfolder
     parent: "root"
 
-  - folderId: "comdagensharedca"
+  - folderId: "Customfolder1"
     initialSeed: 1234
     displayName: "Comdagen generated content assets"
     description: "This folder contains comadgen generated content assets"
     onlineFlag: true
-    # Parentfolder
     parent: "comdagensharedcontent"
+
+
+  # Custom content assets

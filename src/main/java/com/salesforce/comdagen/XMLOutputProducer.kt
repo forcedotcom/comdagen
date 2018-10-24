@@ -160,14 +160,13 @@ constructor(
     @Throws(IOException::class)
     fun render(templateName: String, generator: LibraryGenerator) {
         val libraries = generator.objects
-        //TODO: Do I need index here?
         // For each library
         libraries.forEach { library ->
             val modelData = mapOf(
                 "library" to library,
                 "configuration" to generator.configuration,
                 "contentAssets" to library.contentAssets,
-                "folders" to generator.configuration.folders
+                "abstractFolders" to generator.configuration.folders
             )
             // Generate the specified output folder and a folder named by the libraryId containing the library xml
             File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }

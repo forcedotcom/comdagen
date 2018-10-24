@@ -20,6 +20,7 @@ data class FolderConfiguration(
     val onlineFlag: Boolean = true,
     val importModeDelete: Boolean? = false,
     val parent: String?,
+    val randomFolderIds: Boolean = false,
 
     /**
      * Custom attributes for content

@@ -4,27 +4,27 @@
     <folder folder-id="root">
         <online-flag>true</online-flag>
         <page-attributes>
-            <page-title xml:lang="x-default">Root folder for Comdagen shared library</page-title>
+            <page-title xml:lang="x-default">Root folder</page-title>
             <page-description xml:lang="x-default">Offers comdagen generated content</page-description>
-            <page-keywords xml:lang="x-default">new arrivals,test,comdagen,undagen,content assets</page-keywords>
+            <page-keywords xml:lang="x-default">root,test,comdagen,undagen,content assets</page-keywords>
         </page-attributes>
     </folder>
     <folder folder-id="ComdagenContent">
         <online-flag>true</online-flag>
         <parent>root</parent>
         <page-attributes>
-            <page-title xml:lang="x-default">Root folder for Comdagen shared library</page-title>
+            <page-title xml:lang="x-default">Content folder for Comdagen generated content</page-title>
             <page-description xml:lang="x-default">Offers comdagen generated content</page-description>
-            <page-keywords xml:lang="x-default">new arrivals,test,comdagen,undagen,content assets</page-keywords>
+            <page-keywords xml:lang="x-default">test,comdagen,undagen,content assets</page-keywords>
         </page-attributes>
     </folder>
     <folder folder-id="ComdagenContentAssets">
         <online-flag>true</online-flag>
         <parent>ComdagenContent</parent>
         <page-attributes>
-            <page-title xml:lang="x-default">Root folder for Comdagen shared library</page-title>
-            <page-description xml:lang="x-default">Offers comdagen generated content</page-description>
-            <page-keywords xml:lang="x-default">new arrivals,test,comdagen,undagen,content assets</page-keywords>
+            <page-title xml:lang="x-default">Content folder for Comdagen generated content</page-title>
+            <page-description xml:lang="x-default">Offers comdagen generated Content Assets</page-description>
+            <page-keywords xml:lang="x-default">test,comdagen,undagen,content assets</page-keywords>
         </page-attributes>
     </folder>
     <#list library.folders as folder>
@@ -32,7 +32,7 @@
         <display-name xml:lang="x-default">${folder.displayName}</display-name>
         <description xml:lang="x-default">${folder.description}</description>
         <online-flag>${folder.onlineFlag?c}</online-flag>
-        <parent>${folder.parent}</parent>
+        <#if folder.parent??><parent>${folder.parent}</parent></#if>
         <page-attributes/>
     </folder>
     </#list>
@@ -63,7 +63,7 @@ in the default ComdagenSharedLibrary.
     </#if>
        <#list library.contentAssets as content>
     <content <#if content.importMode>mode="delete" </#if>content-id="${content.contentId}">
-        <#list content.name as region, name>
+        <#list content.displayName as region, name>
     <display-name xml:lang="${region}">${name}</display-name>
         </#list>
     <#list content.description as region, description>

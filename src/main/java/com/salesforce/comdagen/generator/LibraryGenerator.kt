@@ -8,6 +8,7 @@
 package com.salesforce.comdagen.generator
 
 import com.salesforce.comdagen.config.LibraryConfiguration
+import com.salesforce.comdagen.model.AbstractLibrary
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Library
 import java.io.File
@@ -19,11 +20,11 @@ import java.io.File
 data class LibraryGenerator(
     override val configuration: LibraryConfiguration,
     val configDir: File
-) : Generator<LibraryConfiguration, Library> {
-    override val objects: Sequence<Library>
+) : Generator<LibraryConfiguration, AbstractLibrary> {
+    override val objects: Sequence<AbstractLibrary>
         get() = (1..configuration.elementCount).map {
             Library(it, configuration.initialSeed, configuration, configDir)
-            // Add custom ComdagenSharedLibrary
+            // Add default library ComdagenSharedLibrary
         }.plus(
             Library(
                 0,
@@ -33,6 +34,8 @@ data class LibraryGenerator(
                     "ComdagenSharedLibrary",
                     configuration.contentAssetCount,
                     emptyList(),
+                    configuration.defaultFolderConfigs,
+                    configuration.folderCount,
                     emptyList(),
                     configuration.defaultContentAssetConfig,
                     1,

@@ -22,8 +22,11 @@ data class LibraryConfiguration(
     val libraryId: String?,
     val contentAssetCount: Int = 3,
     val folders: List<FolderConfiguration> = listOf(),
-    val content: List<ContentConfiguration> = listOf(),
+    @JsonProperty("folderDefaults")
+    val defaultFolderConfigs: FolderConfiguration,
+    val folderCount: Int = 6,
 
+    val content: List<ContentConfiguration> = listOf(),
     @JsonProperty("contentAssetDefaults")
     val defaultContentAssetConfig: ContentConfiguration,
 
