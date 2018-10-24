@@ -95,17 +95,22 @@ class Comdagen {
         // load sites configuration
         val sitesConfig = OBJECT_MAPPER.readValue(sitesConfigFile, SitesConfig::class.java)
 
+
+        // render generated data as xml files
+        outputProducer.render(SiteGenerator(sitesConfig, configDir))
+
+
         // load library configuration
         val librariesConfFile = File(configDir, "libraries.yaml")
         val librariesConf: LibraryConfiguration?
+        // render libraries
         if (librariesConfFile.isFile && librariesConfFile.canRead()) {
             librariesConf = OBJECT_MAPPER.readValue(librariesConfFile, LibraryConfiguration::class.java)
             outputProducer.render(LibraryGenerator(librariesConf, configDir))
         }
 
-
-        // render generated data as xml files
-        outputProducer.render(SiteGenerator(sitesConfig, configDir))
+        // TODO: Gather statistics about the site generation and pass it on to librariesConf. That should be the basis
+        // for rendering the Comdagen Content Asset
 
 
         // zip generated output directory if cmd option is set

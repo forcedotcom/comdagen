@@ -93,8 +93,6 @@ open class IndexedRandomContent(
     override val regions: List<SupportedZone>
 ) : RandomContent(seed, contentConfig, regions) {
 
-
-    //TODO: BUG: contentId is always null?? dont use get() here for ftlx
     override val contentId: String
         // If defined use random contentIds or ContentId_<number>
         get() = if (contentConfig.useRandomContentIds) RandomData.getRandomNoun(seed + "contentId".hashCode())

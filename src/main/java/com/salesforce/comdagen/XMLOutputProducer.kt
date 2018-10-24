@@ -160,13 +160,25 @@ constructor(
     @Throws(IOException::class)
     fun render(templateName: String, generator: LibraryGenerator) {
         val libraries = generator.objects
+        // Add library statistics
+        libraries.forEach {
+            val library: Map<String, String> = mapOf(
+                "id" to it.libraryId,
+                "initalSeed" to generator.configuration.initialSeed.toString(),
+                "contentAssetCount" to generator.configuration.contentAssetCount.toString()
+            )
+            libraryStatistics.put(it.libraryId, library)
+        }
+
         // For each library
         libraries.forEach { library ->
             val modelData = mapOf(
                 "library" to library,
                 "configuration" to generator.configuration,
                 "contentAssets" to library.contentAssets,
-                "abstractFolders" to generator.configuration.folders
+                "folders" to generator.configuration.folders,
+                "comdagensitestats" to siteStatistics,
+                "comdagenlibrarystats" to libraryStatistics
             )
             // Generate the specified output folder and a folder named by the libraryId containing the library xml
             File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
@@ -201,6 +213,12 @@ constructor(
                 siteTemplateName,
                 "${generator.configuration.outputDir}/${it.id}/site.xml", siteModelData
             )
+            // Gather site statistics and save in the companion object
+            val sitemap: Map<String, String> = mapOf(
+                "id" to it.id,
+                "name" to it.name
+            )
+            siteStatistics.put(it.id, sitemap)
 
             // render preferences.xml
             LOGGER.info("Start rendering preferences for site ${it.id} with template $preferencesTemplateName")
@@ -461,5 +479,9 @@ constructor(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(XMLOutputProducer::class.java)
+
+        // Gather statistics
+        var libraryStatistics: MutableMap<String, Map<String, String>> = hashMapOf()
+        var siteStatistics: MutableMap<String, Map<String, String>> = hashMapOf()
     }
 }
