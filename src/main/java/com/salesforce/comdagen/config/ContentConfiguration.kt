@@ -7,7 +7,7 @@
 
 package com.salesforce.comdagen.config
 
-import com.salesforce.comdagen.ExtendableObjectConfig
+import com.salesforce.comdagen.Configuration
 
 /**
  * Configuration class for content in libraries.
@@ -28,19 +28,11 @@ data class ContentConfiguration(
     // This is can be either body or customCSSFile.
     val attributeId: String = "body",
 
-    // TODO: Implement customAttributes
-    /**
-     * Custom attributes for content
-     */
-    override val customAttributes: Map<String, AttributeConfig>? = null,
-    /**
-     * Randomly generated custom attributes
-     */
-    override val generatedAttributes: GeneratedAttributeConfig? = null,
+    // TODO: Implement customAttributes for content assets
 
     /**
      * This is one because the [ContentConfiguration] is specific to one ContentAsset
      */
     override val elementCount: Int = 1
 
-) : ExtendableObjectConfig
+) : Configuration

@@ -40,16 +40,15 @@ abstract class AbstractContent(
 
     open val customBody: Map<SupportedZone, String>
         get() = mapOf(SupportedZone.Generic to "unnamed-content-body")
-
 }
 
 /**
- * This class reesembles one content asset. [contentId], [displayName], [customBody] and
+ * This class resembles one content asset. [contentId], [displayName], [customBody] and
  * [description] are randomly generated.
  */
 open class RandomContent(
     override val seed: Long,
-    private val contentConfig: ContentConfiguration,
+    contentConfig: ContentConfiguration,
     open val regions: List<SupportedZone>
 ) : AbstractContent(seed, contentConfig) {
 
@@ -66,25 +65,47 @@ open class RandomContent(
             { it },
             { RandomData.getRandomSentence(seed + "description".hashCode(), it) })
 
-    /**
-     * This implements customAttributes for libraries.
-     */
     /*
-     * Should I move this into the freemarkertemplate? Need nested region tags then and might loose flexibility
+     * Should I move this into the freemarker template?
+     * Pros: Easier to see and edit without diving into the sourcecode
+     * Cons: Could get complicated with more specialised templates; no easy access to additional vars;
+     * limited in computation; many different types of content assets could get very confusing
      */
     override val customBody: Map<SupportedZone, String>
         get() = SupportedZone.values().associateBy({ it },
             {
-                " <div style=\"padding:24px 16px 0 16px; font-size:1.1em;\">\n" +
-                        "                    <h1 style=\"color: rgb(86, 79, 71);\">" +
-                        RandomData.getRandomNoun(seed + "header".hashCode(), it) + "</h1>\n" +
-                        "                    <hr />\n                    " + "<p style=\"margin:0 0 8px 0;\">" +
-                        RandomData.getRandomSentence(seed + "body".hashCode(), it) + "</p>"
+                /**
+                 * This is a simple generated content assets consisting of a random noun as header,
+                 * a random sentence and different styles.
+                 * The template looks similar to this:
+                 * <div style="$generalStyle">
+                 *     <h1 style="$headerStyle">$header</h1>
+                 *     <hr />
+                 *     <p style="$paragraphStyle">$paragraph</p>
+                 * </div>
+                 */
+                val headerStyle = "color: rgb(86, 79, 71);"
+                val generalStyle = "padding:24px 16px 0 16px; font-size:1.1em;"
+                val paragraphStyle = "margin:0 0 8px 0;"
+                val header = RandomData.getRandomNoun(
+                    seed + "header".hashCode(),
+                    it
+                )
+                val paragraph = RandomData.getRandomSentence(seed + "body".hashCode(), it)
+
+                // HTML template
+                "&lt;div style=&quot;$generalStyle&quot;&gt;\n" +
+                        "\t&lt;h1 style=&quot;$headerStyle&quot;&gt;" +
+                        header + "&lt;/h1&gt;\n" + "\t&lt;hr /&gt;\n" +
+                        "\t&lt;p style=&quot;$paragraphStyle&quot;&gt;" +
+                        paragraph + "&lt;/p&gt;\n" +
+                        "\t&lt;/div&gt;"
             })
 }
 
 /**
- * This resembles one content asset inside a library.
+ * This class resembles a random content asset, specifically a [RandomContent], that has a index mixed in so that
+ * the [contentId] is represented in the fashion of ContentId_<internId>. The seed is a generated pseudo random number.
  */
 open class IndexedRandomContent(
     private val internId: Int,

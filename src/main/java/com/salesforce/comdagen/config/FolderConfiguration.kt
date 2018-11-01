@@ -7,10 +7,10 @@
 
 package com.salesforce.comdagen.config
 
-import com.salesforce.comdagen.ExtendableObjectConfig
+import com.salesforce.comdagen.Configuration
 
 /**
- * Configuration for one folder
+ * Folder configuration
  */
 data class FolderConfiguration(
     override val initialSeed: Long,
@@ -22,14 +22,7 @@ data class FolderConfiguration(
     val parent: String?,
     val randomFolderIds: Boolean = false,
 
-    /**
-     * Custom attributes for content
-     */
-    override val customAttributes: Map<String, AttributeConfig>? = null,
-    /**
-     * Randomly generated custom attributes
-     */
-    override val generatedAttributes: GeneratedAttributeConfig? = null,
+    //TODO: Implement customAttributes
 
     override val elementCount: Int = 10
-) : ExtendableObjectConfig
+) : Configuration

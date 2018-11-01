@@ -10,17 +10,33 @@ package com.salesforce.comdagen.model
 import com.salesforce.comdagen.Comdagen
 import com.salesforce.comdagen.Configuration
 import com.salesforce.comdagen.SeedInheritance
+import com.salesforce.comdagen.XMLOutputProducer
 import com.salesforce.comdagen.config.*
 import com.salesforce.comdagen.generator.*
 import java.io.File
 
 class Site(
     private val internID: Int,
+    /**
+     * This is either a seed or a random number generated from the top level seed (indexed site generation)!
+     */
     private val seed: Long,
     private val defaults: SiteConfiguration?,
     private val config: SiteConfiguration,
     private val configDir: File
 ) {
+    init {
+        /*
+         * Add some private stats such as seed to the statistics companion object.
+         * A different way would be to change the visibility of the attributes or
+         * a custom getter.
+         * At this point we don't know if the site will be rendered but it was at least
+         * instantiated.
+         */
+
+        XMLOutputProducer.mergeOrPutSiteStats(id, mapOf("Site seed" to seed.toString()))
+    }
+
     val currencies
         get() = config.currencies
 
@@ -28,8 +44,11 @@ class Site(
         get() = config.regions
 
     val id: String
-    // Delete all non alphanumeric characters in siteName.
-        get() = if (config.siteName != null) config.siteName.replace("[^A-Za-z0-9]".toRegex(), "") else "Site_" + internID.toString()
+        // Delete all non alphanumeric characters in siteName.
+        get() = if (config.siteName != null) config.siteName.replace(
+            "[^A-Za-z0-9]".toRegex(),
+            ""
+        ) else "Site_" + internID.toString()
 
     val name: String
         get() = config.siteName ?: "Site $id"
@@ -48,7 +67,7 @@ class Site(
     val navigationCatalog: NavigationCatalog
         get() = NavigationCatalog(
             seed + "navigationCatalog".hashCode(), config.navigationCatalogConfig
-                    ?: defaults!!.navigationCatalogConfig!!, 0,
+                ?: defaults!!.navigationCatalogConfig!!, 0,
             catalogGenerator?.objects ?: emptySequence(), name, regions
         )
 
@@ -61,10 +80,19 @@ class Site(
 
     private val pricebookConfig: PricebookConfiguration? = loadConfig(
         config.pricebookConfig
-                ?: defaults?.pricebookConfig
+            ?: defaults?.pricebookConfig
     )
 
     private val catalogConfig: CatalogListConfiguration? = loadConfig(config.catalogConfig ?: defaults?.catalogConfig)
+
+    init {
+        // If catalogConfig is loaded at this point, add the product count to the statistics.
+        // Otherwise add "???" as product count.
+        XMLOutputProducer.mergeOrPutSiteStats(
+            id,
+            mapOf("Product count" to (catalogConfig?.totalProductCount()?.toString() ?: "???"))
+        )
+    }
 
     private val customerConfig: CustomerConfiguration? = loadConfig(config.customerConfig ?: defaults?.customerConfig)
 
@@ -72,36 +100,36 @@ class Site(
 
     private val inventoryConfig: InventoryConfiguration? = loadConfig(
         config.inventoryConfig
-                ?: defaults?.inventoryConfig
+            ?: defaults?.inventoryConfig
     )
 
     private val customerGroupConfig: CustomerGroupConfiguration? = loadConfig(
         config.customerGroupConfig
-                ?: defaults?.customerGroupConfig
+            ?: defaults?.customerGroupConfig
     )
 
     private val promotionConfig: PromotionConfiguration? = loadConfig(
         config.promotionConfig
-                ?: defaults?.promotionConfig
+            ?: defaults?.promotionConfig
     )
 
     private val shippingConfig: ShippingConfiguration? = loadConfig(config.shippingConfig ?: defaults?.shippingConfig)
 
     private val sourceCodeConfig: SourceCodeConfiguration? = loadConfig(
         config.sourceCodeConfig
-                ?: defaults?.sourceCodeConfig
+            ?: defaults?.sourceCodeConfig
     )
 
     private val storeConfig: StoreConfiguration? = loadConfig(config.storeConfig ?: defaults?.storeConfig)
 
     private val sortingRuleConfig: SortingRuleConfiguration? = loadConfig(
         config.sortingRuleConfig
-                ?: defaults?.sortingRuleConfig
+            ?: defaults?.sortingRuleConfig
     )
 
     private val redirectUrlConfig: RedirectUrlConfiguration? = loadConfig(
         config.redirectUrlConfig
-                ?: defaults?.redirectUrlConfig
+            ?: defaults?.redirectUrlConfig
     )
 
 

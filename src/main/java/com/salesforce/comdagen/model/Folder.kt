@@ -11,8 +11,7 @@ import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.config.FolderConfiguration
 
 /**
- * A abstract model for folders. The [folderId] will be "unnamed-folder" by default unless overwritten
- * by a [folderConfig].
+ * A abstract class for folders providing generally needed attributes.
  */
 abstract class AbstractFolder(
     open val seed: Long,
@@ -45,8 +44,8 @@ open class RandomFolder(override val seed: Long, private val folderConfig: Folde
 }
 
 /**
- * This is a implementation of a folder with an additional index mixed in so that we get different [folderId] in
- * the "Folder_<index>" fashion and mix in the index at the random data generation.
+ * This is [RandomFolder] with an additional index mixed in so that we get different [folderId] in
+ * the "Folder_<index>" fashion and mix in the index at the random [displayName] and [description] generation.
  */
 class IndexedRandomFolder(
     val index: Int,

@@ -1,59 +1,56 @@
+# Configurations for libraries, folders and content assets. CustomAttributes are not supported yet.
 libraryConfig:
   # root folder for libraries
   outputDir: "libraries"
-  initialSeed: 1234
-  # Either define a libraryId OR define a number of libraries
-  # to be generated
-  #BUG: Creates and overwrites the same libraryId
-  libraryId: "TEEESTlibrary"
+  # Top level seed and also used for the ComdagenSharedLibrary
+  initialSeed: 12345
+
+  # The library ComdagenSharedLibrary will always be created.
+  # The default comdagen content folder structure root/ComdagenContent/ComdagenContentAssets
+  # will be created in each library, too.
+
+  # Number of libraries to be generated
   elementCount: 5
 
+  # Generated content assets per library
   contentAssetCount: 10
-  folderCount: 10
 
-  # The default comdagen content folder root/ComdagenContent/ComdagenContentAssets
-  # will always be created in each library
-  # Furthermore library ComdagenSharedLibrary will always be created
+  # Generated folders per library
+  folderCount: 5
 
 
-  # This overrides generated settings
+  # This overrides default settings for content asset generation
   contentAssetDefaults:
-    # Hmm this seems to not create ca when set to true. Might be a replace only mode
+    # This mode is used to delete existing content assets that upon importing them
     importModeDelete: false
-    initialSeed: 1234
     # Either use random contentIds or ContentId_<number> when generating random content assets
     useRandomContentIds: false
-    #contentId: "Testcontent"
     onlineFlag: true
     searchableFlag: true
     classificationFolder: "root"
 
+  # This overrides default settings for folder generation
   folderDefaults:
-    initialSeed: 1234
     onlineFlag: false
     # Use randomly generated folderIds instead of Folder_<index>
     randomFolderIds: false
-    # Parentfolder
+    # Parent folder
     parent: "ComdagenContentAssets"
 
+  # TODO: Implement custom libraries. Problem right now is that the default values are not copied therefore we try
+  # null a non nullable type
+  # Custom libraries
+  #  libraries:
+  #  - initialSeed: 4321
+  #    libraryId: "LOLTEST"
+  #  - initialSeed: 23
 
-  # Creating specific content assets and abstractFolders
 
-  # Folders
+  # Creating a custom folder for each entry
   folders:
   # If no folderId is given a randomized generated one is being used
-  - initialSeed: 1234
-    displayName: "Comdagen generated content"
-    description: "This folder contains comadgen generated content"
-    onlineFlag: true
-    parent: "root"
-
-  - folderId: "Customfolder1"
-    initialSeed: 1234
-    displayName: "Comdagen generated content assets"
-    description: "This folder contains comadgen generated content assets"
+  - folderId: "Customcomdagenfolder"
+    displayName: "Custom comdagen folder"
+    description: "This is a test for a custom folder generated with comdagen"
     onlineFlag: true
     parent: "comdagensharedcontent"
-
-
-  # Custom content assets

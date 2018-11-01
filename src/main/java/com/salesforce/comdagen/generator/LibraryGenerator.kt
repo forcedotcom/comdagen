@@ -12,6 +12,8 @@ import com.salesforce.comdagen.model.AbstractLibrary
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Library
 import java.io.File
+import java.util.*
+import kotlin.streams.toList
 
 /**
  * This generates the sequence of libraries. To get different libraries
@@ -21,12 +23,15 @@ data class LibraryGenerator(
     override val configuration: LibraryConfiguration,
     val configDir: File
 ) : Generator<LibraryConfiguration, AbstractLibrary> {
+
+    private val rng: Random
+        get() = Random(configuration.initialSeed)
+
+
     override val objects: Sequence<AbstractLibrary>
-        get() = (1..configuration.elementCount).map {
-            Library(it, configuration.initialSeed, configuration, configDir)
-            // Add default library ComdagenSharedLibrary
-        }.plus(
-            Library(
+        get() {
+            // The default generated library comdagenSharedLibrary
+            val comdagenSharedLibrary = Library(
                 0,
                 configuration.initialSeed,
                 LibraryConfiguration(
@@ -37,19 +42,35 @@ data class LibraryGenerator(
                     configuration.defaultFolderConfigs,
                     configuration.folderCount,
                     emptyList(),
+                    emptyList(),
                     configuration.defaultContentAssetConfig,
                     1,
                     "ComdagenSharedLibrary.xml",
                     "libraries",
                     configuration.templateName
-                ),
-                configDir
+                )
             )
-        ).asSequence()
+            return (1..configuration.libraries.size).map { index ->
+                creatorFunc(index, configuration.libraries[index - 1].initialSeed)
+            }.plus(comdagenSharedLibrary) // Adding ComdagenSharedLibrary
+                .plus(
+                    rng.longs(
+                        Math.max(
+                            // Fill up to elementCount libraries
+                            configuration.elementCount - configuration.libraries.size - 1,
+                            0
+                        ).toLong()
+                    ).toList().mapIndexed { index, randomLong ->
+                        creatorFunc(
+                            configuration.libraries.size + 1 + index,
+                            randomLong
+                        )
+                    }).asSequence()
+        }
 
-    override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration, configDir) }
+    override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration) }
 
-    //TODO: Implement metadata
+    // TODO: Implement metadata
     override val metadata: Map<String, Set<AttributeDefinition>>
         get() = emptyMap()
 }

@@ -50,56 +50,58 @@ in the default ComdagenSharedLibrary.
            <page-attributes/>
            <custom-attributes>
                <custom-attribute attribute-id="body" xml:lang="x-default">
-                   <div style="padding:24px 16px 0 16px; font-size:1.1em;">
-                   <h1 style="color: rgb(86, 79, 71);">Comdagen summary!</h1>
-                   <hr/>
-                   <p style="margin:0 0 8px 0;">
-                       <br/>
-                       Generated sites:
-                       <br/>
-                       <ul>
+                   &lt;div style=&quot;padding:24px 16px 0 16px; font-size:1.1em;&quot;&gt;
+                   &lt;h1 style=&quot;color: rgb(86, 79, 71);&quot;&gt;Comdagen summary!&lt;/h1&gt;
+                   &lt;hr/&gt;
+                   &lt;p style=&quot;margin:0 0 8px 0;&quot;&gt;
+                   &lt;br/&gt;
+                   Generated sites:
+                   &lt;br/&gt;
+                   &lt;ul&gt;
                            <#list comdagensitestats?keys as siteid>
-                               <li>${siteid}</li>
+                               &lt;li&gt;${siteid}&lt;/li&gt;
                            </#list>
-                       </ul>
-                       Generated libraries:
-                       <br/>
-                       <ul>
+                   &lt;/ul&gt;
+                   Generated libraries:
+                   &lt;br/&gt;
+                   &lt;ul&gt;
                            <#list comdagenlibrarystats?keys as libraryid>
-                               <li>${libraryid}</li>
+                               &lt;li&gt;${libraryid}&lt;/li&gt;
                            </#list>
-                       </ul>
-                       Site stats:
+                   &lt;/ul&gt;
+                   Site stats:
                        <#list comdagensitestats?values as site>
-                           <table>
-                               <tr>
+                           &lt;table&gt;
+                               &lt;tr&gt;
                                    <#list site as key, value>
-                                       <th>${key}</th>
+                                       &lt;th&gt;${key}&lt;/th&gt;
                                    </#list>
-                               </tr>
-                               <tr>
+                               &lt;/tr&gt;
+                               &lt;tr&gt;
                                    <#list site as key, value>
-                                       <td>${value}</td>
+                                       &lt;td&gt;${value}&lt;/td&gt;
                                    </#list>
-                               </tr>
-                           </table>
+                               &lt;/tr&gt;
+                           &lt;/table&gt;
                        </#list>
-                       Library stats:
+                   Library stats:
+
                                <#list comdagenlibrarystats?values as site>
-                           <table>
-                               <tr>
+                           &lt;table&gt;
+                               &lt;tr&gt;
                                    <#list site as key, value>
-                                       <th>${key}</th>
+                                       &lt;th&gt;${key}&lt;/th&gt;
                                    </#list>
-                               </tr>
-                               <tr>
+                               &lt;/tr&gt;
+                               &lt;tr&gt;
                                    <#list site as key, value>
-                                       <td>${value}</td>
+                                       &lt;td&gt;${value}&lt;/td&gt;
                                    </#list>
-                               </tr>
-                           </table>
+                               &lt;/tr&gt;
+                           &lt;/table&gt;
                                </#list>
-                   </p>
+                   &lt;/p&gt;
+                   &lt;/div&gt;
                </custom-attribute>
            </custom-attributes>
            <folder-links>
