@@ -3,7 +3,7 @@ libraryConfig:
   # root folder for libraries
   outputDir: "libraries"
   # Top level seed and also used for the ComdagenSharedLibrary
-  initialSeed: 12345
+  initialSeed: 1234
 
   # The library ComdagenSharedLibrary will always be created.
   # The default comdagen content folder structure root/ComdagenContent/ComdagenContentAssets
@@ -13,10 +13,10 @@ libraryConfig:
   elementCount: 5
 
   # Generated content assets per library
-  contentAssetCount: 10
+  contentAssetCount: 30
 
   # Generated folders per library
-  folderCount: 5
+  folderCount: 10
 
 
   # This overrides default settings for content asset generation
@@ -24,7 +24,7 @@ libraryConfig:
     # This mode is used to delete existing content assets that upon importing them
     importModeDelete: false
     # Either use random contentIds or ContentId_<number> when generating random content assets
-    useRandomContentIds: false
+    useRandomContentIds: true
     onlineFlag: true
     searchableFlag: true
     classificationFolder: "root"
@@ -37,14 +37,32 @@ libraryConfig:
     # Parent folder
     parent: "ComdagenContentAssets"
 
-  # TODO: Implement custom libraries. Problem right now is that the default values are not copied therefore we try
-  # null a non nullable type
-  # Custom libraries
-  #  libraries:
-  #  - initialSeed: 4321
-  #    libraryId: "LOLTEST"
-  #  - initialSeed: 23
 
+  #------------------------
+  # Customized generation
+  #------------------------
+
+  # Custom libraries generation
+  libraries:
+  # root folder for libraries
+  - libraryId: "Custom_test_library"
+    # Top level seed and also used for the ComdagenSharedLibrary
+    initialSeed: 9876
+
+    # Generated content assets per library
+    contentAssetCount: 50
+
+    # Generated folders per library
+    folderCount: 2
+
+    # This overrides default settings for content asset generation
+    contentAssetDefaults:
+      classificationFolder: "root"
+
+    # This overrides default settings for folder generation
+    folderDefaults:
+      # Parent folder
+      parent: "ComdagenContent"
 
   # Creating a custom folder for each entry
   folders:
@@ -53,4 +71,4 @@ libraryConfig:
     displayName: "Custom comdagen folder"
     description: "This is a test for a custom folder generated with comdagen"
     onlineFlag: true
-    parent: "comdagensharedcontent"
+    parent: "ComdagenContent"

@@ -164,9 +164,9 @@ constructor(
         // Gather statistics for the ComdagenSummary
         libraries.forEach {
             val gatheredLibraryStatistics: Map<String, String> = mapOf(
-                "id" to it.libraryId,
+                "Library id" to it.libraryId,
                 "Library seed" to it.seed.toString(),
-                "Generated content assets" to generator.configuration.contentAssetCount.toString()
+                "Content asset count" to generator.configuration.contentAssetCount.toString()
             )
             mergeOrPutLibraryStats(it.libraryId, gatheredLibraryStatistics)
         }
@@ -180,7 +180,8 @@ constructor(
                 "contentAssets" to library.contentAssets,
                 "folders" to generator.configuration.folders,
                 "comdagensitestats" to siteStatistics,
-                "comdagenlibrarystats" to libraryStatistics
+                "comdagenlibrarystats" to libraryStatistics,
+                "generalstatistics" to generalStatistics
             )
             // Generate the specified output folder and a folder named by the libraryId containing the library xml
             File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
@@ -220,7 +221,7 @@ constructor(
 
             // Gather site statistics
             val gatheredSiteStatistics: Map<String, String> = mapOf(
-                "id" to it.id
+                "Site id" to it.id
             )
             mergeOrPutSiteStats(it.id, gatheredSiteStatistics)
 

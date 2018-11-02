@@ -50,10 +50,11 @@ data class LibraryGenerator(
                     configuration.templateName
                 )
             )
+            // Start with 1 because index 0 is reserved for ComdagenSharedLibrary
             return (1..configuration.libraries.size).map { index ->
-                creatorFunc(index, configuration.libraries[index - 1].initialSeed)
+                Library(index, configuration.libraries[index - 1].initialSeed, configuration.libraries[index - 1])
             }.plus(comdagenSharedLibrary) // Adding ComdagenSharedLibrary
-                .plus(
+                .plus( // Adding generated libraries to fill up
                     rng.longs(
                         Math.max(
                             // Fill up to elementCount libraries

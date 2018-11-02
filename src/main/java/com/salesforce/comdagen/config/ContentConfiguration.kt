@@ -15,7 +15,7 @@ import com.salesforce.comdagen.Configuration
 data class ContentConfiguration(
     override val initialSeed: Long = 1234,
     val contentId: String?,
-    val importModeDelete: Boolean?,
+    val importModeDelete: Boolean = false,
     val onlineFlag: Boolean = true,
     val searchableFlag: Boolean = true,
     val classificationFolder: String?,
