@@ -10,32 +10,18 @@ package com.salesforce.comdagen.model
 import com.salesforce.comdagen.Comdagen
 import com.salesforce.comdagen.Configuration
 import com.salesforce.comdagen.SeedInheritance
-import com.salesforce.comdagen.XMLOutputProducer
 import com.salesforce.comdagen.config.*
 import com.salesforce.comdagen.generator.*
 import java.io.File
 
 class Site(
     private val internID: Int,
-    /**
-     * This is either a seed or a random number generated from the top level seed (indexed site generation)!
-     */
-    private val seed: Long,
+    // Not necessarily the user-defined seed
+    val seed: Long,
     private val defaults: SiteConfiguration?,
     private val config: SiteConfiguration,
     private val configDir: File
 ) {
-    init {
-        /*
-         * Add some private stats such as seed to the statistics companion object.
-         * A different way would be to change the visibility of the attributes or
-         * a custom getter.
-         * At this point we don't know if the site will be rendered but it was at least
-         * instantiated.
-         */
-
-        XMLOutputProducer.mergeOrPutSiteStats(id, mapOf("Site seed" to seed.toString()))
-    }
 
     val currencies
         get() = config.currencies
@@ -83,16 +69,7 @@ class Site(
             ?: defaults?.pricebookConfig
     )
 
-    private val catalogConfig: CatalogListConfiguration? = loadConfig(config.catalogConfig ?: defaults?.catalogConfig)
-
-    init {
-        // If catalogConfig is loaded at this point, add the product count to the statistics.
-        // Otherwise add "???" as product count.
-        XMLOutputProducer.mergeOrPutSiteStats(
-            id,
-            mapOf("Product count" to (catalogConfig?.totalProductCount()?.toString() ?: "???"))
-        )
-    }
+    val catalogConfig: CatalogListConfiguration? = loadConfig(config.catalogConfig ?: defaults?.catalogConfig)
 
     private val customerConfig: CustomerConfiguration? = loadConfig(config.customerConfig ?: defaults?.customerConfig)
 

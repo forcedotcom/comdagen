@@ -9,6 +9,7 @@ package com.salesforce.comdagen
 
 import com.salesforce.comdagen.generator.*
 import com.salesforce.comdagen.model.AttributeDefinition
+
 import com.salesforce.comdagen.model.NavigationCatalog
 import freemarker.template.*
 import freemarker.template.Configuration
@@ -53,6 +54,8 @@ constructor(
         "/images/baseSwatch.jpg",
         "/images/baseThumb.jpg"
     )
+
+    private var comdagenStatistics = ComdagenStatistics()
 
     init {
         /* configure template engine */
@@ -168,20 +171,23 @@ constructor(
                 "Library seed" to it.seed.toString(),
                 "Content asset count" to generator.configuration.contentAssetCount.toString()
             )
-            mergeOrPutLibraryStats(it.libraryId, gatheredLibraryStatistics)
+            if (comdagenStatistics.libraryStatistics[it.libraryId] == null)
+                comdagenStatistics.libraryStatistics[it.libraryId] = gatheredLibraryStatistics.toMutableMap()
+            else
+                comdagenStatistics.libraryStatistics[it.libraryId]!!.putAll(gatheredLibraryStatistics)
         }
-        generalStatistics["Libraries top level seed"] = generator.configuration.initialSeed.toString()
+        comdagenStatistics.generalStatistics["Libraries top level seed"] =
+                generator.configuration.initialSeed.toString()
 
         // For each library
         libraries.forEach { library ->
             val modelData = mapOf(
                 "library" to library,
-                "configuration" to generator.configuration,
                 "contentAssets" to library.contentAssets,
-                "folders" to generator.configuration.folders,
-                "comdagensitestats" to siteStatistics,
-                "comdagenlibrarystats" to libraryStatistics,
-                "generalstatistics" to generalStatistics
+                "folders" to library.folders,
+                "comdagensitestats" to comdagenStatistics.siteStatistics,
+                "comdagenlibrarystats" to comdagenStatistics.libraryStatistics,
+                "generalstatistics" to comdagenStatistics.generalStatistics
             )
             // Generate the specified output folder and a folder named by the libraryId containing the library xml
             File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
@@ -207,7 +213,7 @@ constructor(
         val storeGenerators: MutableSet<StoreGenerator> = mutableSetOf()
 
         // Adding top level seed for statistics
-        generalStatistics["Sites top level seed"] = generator.configuration.initialSeed.toString()
+        comdagenStatistics.generalStatistics["Sites top level seed"] = generator.configuration.initialSeed.toString()
 
         generator.objects.forEach {
             // render site.xml
@@ -221,9 +227,14 @@ constructor(
 
             // Gather site statistics
             val gatheredSiteStatistics: Map<String, String> = mapOf(
-                "Site id" to it.id
+                "Site id" to it.id,
+                "Site seed" to it.seed.toString(),
+                "Product count" to (it.catalogConfig?.totalProductCount()?.toString() ?: "???")
             )
-            mergeOrPutSiteStats(it.id, gatheredSiteStatistics)
+            if (comdagenStatistics.siteStatistics[it.id] == null)
+                comdagenStatistics.siteStatistics[it.id] = gatheredSiteStatistics.toMutableMap()
+            else
+                comdagenStatistics.siteStatistics[it.id]!!.putAll(gatheredSiteStatistics)
 
             // render preferences.xml
             LOGGER.info("Start rendering preferences for site ${it.id} with template $preferencesTemplateName")
@@ -482,46 +493,33 @@ constructor(
         }
     }
 
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(XMLOutputProducer::class.java)
-
+    /**
+     * Inner class that holds the comdagen statistics. Since random nouns can be chosen as libraryId and site
+     * names be specifically set, different maps are being used to avoid conflicts with duplicate keys.
+     */
+    private class ComdagenStatistics {
+        /**
+         * Gathers all site specific statistics needed for the ComdagenSummary content asset.
+         * Map<siteId<stat, value>>
+         */
+        var siteStatistics: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
 
         /**
-         * The libraryStatistics map gathers all statistics for libraries which will all get rendered by the
-         * freemarker template on the ComdagenSummary content asset.
+         * Gathers all library specific statistics for needed for the ComdagenSummary content asset.
+         * Map<libraryId<stat, value>>
          */
         var libraryStatistics: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
 
         /**
-         * PutMerges library statistics into the global library statistics map. If the libraryId is not known
-         * to the map it will get
+         * This map gathers general statistics data about the generated data
+         * Map<stat, value>
          */
-        fun mergeOrPutLibraryStats(libraryId: String, libraryStatistics: Map<String, String>) {
-            if (Companion.libraryStatistics.containsKey(libraryId)) {
-                libraryStatistics.forEach { key, value ->
-                    Companion.libraryStatistics[libraryId]!![key] = value
-                }
-            } else {
-                Companion.libraryStatistics[libraryId] = libraryStatistics.toMutableMap()
-            }
-        }
-
-        /**
-         * The siteStatistics map gathers all statistics for sites which will all get rendered by the
-         * freemarker template on the ComdagenSummary content asset.
-         */
-        var siteStatistics: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
-
-        fun mergeOrPutSiteStats(siteId: String, siteStatistics: Map<String, String>) {
-            if (Companion.siteStatistics.containsKey(siteId)) {
-                siteStatistics.forEach { key, value ->
-                    Companion.siteStatistics[siteId]!![key] = value
-                }
-            } else {
-                Companion.siteStatistics[siteId] = siteStatistics.toMutableMap()
-            }
-        }
-
         var generalStatistics: MutableMap<String, String> = mutableMapOf()
     }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(XMLOutputProducer::class.java)
+
+    }
 }
+

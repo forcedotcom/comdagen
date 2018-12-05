@@ -9,58 +9,35 @@ package com.salesforce.comdagen.model
 
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.SupportedZone
+import com.salesforce.comdagen.config.AttributeId
 import com.salesforce.comdagen.config.ContentConfiguration
 
 
 /**
- * Abstract content class which requires a seed and a contentConfig.
+ * Resembling one content asset. [contentId], [displayName], [customBody] and
+ * [description] are randomly generated.
  */
-abstract class AbstractContent(
-    open val seed: Long,
-    private val contentConfig: ContentConfiguration
+open class RandomContentAsset(
+    val seed: Long,
+    val contentConfig: ContentConfiguration,
+    open val regions: List<SupportedZone> = listOf(SupportedZone.Generic)
 ) {
-    open val attributeId: String get() = contentConfig.attributeId
-    open val contentId: String
-        get() = contentConfig.contentId ?: "unnamed-content-id"
-    open val displayName: Map<SupportedZone, String>
-        get() = mapOf(SupportedZone.Generic to "unnamed-content-name")
 
-    open val description: Map<SupportedZone, String>
-        get() = mapOf(SupportedZone.Generic to "unnamed-content-description")
-
-    val onlineFlag: Boolean get() = contentConfig.onlineFlag
-
-    val searchable: Boolean get() = contentConfig.searchableFlag
+    val attributeId: AttributeId get() = contentConfig.attributeId
 
     val folderId: String? get() = contentConfig.classificationFolder
 
-    val importMode: Boolean? get() = contentConfig.importModeDelete
-
     val classificationFolder: String? get() = contentConfig.classificationFolder
 
-    open val customBody: Map<SupportedZone, String>
-        get() = mapOf(SupportedZone.Generic to "unnamed-content-body")
-}
-
-/**
- * This class resembles one content asset. [contentId], [displayName], [customBody] and
- * [description] are randomly generated.
- */
-open class RandomContent(
-    override val seed: Long,
-    contentConfig: ContentConfiguration,
-    open val regions: List<SupportedZone>
-) : AbstractContent(seed, contentConfig) {
-
-    override val contentId: String
+    open val contentId: String
         get() = RandomData.getRandomNoun(seed + "contentId".hashCode())
 
-    override val displayName: Map<SupportedZone, String>
+    open val displayName: Map<SupportedZone, String>
         get() = regions.associateBy(
             { it },
             { RandomData.getRandomNoun(seed + "displayName".hashCode(), it) })
 
-    override val description: Map<SupportedZone, String>
+    open val description: Map<SupportedZone, String>
         get() = regions.associateBy(
             { it },
             { RandomData.getRandomSentence(seed + "description".hashCode(), it) })
@@ -71,7 +48,7 @@ open class RandomContent(
      * Cons: Could get complicated with more specialised templates; no easy access to additional vars;
      * limited in computation; many different types of content assets could get very confusing
      */
-    override val customBody: Map<SupportedZone, String>
+    open val customBody: Map<SupportedZone, String>
         get() = SupportedZone.values().associateBy({ it },
             {
                 /**
@@ -94,25 +71,30 @@ open class RandomContent(
                 val paragraph = RandomData.getRandomSentence(seed + "body".hashCode(), it)
 
                 // HTML template
-                "&lt;div style=&quot;$generalStyle&quot;&gt;\n" +
-                        "\t&lt;h1 style=&quot;$headerStyle&quot;&gt;" +
-                        header + "&lt;/h1&gt;\n" + "\t&lt;hr /&gt;\n" +
-                        "\t&lt;p style=&quot;$paragraphStyle&quot;&gt;" +
-                        paragraph + "&lt;/p&gt;\n" +
-                        "\t&lt;/div&gt;"
+                """
+                    &lt;div style=&quot;$generalStyle&quot;&gt;
+                        &lt;h1 style=&quot;$headerStyle&quot;&gt;
+                            $header
+                        &lt;/h1&gt;
+                        &lt;hr /&gt;
+                        &lt;p style=&quot;$paragraphStyle&quot;&gt;
+                            $paragraph
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                """
             })
 }
 
 /**
- * This class resembles a random content asset, specifically a [RandomContent], that has a index mixed in so that
+ * This class resembles a random content asset, specifically a [RandomContentAsset], that has a index mixed in so that
  * the [contentId] is represented in the fashion of ContentId_<internId>. The seed is a generated pseudo random number.
  */
-open class IndexedRandomContent(
+open class IndexedRandomContentAsset(
     private val internId: Int,
-    override val seed: Long,
-    private val contentConfig: ContentConfiguration,
-    override val regions: List<SupportedZone>
-) : RandomContent(seed, contentConfig, regions) {
+    seed: Long,
+    contentConfig: ContentConfiguration,
+    regions: List<SupportedZone>
+) : RandomContentAsset(seed, contentConfig, regions) {
 
     override val contentId: String
         // If defined use random contentIds or ContentId_<number>

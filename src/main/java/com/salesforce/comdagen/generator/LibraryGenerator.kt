@@ -8,7 +8,6 @@
 package com.salesforce.comdagen.generator
 
 import com.salesforce.comdagen.config.LibraryConfiguration
-import com.salesforce.comdagen.model.AbstractLibrary
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Library
 import java.io.File
@@ -22,54 +21,59 @@ import kotlin.streams.toList
 data class LibraryGenerator(
     override val configuration: LibraryConfiguration,
     val configDir: File
-) : Generator<LibraryConfiguration, AbstractLibrary> {
+) : Generator<LibraryConfiguration, Library> {
 
     private val rng: Random
         get() = Random(configuration.initialSeed)
 
-
-    override val objects: Sequence<AbstractLibrary>
+    /**
+     * First the library from the main library configuration file gets created. Following are custom libraries and
+     * generated libraries up to the defined number of libraries elementCount.
+     */
+    override val objects: Sequence<Library>
         get() {
-            // The default generated library comdagenSharedLibrary
-            val comdagenSharedLibrary = Library(
+            val maxNumberOfLibraries = configuration.elementCount
+
+            if (maxNumberOfLibraries <= 0)
+                return emptySequence()
+            var x = emptySequence<Library>()
+
+            // Adding one library with the configured libraryId. If libraryId is null the internId will be 0
+            x += creatorFunc(
                 0,
-                configuration.initialSeed,
-                LibraryConfiguration(
-                    configuration.initialSeed,
-                    "ComdagenSharedLibrary",
-                    configuration.contentAssetCount,
-                    emptyList(),
-                    configuration.defaultFolderConfigs,
-                    configuration.folderCount,
-                    emptyList(),
-                    emptyList(),
-                    configuration.defaultContentAssetConfig,
-                    1,
-                    "ComdagenSharedLibrary.xml",
-                    "libraries",
-                    configuration.templateName
-                )
+                configuration.initialSeed
             )
-            // Start with 1 because index 0 is reserved for ComdagenSharedLibrary
-            return (1..configuration.libraries.size).map { index ->
-                Library(index, configuration.libraries[index - 1].initialSeed, configuration.libraries[index - 1])
-            }.plus(comdagenSharedLibrary) // Adding ComdagenSharedLibrary
-                .plus( // Adding generated libraries to fill up
-                    rng.longs(
-                        Math.max(
-                            // Fill up to elementCount libraries
-                            configuration.elementCount - configuration.libraries.size - 1,
-                            0
-                        ).toLong()
-                    ).toList().mapIndexed { index, randomLong ->
-                        creatorFunc(
-                            configuration.libraries.size + 1 + index,
-                            randomLong
-                        )
-                    }).asSequence()
+            // Adding custom libraries
+            x += (0 until Math.min(maxNumberOfLibraries - x.count(), configuration.libraries.size)).map { index ->
+                Library(index + 1, configuration.libraries[index].initialSeed, configuration.libraries[index])
+            }
+
+            // Adding generated libraries to fill up
+            x += rng.longs(
+                Math.max(
+                    maxNumberOfLibraries - configuration.libraries.size - 1,
+                    0
+                ).toLong()
+            ).toList().mapIndexed { index, randomLong ->
+                creatorFunIndexedLibrary(
+                    index + x.count(),
+                    randomLong
+                )
+            }.asSequence()
+            return x
         }
 
+
+    /**
+     * Creates a library according to the configuration of the generator.
+     */
     override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration) }
+
+    /**
+     * Generates a library according to the configuration of the generator but ignores the libraryId
+     */
+    val creatorFunIndexedLibrary =
+        { idx: Int, seed: Long -> Library(idx, seed, configuration.copy(libraryId = null)) }
 
     // TODO: Implement metadata
     override val metadata: Map<String, Set<AttributeDefinition>>

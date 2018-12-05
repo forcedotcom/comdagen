@@ -2,31 +2,32 @@
 libraryConfig:
   # root folder for libraries
   outputDir: "libraries"
-  # Top level seed and also used for the ComdagenSharedLibrary
+  # Top level seed
   initialSeed: 1234
 
-  # The library ComdagenSharedLibrary will always be created.
-  # The default comdagen content folder structure root/ComdagenContent/ComdagenContentAssets
-  # will be created in each library, too.
+  # The content asset "ComdagenSummary" in the library "ComdagenSharedLibrary" will be displayed in
+  # a main content slot on the store front
 
-  # Number of libraries to be generated
-  elementCount: 5
+  # Id of the library
+  libraryId: "ComdagenSharedLibrary"
 
-  # Generated content assets per library
+  # Total of libraries to be generated
+  libraryCount: 5
+
+  # Total number of generated content assets per library
   contentAssetCount: 30
 
-  # Generated folders per library
+  # Total number of generated folders per library
   folderCount: 10
+
+  # Renders a summary about the comdagen run
+  renderSummary: true
 
 
   # This overrides default settings for content asset generation
   contentAssetDefaults:
-    # This mode is used to delete existing content assets that upon importing them
-    importModeDelete: false
     # Either use random contentIds or ContentId_<number> when generating random content assets
     useRandomContentIds: true
-    onlineFlag: true
-    searchableFlag: true
     classificationFolder: "root"
 
   # This overrides default settings for folder generation
@@ -42,18 +43,21 @@ libraryConfig:
   # Customized generation
   #------------------------
 
-  # Custom libraries generation
+  # Custom libraries generation (additional custom libraries will be ignored)
   libraries:
   # root folder for libraries
   - libraryId: "Custom_test_library"
-    # Top level seed and also used for the ComdagenSharedLibrary
+    # Top level seed
     initialSeed: 9876
 
-    # Generated content assets per library
+    # Total generated content assets per library
     contentAssetCount: 50
 
-    # Generated folders per library
-    folderCount: 2
+    # Total generated folders per library
+    folderCount: 4
+
+    # Renders a summary about the comdagen run
+    renderSummary: false
 
     # This overrides default settings for content asset generation
     contentAssetDefaults:
@@ -62,13 +66,30 @@ libraryConfig:
     # This overrides default settings for folder generation
     folderDefaults:
       # Parent folder
-      parent: "ComdagenContent"
+      parent: "root"
+
+    folders:
+    - folderId: "root"
+      displayName: "Root folder"
+      description: "Offers comdagen generated content"
+      onlineFlag: true
 
   # Creating a custom folder for each entry
   folders:
   # If no folderId is given a randomized generated one is being used
-  - folderId: "Customcomdagenfolder"
+  - folderId: "root"
+    displayName: "Root folder"
+    description: "Offers comdagen generated content"
+    onlineFlag: true
+
+  - folderId: "ComdagenContent"
     displayName: "Custom comdagen folder"
-    description: "This is a test for a custom folder generated with comdagen"
+    description:  "Content folder for Comdagen generated content"
+    onlineFlag: true
+    parent: "root"
+
+  - folderId: "ComdagenContentAssets"
+    displayName: "Custom comdagen folder"
+    description: "Content folder for Comdagen generated content"
     onlineFlag: true
     parent: "ComdagenContent"

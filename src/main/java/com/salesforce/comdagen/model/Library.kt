@@ -9,54 +9,8 @@ package com.salesforce.comdagen.model
 
 import com.salesforce.comdagen.SupportedZone
 import com.salesforce.comdagen.config.LibraryConfiguration
-import java.lang.Integer.max
 import java.util.*
 import kotlin.streams.toList
-
-/**
- * Abstract class of a library that contains content assets and folders.
- */
-abstract class AbstractLibrary(
-    open val seed: Long,
-    private val config: LibraryConfiguration
-) {
-    // Use the predefined libraryId or the internal id for the libraryId
-    open val libraryId: String get() = config.libraryId ?: "unnamed_library"
-
-    open val contentAssets: List<AbstractContent>
-        get() {
-            val rng = Random(seed + "contentassets".hashCode())
-            return (1..config.contentAssetCount).map {
-                RandomContent(
-                    rng.nextLong(),
-                    config.defaultContentAssetConfig,
-                    SupportedZone.values().asList()
-                )
-            }
-        }
-
-    open val folders: List<AbstractFolder>
-        get() {
-            val rng = Random(seed + "randomFolders".hashCode())
-            /**
-             * Generate all defined folders from the libraries config plus the default folders:
-             * "root", "ComdagenContent" and "ComdagenContentAssets". Fill up with random folders
-             * up to folderCount folders.
-             */
-            return config.folders.asSequence().map { it ->
-                RandomFolder(rng.nextLong(), it)
-            }.plus(
-                rng.longs(
-                    max(
-                        0,
-                        config.folderCount - config.folders.size - 3
-                    ).toLong()
-                ).toList().map { it -> RandomFolder(it, config.defaultFolderConfigs) }
-            ).toList()
-        }
-}
-
-// TODO: Add support for different libraries allowing custom libraries and custom seeds!
 
 /**
  * This is the model of a library which has its own attributes, contents and folders.
@@ -66,23 +20,32 @@ class Library(
      * This internId is necessary to set a unique libraryId when
      * none is defined in the configuration file. The internId
      * will be related to the order in which the libraries are
-     * generated. internId = 0 is reserved for the ComdagenSharedLibrary
+     * generated. internId = 0 is reserved for the base library in the
+     * configuration file.
      */
     private val internId: Int,
-    override val seed: Long,
-    private val config: LibraryConfiguration
-) : AbstractLibrary(seed, config) {
+    val seed: Long,
+    val config: LibraryConfiguration
+) {
+
     // Use the predefined libraryId or the internal id for the libraryId
-    override val libraryId: String get() = config.libraryId ?: "Library_"+internId.toString()
+    val libraryId: String get() = config.libraryId ?: "Library_"+internId.toString()
 
-    // Check if this library is the "ComdagenSharedLibrary". This is called from the freemarker template
-    val comdagenShared: Boolean get() = internId == 0
-
-    override val contentAssets: List<AbstractContent>
+    /**
+     * Generate up to content assets up to the count contentAssetCount which is defined in the
+     * configuration. If the comdagen summary content asset gets created, the list of contentAssets
+     * will be one short. The comdagen summary nevertheless will get rendered at the freemarker template.
+     */
+    val contentAssets: List<RandomContentAsset>
         get() {
             val rng = Random(seed + "contentassets".hashCode())
-            return rng.longs(config.contentAssetCount.toLong()).toList().mapIndexed { index, it ->
-                IndexedRandomContent(
+            val requestedGeneratedContentAssets: Long =
+                if (config.renderComdagenSummaryContentAsset)
+                    Math.max(config.contentAssetCount.toLong() - 1, 0)
+                else
+                    config.contentAssetCount.toLong()
+            return rng.longs(requestedGeneratedContentAssets).toList().mapIndexed { index, it ->
+                IndexedRandomContentAsset(
                     index + 1,
                     it,
                     config.defaultContentAssetConfig,
@@ -90,25 +53,23 @@ class Library(
                 )
             }
         }
-
-    override val folders: List<AbstractFolder>
+    /**
+     * Generate up to config.folderCount (from config) folders. Start by creating custom defined folders. Fill up with
+     * generated, random indexed folders using the default folder configuration.
+     */
+    val folders: List<RandomFolder>
         get() {
-            val rng = Random(seed + "abstractFolders".hashCode())
-            /**
-             * Generate all defined abstractFolders from the libraries config plus the default folders:
-             * "root", "ComdagenContent" and "ComdagenContentAssets". Fill up with random, indexed folders
-             * up to folderCount folders.
-             */
-            return config.folders.asSequence().map { it ->
-                RandomFolder(rng.nextLong(), it)
-            }.plus(
-                rng.longs(
-                    max(
-                        0,
-                        config.folderCount - config.folders.size - 3
-                    ).toLong()
-                    // FolderId starts with 1 thus "Folder_1"
-                ).toList().mapIndexed { index, it -> IndexedRandomFolder(index + 1, it, config.defaultFolderConfigs) }
-            ).toList()
+            val rng = Random(seed + "folders".hashCode())
+            // Create custom folders up to config.folderCount
+            return (1..Math.min(config.folderCount, config.folders.size)).map {
+                RandomFolder(rng.nextLong(), config.folders[it - 1])
+                // Fill with generated folders up to config.folderCount
+            }.plus((1..config.folderCount - config.folders.size).map {
+                IndexedRandomFolder(
+                    it,
+                    rng.nextLong(),
+                    config.defaultFolderConfigs
+                )
+            })
         }
 }

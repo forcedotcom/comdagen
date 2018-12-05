@@ -18,7 +18,6 @@ data class FolderConfiguration(
     val displayName: String?,
     val description: String?,
     val onlineFlag: Boolean = true,
-    val importModeDelete: Boolean? = false,
     val parent: String?,
     val randomFolderIds: Boolean = false,
 

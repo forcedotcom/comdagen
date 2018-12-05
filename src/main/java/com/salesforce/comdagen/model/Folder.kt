@@ -10,37 +10,30 @@ import com.salesforce.comdagen.RandomData
 
 import com.salesforce.comdagen.config.FolderConfiguration
 
-/**
- * A abstract class for folders providing generally needed attributes.
- */
-abstract class AbstractFolder(
-    open val seed: Long,
-    private val folderConfig: FolderConfiguration
-) {
-    // Each folder has a Id, if none defined the folders wil be called unnamed-folder
-    open val folderId: String get() = folderConfig.folderId ?: "unnamed-folder"
-    open val displayName: String? get() = folderConfig.displayName
-    open val description: String? get() = folderConfig.description
-    val onlineFlag: Boolean get() = folderConfig.onlineFlag
-    val parent: String? get() = folderConfig.parent
-}
 
 /**
  * A folder model that sets its [folderId], [displayName] and [description] with the use of the [seed] and a
  * pseudo-RNG.
  */
-open class RandomFolder(override val seed: Long, private val folderConfig: FolderConfiguration) :
-    AbstractFolder(seed, folderConfig) {
+open class RandomFolder(
+    open val seed: Long,
+    val folderConfig: FolderConfiguration
+) {
+
     // Still accept folderId if it is set.
-    override val folderId: String
+    open val folderId: String
         get() =
             folderConfig.folderId ?: RandomData.getRandomNoun(seed + "randomFolderId_".hashCode())
-    override val displayName: String
+    open val displayName: String
         get() =
-            RandomData.getRandomNoun(seed + "randomFolderDisplayName_".hashCode())
-    override val description: String
+            folderConfig.displayName ?: RandomData.getRandomNoun(seed + "randomFolderDisplayName_".hashCode())
+    open val description: String
         get() =
-            RandomData.getRandomSentence(seed + "randomFolderDescription_".hashCode())
+            folderConfig.description ?: RandomData.getRandomSentence(seed + "randomFolderDescription_".hashCode())
+
+    val onlineFlag: Boolean get() = folderConfig.onlineFlag
+
+    val parent: String? get() = folderConfig.parent
 }
 
 /**
@@ -49,15 +42,17 @@ open class RandomFolder(override val seed: Long, private val folderConfig: Folde
  */
 class IndexedRandomFolder(
     val index: Int,
-    override val seed: Long,
-    private val folderConfig: FolderConfiguration
+    seed: Long,
+    folderConfig: FolderConfiguration
 ) :
     RandomFolder(seed, folderConfig) {
     override val folderId: String
         get() = if (folderConfig.randomFolderIds)
             RandomData.getRandomNoun(seed + "randomFolderId_".hashCode()) else "Folder_$index"
     override val displayName: String
-        get() = RandomData.getRandomNoun(seed + "randomFolderDisplayName_".hashCode() + index)
+        get() = folderConfig.displayName
+            ?: RandomData.getRandomNoun(seed + "randomFolderDisplayName_".hashCode() + index)
     override val description: String
-        get() = RandomData.getRandomSentence(seed + "randomFolderDescription_".hashCode() + index)
+        get() = folderConfig.description
+            ?: RandomData.getRandomSentence(seed + "randomFolderDescription_".hashCode() + index)
 }

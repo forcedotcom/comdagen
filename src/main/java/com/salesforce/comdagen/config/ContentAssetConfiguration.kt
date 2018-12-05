@@ -15,9 +15,6 @@ import com.salesforce.comdagen.Configuration
 data class ContentConfiguration(
     override val initialSeed: Long = 1234,
     val contentId: String?,
-    val importModeDelete: Boolean = false,
-    val onlineFlag: Boolean = true,
-    val searchableFlag: Boolean = true,
     val classificationFolder: String?,
 
     /**
@@ -26,7 +23,7 @@ data class ContentConfiguration(
     val useRandomContentIds: Boolean = true,
 
     // This is can be either body or customCSSFile.
-    val attributeId: String = "body",
+    val attributeId: AttributeId = AttributeId.BODY,
 
     // TODO: Implement customAttributes for content assets
 
@@ -36,3 +33,14 @@ data class ContentConfiguration(
     override val elementCount: Int = 1
 
 ) : Configuration
+
+enum class AttributeId(val asAttributeString: String) {
+    BODY("body"), CUSTOMCSSFILE("customCSSFile");
+
+    /**
+     * Will be used in the freemarker template.
+     */
+    override fun toString(): String {
+        return asAttributeString
+    }
+}
