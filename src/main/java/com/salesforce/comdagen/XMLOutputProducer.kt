@@ -55,7 +55,7 @@ constructor(
         "/images/baseThumb.jpg"
     )
 
-    private var comdagenStatistics = ComdagenStatistics()
+    private val comdagenStatistics = ComdagenStatistics()
 
     init {
         /* configure template engine */
@@ -171,10 +171,11 @@ constructor(
                 "Library seed" to it.seed.toString(),
                 "Content asset count" to generator.configuration.contentAssetCount.toString()
             )
-            if (comdagenStatistics.libraryStatistics[it.libraryId] == null)
-                comdagenStatistics.libraryStatistics[it.libraryId] = gatheredLibraryStatistics.toMutableMap()
-            else
-                comdagenStatistics.libraryStatistics[it.libraryId]!!.putAll(gatheredLibraryStatistics)
+            comdagenStatistics.mergeIntoStatisticsMap(
+                it.libraryId,
+                gatheredLibraryStatistics,
+                comdagenStatistics.libraryStatistics
+            )
         }
         comdagenStatistics.generalStatistics["Libraries top level seed"] =
                 generator.configuration.initialSeed.toString()
@@ -231,10 +232,7 @@ constructor(
                 "Site seed" to it.seed.toString(),
                 "Product count" to (it.catalogConfig?.totalProductCount()?.toString() ?: "???")
             )
-            if (comdagenStatistics.siteStatistics[it.id] == null)
-                comdagenStatistics.siteStatistics[it.id] = gatheredSiteStatistics.toMutableMap()
-            else
-                comdagenStatistics.siteStatistics[it.id]!!.putAll(gatheredSiteStatistics)
+            comdagenStatistics.mergeIntoStatisticsMap(it.id, gatheredSiteStatistics, comdagenStatistics.siteStatistics)
 
             // render preferences.xml
             LOGGER.info("Start rendering preferences for site ${it.id} with template $preferencesTemplateName")
@@ -502,19 +500,31 @@ constructor(
          * Gathers all site specific statistics needed for the ComdagenSummary content asset.
          * Map<siteId<stat, value>>
          */
-        var siteStatistics: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
+        val siteStatistics: MutableMap<String, Map<String, String>> = mutableMapOf()
 
         /**
          * Gathers all library specific statistics for needed for the ComdagenSummary content asset.
          * Map<libraryId<stat, value>>
          */
-        var libraryStatistics: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
+        val libraryStatistics: MutableMap<String, Map<String, String>> = mutableMapOf()
 
         /**
          * This map gathers general statistics data about the generated data
          * Map<stat, value>
          */
-        var generalStatistics: MutableMap<String, String> = mutableMapOf()
+        val generalStatistics: MutableMap<String, String> = mutableMapOf()
+
+        /**
+         * Merges new data into the statistics map for the right key (to library or site).
+         */
+        fun mergeIntoStatisticsMap(
+            id: String,
+            data: Map<String, String>,
+            dest: MutableMap<String, Map<String, String>>
+        ) {
+            dest.merge(id, data) { old, new -> old + new }
+
+        }
     }
 
     companion object {

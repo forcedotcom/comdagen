@@ -92,7 +92,8 @@
             <page-attributes/>
             <custom-attributes>
             <#list content.customBody as region, body>
-                <custom-attribute attribute-id="${content.attributeId}" xml:lang="${region}">${body}</custom-attribute>
+                <custom-attribute attribute-id="${content.attributeId}"
+                                  xml:lang="${region}">${body?esc}</custom-attribute>
             </#list>
             </custom-attributes>
             <#if content.classificationFolder??>
