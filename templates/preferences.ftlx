@@ -33,6 +33,8 @@
             <preference preference-id="SiteInventoryList">${inventoryLists?first}</preference>
             </#if>
             <preference preference-id="SiteLibrary">SiteGenesisSharedLibrary</preference>
+            <!-- Always include the comdagen shared library -->
+            <preference preference-id="SiteLibrary">ComdagenSharedLibrary</preference>
             <preference preference-id="SiteLocales">${locales?join(":")}</preference>
             <#if pricebooks??>
             <preference preference-id="SitePriceBooks">${pricebooks?join(":")}</preference>

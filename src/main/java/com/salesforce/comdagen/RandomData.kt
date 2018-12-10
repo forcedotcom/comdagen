@@ -38,14 +38,14 @@ object RandomData {
     /** A copy of `SitesConfig.emailDomain`, initialized from there. */
     var emailDomain: String = "varmail.net"
 
-    fun getRandomFirstName(region: SupportedZone, seed: Long): String {
+    fun getRandomFirstName(region: SupportedZone, randomLong: Long): String {
         val list = FIRST_NAMES.getOrPut(region, { contentFileAsList("FirstNames_${region.countryCode}.txt") })
-        return list[(Math.abs(seed) % list.size).toInt()]
+        return list[(Math.abs(randomLong) % list.size).toInt()]
     }
 
-    fun getRandomLastName(region: SupportedZone, seed: Long): String {
+    fun getRandomLastName(region: SupportedZone, randomLong: Long): String {
         val list = LAST_NAMES.getOrPut(region, { contentFileAsList("LastNames_${region.countryCode}.txt") })
-        return list[(Math.abs(seed) % list.size).toInt()]
+        return list[(Math.abs(randomLong) % list.size).toInt()]
     }
 
     fun getRandomStreetName(region: SupportedZone, seed: Long): String = when (region) {

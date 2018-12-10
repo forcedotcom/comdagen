@@ -16,11 +16,13 @@ import java.io.File
 
 class Site(
     private val internID: Int,
-    private val seed: Long,
+    // Not necessarily the user-defined seed
+    val seed: Long,
     private val defaults: SiteConfiguration?,
     private val config: SiteConfiguration,
     private val configDir: File
 ) {
+
     val currencies
         get() = config.currencies
 
@@ -28,8 +30,11 @@ class Site(
         get() = config.regions
 
     val id: String
-    // Delete all non alphanumeric characters in siteName.
-        get() = if (config.siteName != null) config.siteName.replace("[^A-Za-z0-9]".toRegex(), "") else "Site_" + internID.toString()
+        // Delete all non alphanumeric characters in siteName.
+        get() = if (config.siteName != null) config.siteName.replace(
+            "[^A-Za-z0-9]".toRegex(),
+            ""
+        ) else "Site_" + internID.toString()
 
     val name: String
         get() = config.siteName ?: "Site $id"
@@ -48,7 +53,7 @@ class Site(
     val navigationCatalog: NavigationCatalog
         get() = NavigationCatalog(
             seed + "navigationCatalog".hashCode(), config.navigationCatalogConfig
-                    ?: defaults!!.navigationCatalogConfig!!, 0,
+                ?: defaults!!.navigationCatalogConfig!!, 0,
             catalogGenerator?.objects ?: emptySequence(), name, regions
         )
 
@@ -61,10 +66,10 @@ class Site(
 
     private val pricebookConfig: PricebookConfiguration? = loadConfig(
         config.pricebookConfig
-                ?: defaults?.pricebookConfig
+            ?: defaults?.pricebookConfig
     )
 
-    private val catalogConfig: CatalogListConfiguration? = loadConfig(config.catalogConfig ?: defaults?.catalogConfig)
+    val catalogConfig: CatalogListConfiguration? = loadConfig(config.catalogConfig ?: defaults?.catalogConfig)
 
     private val customerConfig: CustomerConfiguration? = loadConfig(config.customerConfig ?: defaults?.customerConfig)
 
@@ -72,36 +77,36 @@ class Site(
 
     private val inventoryConfig: InventoryConfiguration? = loadConfig(
         config.inventoryConfig
-                ?: defaults?.inventoryConfig
+            ?: defaults?.inventoryConfig
     )
 
     private val customerGroupConfig: CustomerGroupConfiguration? = loadConfig(
         config.customerGroupConfig
-                ?: defaults?.customerGroupConfig
+            ?: defaults?.customerGroupConfig
     )
 
     private val promotionConfig: PromotionConfiguration? = loadConfig(
         config.promotionConfig
-                ?: defaults?.promotionConfig
+            ?: defaults?.promotionConfig
     )
 
     private val shippingConfig: ShippingConfiguration? = loadConfig(config.shippingConfig ?: defaults?.shippingConfig)
 
     private val sourceCodeConfig: SourceCodeConfiguration? = loadConfig(
         config.sourceCodeConfig
-                ?: defaults?.sourceCodeConfig
+            ?: defaults?.sourceCodeConfig
     )
 
     private val storeConfig: StoreConfiguration? = loadConfig(config.storeConfig ?: defaults?.storeConfig)
 
     private val sortingRuleConfig: SortingRuleConfiguration? = loadConfig(
         config.sortingRuleConfig
-                ?: defaults?.sortingRuleConfig
+            ?: defaults?.sortingRuleConfig
     )
 
     private val redirectUrlConfig: RedirectUrlConfiguration? = loadConfig(
         config.redirectUrlConfig
-                ?: defaults?.redirectUrlConfig
+            ?: defaults?.redirectUrlConfig
     )
 
 

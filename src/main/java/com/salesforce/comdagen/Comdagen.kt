@@ -12,7 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.salesforce.InvalidSpecificationException
+import com.salesforce.comdagen.config.LibraryConfiguration
 import com.salesforce.comdagen.config.SitesConfig
+import com.salesforce.comdagen.generator.LibraryGenerator
 import com.salesforce.comdagen.generator.SiteGenerator
 import org.kohsuke.args4j.CmdLineException
 import org.kohsuke.args4j.CmdLineParser
@@ -95,6 +97,16 @@ class Comdagen {
 
         // render generated data as xml files
         outputProducer.render(SiteGenerator(sitesConfig, configDir))
+
+        // load library configuration
+        val librariesConfFile = File(configDir, "libraries.yaml")
+        val librariesConf: LibraryConfiguration?
+
+        // render libraries
+        if (librariesConfFile.isFile && librariesConfFile.canRead()) {
+            librariesConf = OBJECT_MAPPER.readValue(librariesConfFile, LibraryConfiguration::class.java)
+            outputProducer.render(LibraryGenerator(librariesConf, configDir))
+        }
 
         // zip generated output directory if cmd option is set
         if (zip) {

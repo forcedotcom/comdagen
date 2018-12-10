@@ -9,6 +9,7 @@ package com.salesforce.comdagen
 
 import com.salesforce.comdagen.generator.*
 import com.salesforce.comdagen.model.AttributeDefinition
+
 import com.salesforce.comdagen.model.NavigationCatalog
 import freemarker.template.*
 import freemarker.template.Configuration
@@ -53,6 +54,8 @@ constructor(
         "/images/baseSwatch.jpg",
         "/images/baseThumb.jpg"
     )
+
+    private val comdagenStatistics = ComdagenStatistics()
 
     init {
         /* configure template engine */
@@ -99,6 +102,7 @@ constructor(
         when (generator) {
             is CatalogGenerator -> render(generator.generatorTemplate, generator)
             is SiteGenerator -> render(generator.generatorTemplate, generator.preferencesTemplate, generator)
+            is LibraryGenerator -> render(generator.generatorTemplate, generator)
             else -> render(generator.generatorTemplate, generator, currentGeneratorIndex)
         }
     }
@@ -157,6 +161,47 @@ constructor(
     }
 
     @Throws(IOException::class)
+    fun render(templateName: String, generator: LibraryGenerator) {
+        val libraries = generator.objects
+
+        // Gather statistics for the ComdagenSummary
+        libraries.forEach {
+            val gatheredLibraryStatistics: Map<String, String> = mapOf(
+                "Library id" to it.libraryId,
+                "Library seed" to it.seed.toString(),
+                "Content asset count" to generator.configuration.contentAssetCount.toString()
+            )
+            comdagenStatistics.mergeIntoStatisticsMap(
+                it.libraryId,
+                gatheredLibraryStatistics,
+                comdagenStatistics.libraryStatistics
+            )
+        }
+        comdagenStatistics.generalStatistics["Libraries top level seed"] =
+                generator.configuration.initialSeed.toString()
+
+        // For each library
+        libraries.forEach { library ->
+            val modelData = mapOf(
+                "library" to library,
+                "contentAssets" to library.contentAssets,
+                "folders" to library.folders,
+                "comdagensitestats" to comdagenStatistics.siteStatistics,
+                "comdagenlibrarystats" to comdagenStatistics.libraryStatistics,
+                "generalstatistics" to comdagenStatistics.generalStatistics
+            )
+            // Generate the specified output folder and a folder named by the libraryId containing the library xml
+            File("$outputDir/${generator.configuration.outputDir}/${library.libraryId}").apply { mkdirs() }
+            LOGGER.info("Start rendering library ${library.libraryId} with template $templateName")
+            produce(
+                templateName,
+                "${generator.configuration.outputDir}/${library.libraryId}/${library.libraryId}.xml",
+                modelData
+            )
+        }
+    }
+
+    @Throws(IOException::class)
     private fun render(siteTemplateName: String, preferencesTemplateName: String, generator: SiteGenerator) {
         val catalogGenerators: MutableSet<CatalogGenerator> = mutableSetOf()
         val pricebookGenerators: MutableSet<PricebookGenerator> = mutableSetOf()
@@ -168,6 +213,9 @@ constructor(
         val shippingGenerators: MutableSet<ShippingGenerator> = mutableSetOf()
         val storeGenerators: MutableSet<StoreGenerator> = mutableSetOf()
 
+        // Adding top level seed for statistics
+        comdagenStatistics.generalStatistics["Sites top level seed"] = generator.configuration.initialSeed.toString()
+
         generator.objects.forEach {
             // render site.xml
             LOGGER.info("Start rendering site ${it.id} with template $siteTemplateName")
@@ -177,6 +225,14 @@ constructor(
                 siteTemplateName,
                 "${generator.configuration.outputDir}/${it.id}/site.xml", siteModelData
             )
+
+            // Gather site statistics
+            val gatheredSiteStatistics: Map<String, String> = mapOf(
+                "Site id" to it.id,
+                "Site seed" to it.seed.toString(),
+                "Product count" to (it.catalogConfig?.totalProductCount()?.toString() ?: "???")
+            )
+            comdagenStatistics.mergeIntoStatisticsMap(it.id, gatheredSiteStatistics, comdagenStatistics.siteStatistics)
 
             // render preferences.xml
             LOGGER.info("Start rendering preferences for site ${it.id} with template $preferencesTemplateName")
@@ -381,7 +437,7 @@ constructor(
                     file.copyTo(File(outputDir, file.name), overwrite = true)
                 }
             } else {
-                LOGGER.info("Invalid Path -> " + file.toString());
+                LOGGER.info("Invalid Path -> " + file.toString())
             }
         }
     }
@@ -410,7 +466,7 @@ constructor(
             if (input != null) {
                 Files.copy(input, outputDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
             } else {
-                LOGGER.warn("File not found at : ${fileName}")
+                LOGGER.warn("File not found at : $fileName")
             }
         }
     }
@@ -435,7 +491,45 @@ constructor(
         }
     }
 
+    /**
+     * Inner class that holds the comdagen statistics. Since random nouns can be chosen as libraryId and site
+     * names be specifically set, different maps are being used to avoid conflicts with duplicate keys.
+     */
+    private class ComdagenStatistics {
+        /**
+         * Gathers all site specific statistics needed for the ComdagenSummary content asset.
+         * Map<siteId<stat, value>>
+         */
+        val siteStatistics: MutableMap<String, Map<String, String>> = mutableMapOf()
+
+        /**
+         * Gathers all library specific statistics for needed for the ComdagenSummary content asset.
+         * Map<libraryId<stat, value>>
+         */
+        val libraryStatistics: MutableMap<String, Map<String, String>> = mutableMapOf()
+
+        /**
+         * This map gathers general statistics data about the generated data
+         * Map<stat, value>
+         */
+        val generalStatistics: MutableMap<String, String> = mutableMapOf()
+
+        /**
+         * Merges new data into the statistics map for the right key (to library or site).
+         */
+        fun mergeIntoStatisticsMap(
+            id: String,
+            data: Map<String, String>,
+            dest: MutableMap<String, Map<String, String>>
+        ) {
+            dest.merge(id, data) { old, new -> old + new }
+
+        }
+    }
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(XMLOutputProducer::class.java)
+
     }
 }
+
