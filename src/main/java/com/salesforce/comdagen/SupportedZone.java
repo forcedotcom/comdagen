@@ -6,23 +6,36 @@
 package com.salesforce.comdagen;
 
 public enum SupportedZone {
-    Generic("generic"), German("de"), Chinese("zh"), Russian("ru");
+    Generic("generic", "US", "English"), German("de", "DE", "German"), Chinese("zh", "", "Chinese"),
+    Russian("ru", "", "Russian");
 
-    private String countryCode;
+    private String countryCode, languageCode, languageName;
 
-    SupportedZone(String countryCode) {
+    SupportedZone(String countryCode, String languageCode, String languageName) {
         this.countryCode = countryCode;
+        this.languageCode = languageCode;
+        this.languageName = languageName;
     }
+
 
     public String getCountryCode() {
         return countryCode;
     }
 
     public String getLocale() {
-        if (this == Generic) {
-            return "en_US";
-        }
-        return countryCode;
+        if (this == Generic)
+            return "en-US";
+        if (languageCode.isEmpty())
+            return countryCode;
+        return countryCode + "-" + languageCode;
+    }
+
+    public String getLanguage() {
+        return languageCode;
+    }
+
+    public String getLanguageName() {
+        return languageName;
     }
 
     @Override

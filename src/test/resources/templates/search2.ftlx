@@ -32,7 +32,9 @@
         <indexed-locales>
             <locale>x-default</locale>
         </indexed-locales>
-        <stemming xml:lang="en-US">English</stemming>
+        <#list locales as locale>
+        <stemming xml:lang="${locale.getLocale()}">${locale.getLanguageName()}</stemming>
+        </#list>
         <stemming xml:lang="x-default">English</stemming>
     </index-settings>
 </search>

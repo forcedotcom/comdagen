@@ -156,7 +156,8 @@ constructor(
         produce(
             "search2.ftlx", "search2.xml",
             mapOf("searchableAttributes" to customAttributes.flatMap { it.value.filter { it.searchable } },
-                "locales" to regions.map { it.locale })
+                "locales" to regions
+            )
         )
     }
 
