@@ -184,7 +184,8 @@ data class ProductSet(
             val rng = Random(seed)
 
             val productList = catalog.getAllProducts()
-            val elementCount = rng.nextInt(config.maxSetProducts - config.minSetProducts) + config.minSetProducts
+            val elementCount =
+                rng.nextInt(Math.max(config.maxSetProducts - config.minSetProducts, 1)) + config.minSetProducts
             val startIdx = rng.nextInt(productList.size - elementCount)
 
             return productList.subList(startIdx, startIdx + elementCount)
