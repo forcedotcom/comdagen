@@ -231,10 +231,28 @@ class MasterCatalog(
             if (config.productSets == null) {
                 return emptyList()
             }
-
-            return (1..config.productSets.elementCount).map {
-                ProductSet(seed * "productSet$it".hashCode(), regions, config.productSets, this)
-            }
+            /*
+             * If min and max values are enforced and there are at least 2 product sets to be generated,
+             * generate two productSets that consist of the minimum and the maximum number of products per set.
+             */
+            if (config.productSets.enforceMinMaxProducts && config.productSets.elementCount >= 2) {
+                return (1..config.productSets.elementCount - 2).map {
+                    ProductSet(seed * "productSet$it".hashCode(), regions, config.productSets, this)
+                } + ProductSet(
+                    seed * "productSet${config.productSets.elementCount - 1}".hashCode(),
+                    regions,
+                    config.productSets.copy(minSetProducts = config.productSets.maxSetProducts),
+                    this
+                ) + ProductSet(
+                    seed * "productSet${config.productSets.elementCount}".hashCode(),
+                    regions,
+                    config.productSets.copy(maxSetProducts = config.productSets.minSetProducts),
+                    this
+                )
+            } else
+                return (1..config.productSets.elementCount).map {
+                    ProductSet(seed * "productSet$it".hashCode(), regions, config.productSets, this)
+                }
         }
 
     val sharedOptions: List<ProductOption>

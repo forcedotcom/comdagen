@@ -137,4 +137,7 @@ catalogs:
     # define range of products per product set
     minSetProducts: 3
     maxSetProducts: 8
+    # enforce the creation of upper and lower limit
+    # if the elementCount is greater or equal 2
+    enforceMinMaxProducts: true
 
