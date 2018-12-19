@@ -18,7 +18,7 @@ data class SortingRuleGenerator(override val configuration: SortingRuleConfigura
     override val creatorFunc = { _: Int, seed: Long -> SortingRule(seed) }
 
     val assignments: Sequence<SortingRuleAssignment>
-        get() = objects.map { SortingRuleAssignment("root", SortingRule.DefaultRule.BEST_MATCH.id) }
+        get() = sequenceOf(SortingRuleAssignment("root", SortingRule.DefaultRule.BEST_MATCH.id))
 
     override val metadata: Map<String, Set<AttributeDefinition>>
         get() = emptyMap()
