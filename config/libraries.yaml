@@ -13,13 +13,15 @@ libraryConfig:
   # fashion e.g. Library_0, Library_1,...
   libraryId: "ComdagenSharedLibrary"
 
-  # Total of libraries to be generated
+  # Total of libraries to be generated. First this library will be generated and then the custom libraries up to
+  # "libraryCount"
   libraryCount: 5
 
   # Total number of generated content assets per library
   contentAssetCount: 30
 
-  # Total number of generated folders per library
+  # Total number of generated folders per library. Custom specified folders are generated first followed by default
+  # generated folders up to "folderCount" folders
   folderCount: 10
 
   # Generates a content asset containing the top level seeds and names of all generated libraries and
@@ -78,6 +80,7 @@ libraryConfig:
     - folderId: "root"
       displayName: "Root folder"
       description: "Offers comdagen generated content"
+      # The content of folders marked with onlineFlag false is disabled
       onlineFlag: true
 
   # Creating a custom folder for each entry
