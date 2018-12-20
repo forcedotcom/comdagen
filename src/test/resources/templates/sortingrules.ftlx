@@ -1,5 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sort xmlns="http://www.demandware.com/xml/impex/sort/2009-05-15">
+
+    <dynamic-attribute dynamic-attribute-id="clearance">
+        <weighted-attribute>
+            <attribute-path>product.activeData.conversionWeek</attribute-path>
+            <weight>25</weight>
+            <default-value>average</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.availabilityModel.ats</attribute-path>
+            <weight>40</weight>
+            <default-value>average</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.availabilityModel.skuCoverage</attribute-path>
+            <weight>35</weight>
+            <default-value>average</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+    </dynamic-attribute>
+
+    <dynamic-attribute dynamic-attribute-id="most-popular">
+        <weighted-attribute>
+            <attribute-path>product.activeData.viewsMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.activeData.salesVelocityMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.activeData.lookToBookRatioMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>average</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.availabilityModel.availability</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+    </dynamic-attribute>
+
+    <dynamic-attribute dynamic-attribute-id="top-sellers">
+        <weighted-attribute>
+            <attribute-path>product.activeData.revenueMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.activeData.unitsMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.activeData.lookToBookRatioMonth</attribute-path>
+            <weight>25</weight>
+            <default-value>average</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+        <weighted-attribute>
+            <attribute-path>product.availabilityModel.availability</attribute-path>
+            <weight>25</weight>
+            <default-value>minimum</default-value>
+            <direction>descending</direction>
+        </weighted-attribute>
+    </dynamic-attribute>
+
     <#list gen.objects as rule>
     <sorting-rule rule-id="${rule.id}">
         <description>${rule.description}</description>
@@ -20,6 +96,179 @@
         </sorting-attributes>
     </sorting-rule>
     </#list>
+
+    <sorting-rule rule-id="Einstein Automatic Sort for Revenue">
+        <description>Sort by Einstein determined attributes to optimize for revenue</description>
+    </sorting-rule>
+
+    <sorting-rule rule-id="best-matches">
+        <description>Applies static sortings (category position, search placement/rank), then text relevance, then
+            explicit sortings
+        </description>
+        <sorting-attributes>
+            <category-position/>
+            <attribute>
+                <attribute-path>product.searchPlacement</attribute-path>
+                <direction>descending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+            <attribute>
+                <attribute-path>product.searchRank</attribute-path>
+                <direction>descending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+            <text-relevance/>
+            <explicit-sortings/>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="brand">
+        <description>Sorts by product brand A-Z</description>
+        <sorting-attributes>
+            <attribute>
+                <attribute-path>product.brand</attribute-path>
+                <direction>ascending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="customer-favorites">
+        <description>Sorts by customer ratings</description>
+        <sorting-attributes>
+            <dynamic-attribute dynamic-attribute-id="most-popular">
+                <include-text-relevance>false</include-text-relevance>
+            </dynamic-attribute>
+            <category-position/>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="most-popular">
+        <description>Sorts by combination of product views, sales velocity, look to book, and availability</description>
+        <sorting-attributes>
+            <dynamic-attribute dynamic-attribute-id="most-popular">
+                <include-text-relevance>false</include-text-relevance>
+            </dynamic-attribute>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="price-high-to-low">
+        <description>Sorts by price descending</description>
+        <sorting-attributes>
+            <price>
+                <direction>descending</direction>
+            </price>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="price-low-to-high">
+        <description>Sorts by price ascending</description>
+        <sorting-attributes>
+            <price>
+                <direction>ascending</direction>
+            </price>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="product-name-ascending">
+        <description>Sorts by product name A-Z</description>
+        <sorting-attributes>
+            <attribute>
+                <attribute-path>product.name</attribute-path>
+                <direction>ascending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="product-name-descending">
+        <description>Sorts by product name Z-A</description>
+        <sorting-attributes>
+            <attribute>
+                <attribute-path>product.name</attribute-path>
+                <direction>descending</direction>
+                <include-text-relevance>false</include-text-relevance>
+            </attribute>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-rule rule-id="top-sellers">
+        <description>Sorts by combination of revenue, units, look to book, and availability</description>
+        <sorting-attributes>
+            <dynamic-attribute dynamic-attribute-id="top-sellers">
+                <include-text-relevance>false</include-text-relevance>
+            </dynamic-attribute>
+        </sorting-attributes>
+    </sorting-rule>
+
+    <sorting-options>
+        <sorting-option option-id="best-matches">
+            <rule-id>best-matches</rule-id>
+            <display-name xml:lang="x-default">Best Matches</display-name>
+            <display-name xml:lang="fr-FR">Meilleurs résultats</display-name>
+            <display-name xml:lang="it-IT">Migliore corrispondenza</display-name>
+            <display-name xml:lang="ja-JP">一致順</display-name>
+            <display-name xml:lang="zh-CN">最佳匹配</display-name>
+        </sorting-option>
+        <sorting-option option-id="price-low-to-high">
+            <rule-id>price-low-to-high</rule-id>
+            <display-name xml:lang="x-default">Price Low To High</display-name>
+            <display-name xml:lang="fr-FR">Prix : croissant</display-name>
+            <display-name xml:lang="it-IT">Prezzo dal più basso al più alto</display-name>
+            <display-name xml:lang="ja-JP">価格が低い順</display-name>
+            <display-name xml:lang="zh-CN">价格从低到高</display-name>
+        </sorting-option>
+        <sorting-option option-id="price-high-to-low">
+            <rule-id>price-high-to-low</rule-id>
+            <display-name xml:lang="x-default">Price High to Low</display-name>
+            <display-name xml:lang="fr-FR">Prix : décroissant</display-name>
+            <display-name xml:lang="it-IT">Prezzo dal più alto al più basso</display-name>
+            <display-name xml:lang="ja-JP">価格が高い順</display-name>
+            <display-name xml:lang="zh-CN">价格从高到低</display-name>
+        </sorting-option>
+        <sorting-option option-id="product-name-ascending">
+            <rule-id>product-name-ascending</rule-id>
+            <display-name xml:lang="x-default">Product Name A - Z</display-name>
+            <display-name xml:lang="fr-FR">Nom de produit de A à Z</display-name>
+            <display-name xml:lang="it-IT">Nome prodotto A - Z</display-name>
+            <display-name xml:lang="ja-JP">商品名 (昇順)</display-name>
+            <display-name xml:lang="zh-CN">产品名称 A 到 Z</display-name>
+        </sorting-option>
+        <sorting-option option-id="product-name-descending">
+            <rule-id>product-name-descending</rule-id>
+            <display-name xml:lang="x-default">Product Name Z - A</display-name>
+            <display-name xml:lang="fr-FR">Nom de produit de Z à A</display-name>
+            <display-name xml:lang="it-IT">Nome prodotto Z - A</display-name>
+            <display-name xml:lang="ja-JP">商品名 (降順)</display-name>
+            <display-name xml:lang="zh-CN">产品名称 Z 到 A</display-name>
+        </sorting-option>
+        <sorting-option option-id="brand">
+            <rule-id>brand</rule-id>
+            <display-name xml:lang="x-default">Brand</display-name>
+            <display-name xml:lang="fr-FR">Marque</display-name>
+            <display-name xml:lang="it-IT">Marca</display-name>
+            <display-name xml:lang="ja-JP">ブランド順</display-name>
+            <display-name xml:lang="zh-CN">品牌</display-name>
+        </sorting-option>
+        <sorting-option option-id="most-popular">
+            <rule-id>most-popular</rule-id>
+            <display-name xml:lang="x-default">Most Popular</display-name>
+            <display-name xml:lang="fr-FR">Les plus populaires</display-name>
+            <display-name xml:lang="it-IT">I più cercati</display-name>
+            <display-name xml:lang="ja-JP">人気が高い順</display-name>
+            <display-name xml:lang="zh-CN">最热门</display-name>
+        </sorting-option>
+        <sorting-option option-id="top-sellers">
+            <rule-id>top-sellers</rule-id>
+            <display-name xml:lang="x-default">Top Sellers</display-name>
+            <display-name xml:lang="fr-FR">Meilleures ventes</display-name>
+            <display-name xml:lang="it-IT">I più venduti</display-name>
+            <display-name xml:lang="ja-JP">売れ筋順</display-name>
+            <display-name xml:lang="zh-CN">最畅销</display-name>
+        </sorting-option>
+    </sorting-options>
+
+    <keyword-search-sorting-rule-assignment rule-id="best-matches"/>
 
     <#list gen.assignments as assignment>
     <sorting-rule-assignment category-id="${assignment.categoryId}" rule-id="${assignment.ruleId}" />
