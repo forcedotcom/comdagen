@@ -125,9 +125,10 @@ Here you will find answers to your questions about shopping at our online store,
         </content>
     </slot-configuration>
 
-    <slot-configuration slot-id="home-main" context="global" configuration-id="homepage-jquery-cycle" default="true" assigned-to-site="true">
-        <description>Homepage Jquery Cycle</description>
-        <template>slots/content/homepage/homepageslider.isml</template>
+    <slot-configuration slot-id="home-main" context="global" configuration-id="comdagen-summary-cid" default="true"
+                        assigned-to-site="true">
+        <description>Comdagen summary slot</description>
+        <template>slots/content/contentassetbody.isml</template>
         <enabled-flag>true</enabled-flag>
         <content>
             <content-assets>
