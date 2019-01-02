@@ -1,7 +1,7 @@
 shipping:
-  # number of generated shipping promotions
+  # number of generated shipping methods
   elementCount: 5
-  # price range of each shipping promotion
+  # price range of each shipping method
   minPrice: 3.0
   maxPrice: 50.0
 
