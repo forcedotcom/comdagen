@@ -8,6 +8,7 @@
 package com.salesforce.comdagen.model
 
 import com.google.common.collect.Sets
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.SupportedCurrency
 import com.salesforce.comdagen.SupportedZone
@@ -156,8 +157,17 @@ data class BundleProduct(
 
             val productList = catalog.getAllProducts()
 
-            val elementCount =
-                rng.nextInt(config.maxBundledProducts - config.minBundledProducts) + config.minBundledProducts
+            val elementCount = when {
+                config.maxBundledProducts > config.minBundledProducts -> rng.nextInt(
+                    config.maxBundledProducts -
+                            config.minBundledProducts
+                ) + config.minBundledProducts
+                config.maxBundledProducts == config.minBundledProducts -> config.minBundledProducts
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minBundledProducts value ${config.minBundledProducts} needs to be bigger than" +
+                            " maxBundledProducts ${config.maxBundledProducts} in the catalogs.yaml configuration file."
+                )
+            }
 
             val startIdx = rng.nextInt(productList.size - elementCount)
 
@@ -166,7 +176,17 @@ data class BundleProduct(
             if (startIdx >= 0) {
                 val products = productList.subList(startIdx, startIdx + elementCount)
                 products.forEach { product ->
-                    val quantity = rng.nextInt(config.maxQuantity - config.minQuantity) + config.minQuantity
+                    val quantity = when {
+                        config.maxQuantity > config.minQuantity -> rng.nextInt(
+                            config.maxQuantity -
+                                    config.minQuantity
+                        ) + config.minQuantity
+                        config.maxQuantity == config.minQuantity -> config.minQuantity
+                        else -> throw InvalidComdagenConfigurationValueException(
+                            "minQuantity value ${config.minQuantity} needs to be bigger than" +
+                                    " maxQuantity ${config.maxQuantity} in the catalogs.yaml configuration file."
+                        )
+                    }
                     bundledProductMap.put(product, quantity)
                 }
             }
@@ -184,7 +204,15 @@ data class ProductSet(
             val rng = Random(seed)
 
             val productList = catalog.getAllProducts()
-            val elementCount = rng.nextInt(config.maxSetProducts - config.minSetProducts) + config.minSetProducts
+            val elementCount = when {
+                config.maxSetProducts > config.minSetProducts ->
+                    rng.nextInt(config.maxSetProducts - config.minSetProducts) + config.minSetProducts
+                config.maxSetProducts == config.minSetProducts -> config.minSetProducts
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minSetProducts value ${config.minSetProducts} needs to be bigger than" +
+                            " maxSetProducts ${config.maxSetProducts} in the catalogs.yaml configuration file."
+                )
+            }
             val startIdx = rng.nextInt(productList.size - elementCount)
 
             return productList.subList(startIdx, startIdx + elementCount)
@@ -219,7 +247,15 @@ data class ProductOption(
     override val dataStore: List<OptionValue>
         get() {
             val rng = Random(seed)
-            val n = rng.nextInt(config.maxValues - config.minValues) + config.minValues
+            val n = when {
+                config.maxValues > config.minValues ->
+                    rng.nextInt(config.maxValues - config.minValues) + config.minValues
+                config.maxValues == config.minValues -> config.minValues
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minValues value ${config.minValues} needs to be bigger than" +
+                            " maxValues ${config.maxValues} in the catalogs.yaml configuration file."
+                )
+            }
 
             return (1..n).map {
                 if (it == 1) {

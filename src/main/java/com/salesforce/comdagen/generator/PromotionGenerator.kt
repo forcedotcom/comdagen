@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.generator
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.PromotionConfiguration
 import com.salesforce.comdagen.model.*
@@ -74,7 +75,16 @@ data class PromotionGenerator(
 
             while (promotions.isNotEmpty()) {
                 val promotionCount =
-                    assignmentRng.nextInt(configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions) + configuration.campaigns.minPromotions
+                    when {
+                        configuration.campaigns.maxPromotions > configuration.campaigns.minPromotions -> assignmentRng.nextInt(
+                            configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions
+                        ) + configuration.campaigns.minPromotions
+                        configuration.campaigns.maxPromotions == configuration.campaigns.minPromotions -> configuration.campaigns.minPromotions
+                        else -> throw InvalidComdagenConfigurationValueException(
+                            "maxPromotions value ${configuration.campaigns.maxPromotions} needs to be bigger than minPromotions " +
+                                    "${configuration.campaigns.minPromotions} in the promotions.yaml configuration file."
+                        )
+                    }
                 val campaign = Campaign(
                     seed = campaignRng.nextLong(),
                     attributeDefinitions = metadata["Campaign"].orEmpty(),
@@ -108,8 +118,16 @@ data class PromotionGenerator(
             val assignments = mutableListOf<CampaignPromotionAssignment>()
 
             campaigns.forEach { campaign ->
-                val promotionCount =
-                    rng.nextInt(configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions) + configuration.campaigns.minPromotions
+                val promotionCount = when {
+                    configuration.campaigns.maxPromotions > configuration.campaigns.minPromotions -> rng.nextInt(
+                        configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions
+                    ) + configuration.campaigns.minPromotions
+                    configuration.campaigns.maxPromotions == configuration.campaigns.minPromotions -> configuration.campaigns.minPromotions
+                    else -> throw InvalidComdagenConfigurationValueException(
+                        "maxPromotions value ${configuration.campaigns.maxPromotions} needs to be bigger than minPromotions " +
+                                "${configuration.campaigns.minPromotions} in the promotions.yaml configuration file."
+                    )
+                }
                 (1..promotionCount).forEach {
                     if (promotions.isNotEmpty()) {
                         val promotion = promotions[rng.nextInt(promotions.size)]

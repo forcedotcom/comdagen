@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.model
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.Encryption
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.SupportedZone
@@ -28,7 +29,7 @@ class Profile(
         get() = RandomData.getRandomEmail(seed + "email".hashCode())
 
     val birthday: String
-    // fixed starting date so we can re-generate the exact same data
+        // fixed starting date so we can re-generate the exact same data
         get() = LocalDate.of(2017, 1, 1).minusDays(Random(seed).nextInt(maxAge).toLong()).toString()
 
     val phoneMobile: String
@@ -108,7 +109,17 @@ class Customer(
     val addresses: List<Address>
         get() {
             val rng = Random(seed)
-            val addressCount = rng.nextInt(config.maxAddressCount - config.minAddressCount) + config.minAddressCount
+            val addressCount = when {
+                config.maxAddressCount > config.minAddressCount -> rng.nextInt(
+                    config.maxAddressCount
+                            - config.minAddressCount
+                ) + config.minAddressCount
+                config.maxAddressCount == config.minAddressCount -> config.minAddressCount
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minAdressCount value ${config.minAddressCount} needs to be bigger than maxAdressCount " +
+                            "${config.maxAddressCount} in the customer-groups.yaml configuration file."
+                )
+            }
             return (0..addressCount).map { Address(it.toLong(), rng.nextLong(), config, region) }
         }
 

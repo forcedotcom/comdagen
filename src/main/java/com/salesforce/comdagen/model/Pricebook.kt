@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.model
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.config.PricebookConfiguration
 import com.salesforce.comdagen.generator.CatalogGenerator
 import java.util.*
@@ -116,7 +117,14 @@ class PriceTable(
 
             var amountCount = 1
             if (config.maxAmountCount > 1) {
-                amountCount = rng.nextInt(config.maxAmountCount - config.minAmountCount) + config.minAmountCount
+                amountCount = when {
+                    config.maxAmountCount > config.minAmountCount -> rng.nextInt(config.maxAmountCount - config.minAmountCount) + config.minAmountCount
+                    config.maxAmountCount == config.minAmountCount -> config.minAmountCount
+                    else -> throw InvalidComdagenConfigurationValueException(
+                        "minAmountCount value ${config.minAmountCount} needs to be bigger than maxAmountCount " +
+                                "${config.maxAmountCount} in the pricebooks.yaml configuration file."
+                    )
+                }
             }
             return (1..amountCount).map { quantity -> Amount(seed, config, quantity, currency, sale) }
         }

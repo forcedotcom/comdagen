@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.generator
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.CustomerConfiguration
 import com.salesforce.comdagen.config.CustomerGroupConfiguration
@@ -27,8 +28,16 @@ data class CustomerGroupGenerator(
             val groups = objects
             val rng = Random(configuration.initialSeed)
             return groups.flatMap { group ->
-                val customerCount =
-                    rng.nextInt(configuration.maxCustomers - configuration.minCustomers) + configuration.minCustomers
+                val customerCount = when {
+                    configuration.maxCustomers > configuration.minCustomers -> rng.nextInt(
+                        configuration.maxCustomers - configuration.minCustomers
+                    ) + configuration.minCustomers
+                    configuration.maxCustomers == configuration.minCustomers -> configuration.minCustomers
+                    else -> throw InvalidComdagenConfigurationValueException(
+                        "maxCustomer value ${configuration.maxCustomers} needs to be bigger than minCustomers " +
+                                "${configuration.minCustomers} in the customer-groups.yaml configuration file."
+                    )
+                }
                 (1..customerCount).asSequence().map { GroupAssignment(group.id, getRandomCustomer(rng.nextInt())) }
             }
         }

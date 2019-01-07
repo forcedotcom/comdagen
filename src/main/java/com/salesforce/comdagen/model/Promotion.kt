@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.model
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.CampaignConfiguration
@@ -38,7 +39,15 @@ data class ProductPromotion(
         get() = categoryIds[Random(seed).nextInt(categoryIds.size)]
 
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = when {
+            config.maxDiscount > config.minDiscount ->
+                Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+            config.maxDiscount == config.minDiscount -> config.minDiscount
+            else -> throw InvalidComdagenConfigurationValueException(
+                "minDiscount value ${config.minDiscount} needs to be bigger than" +
+                        " maxDiscount ${config.maxDiscount} in the promotions.yaml configuration file."
+            )
+        }
 
     override val calloutMsg: String
         get() = "Get $discount% off!"
@@ -52,7 +61,15 @@ data class OrderPromotion(
     private val config: OrderPromotionConfiguration
 ) : Promotion(seed) {
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = when {
+            config.maxDiscount > config.minDiscount ->
+                Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+            config.maxDiscount == config.minDiscount -> config.minDiscount
+            else -> throw InvalidComdagenConfigurationValueException(
+                "minDiscount value ${config.minDiscount} needs to be bigger than" +
+                        " maxDiscount ${config.maxDiscount} in the promotions.yaml configuration file."
+            )
+        }
 
     val threshold: Float
         get() = Random(seed).nextFloat() * (config.maxThreshold - config.minThreshold) + config.minThreshold
@@ -78,7 +95,15 @@ data class ShippingPromotion(
         get() = Random(seed).nextFloat() * (config.maxThreshold - config.minThreshold) + config.minThreshold
 
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = when {
+            config.maxDiscount > config.minDiscount ->
+                Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+            config.maxDiscount == config.minDiscount -> config.minDiscount
+            else -> throw InvalidComdagenConfigurationValueException(
+                "minDiscount value ${config.minDiscount} needs to be bigger than" +
+                        " maxDiscount ${config.maxDiscount} in the promotions.yaml configuration file."
+            )
+        }
 
     val shippingMethod: String
         get() = shippingIds[Random(seed + "shippingMethod".hashCode()).nextInt(shippingIds.size)]
@@ -108,7 +133,16 @@ data class Campaign(
         get() {
             val rng = Random(seed)
 
-            val count = rng.nextInt(config.maxCoupons - config.minCoupons) + config.minCoupons
+            val count = when {
+                config.maxCoupons > config.minCoupons ->
+                    rng.nextInt(config.maxCoupons - config.minCoupons) + config.minCoupons
+                config.maxCoupons == config.minCoupons -> config.minCoupons
+
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minCoupons value ${config.minCoupons} needs to be bigger than" +
+                            " maxCoupons ${config.maxCoupons} in the promotions.yaml configuration file."
+                )
+            }
 
             if (count >= couponIds.size) {
                 return couponIds
@@ -123,7 +157,16 @@ data class Campaign(
         get() {
             val rng = Random(seed)
 
-            val count = rng.nextInt(config.maxCustomerGroups - config.minCustomerGroups) + config.minCustomerGroups
+            val count = when {
+                config.maxCustomerGroups > config.minCustomerGroups ->
+                    rng.nextInt(config.maxCustomerGroups - config.minCustomerGroups) + config.minCustomerGroups
+                config.maxCustomerGroups == config.minCustomerGroups -> config.minCustomerGroups
+
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minCustomerGroups value ${config.minCustomerGroups} needs to be bigger than" +
+                            " maxCustomerGroups ${config.maxCustomerGroups} in the promotions.yaml configuration file."
+                )
+            }
 
             if (count >= customerGroupIds.size) {
                 return customerGroupIds
@@ -138,7 +181,16 @@ data class Campaign(
         get() {
             val rng = Random(seed + "campaignSourceCodes".hashCode())
 
-            val count = rng.nextInt(config.maxSourceCodes - config.minSourceCodes) + config.minSourceCodes
+            val count = when {
+                config.maxSourceCodes > config.minSourceCodes ->
+                    rng.nextInt(config.maxSourceCodes - config.minSourceCodes) + config.minSourceCodes
+                config.maxSourceCodes == config.minSourceCodes -> config.minSourceCodes
+
+                else -> throw InvalidComdagenConfigurationValueException(
+                    "minSourceCodes value ${config.minSourceCodes} needs to be bigger than" +
+                            " maxSourceCodes ${config.maxSourceCodes} in the promotions.yaml configuration file."
+                )
+            }
 
             if (count >= sourceCodeIds.size) {
                 return sourceCodeIds

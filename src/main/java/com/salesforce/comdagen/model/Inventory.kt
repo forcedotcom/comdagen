@@ -7,6 +7,7 @@
 
 package com.salesforce.comdagen.model
 
+import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.config.InventoryConfiguration
 import com.salesforce.comdagen.config.InventoryRecordConfiguration
@@ -84,14 +85,30 @@ class InventoryRecord(
 ) {
 
     val allocation: Int
-        get() = Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        get() = when {
+            config.maxCount > config.minCount -> Random(seed).nextInt(config.maxCount - config.minCount) +
+                    config.minCount
+            config.maxCount == config.minCount -> config.minCount
+            else -> throw InvalidComdagenConfigurationValueException(
+                "minCount value ${config.minCount} needs to be bigger than maxCount " +
+                        "${config.maxCount} in the inventories.yaml configuration file."
+            )
+        }
 
     // use yesterday as allocation date to not conflict with different timezones
     val allocationDateTime: String
         get() = DateTimeFormatter.ISO_INSTANT.format(LocalDateTime.now().minusDays(1).toInstant(ZoneOffset.UTC))
 
     val ats: Int
-        get() = Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        get() = when {
+            config.maxCount > config.minCount -> Random(seed).nextInt(config.maxCount - config.minCount) +
+                    config.minCount
+            config.maxCount == config.minCount -> config.minCount
+            else -> throw InvalidComdagenConfigurationValueException(
+                "minCount value ${config.minCount} needs to be bigger than maxCount " +
+                        "${config.maxCount} in the inventories.yaml configuration file."
+            )
+        }
 
     val perpetual: Boolean
         get() = false
