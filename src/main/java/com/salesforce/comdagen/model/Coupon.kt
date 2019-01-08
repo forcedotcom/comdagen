@@ -7,7 +7,6 @@
 
 package com.salesforce.comdagen.model
 
-import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.config.CouponConfiguration
 import com.salesforce.comdagen.config.SystemCodeConfig
@@ -40,17 +39,10 @@ class CodeListCoupon(private val seed: Long, private val config: CouponConfigura
     val codeList: List<String>
         get() {
             val rng = Random(seed)
-            val count = when {
-                config.maxCodes > config.minCodes -> rng.nextInt(config.maxCodes - config.minCodes) +
-                        config.minCodes
-                config.maxCodes == config.minCodes -> config.minCodes
-                else -> throw InvalidComdagenConfigurationValueException(
-                    "maxCodes value ${config.maxCodes} needs to be bigger than minCodes " +
-                            "${config.minCodes} in the coupons.yaml configuration file."
-                )
-            }
-
-
+            val count = if (config.maxCodes > config.minCodes)
+                rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else
+                config.minCodes
             return (1..count).map { RandomData.getRandomCouponCode(rng.nextLong()) }
         }
 }
@@ -61,15 +53,10 @@ class CodeListCoupon(private val seed: Long, private val config: CouponConfigura
 class SystemCodeCoupon(private val seed: Long, private val config: SystemCodeConfig) : Coupon(seed) {
     val systemCodes: SystemCodes
         get() {
-            val maxNumberOfCodes = when {
-                config.maxCodes > config.minCodes -> Random(seed).nextInt(config.maxCodes - config.minCodes) +
-                        config.minCodes
-                config.maxCodes == config.minCodes -> config.minCodes
-                else -> throw InvalidComdagenConfigurationValueException(
-                    "maxCodes value ${config.maxCodes} needs to be bigger than minCodes " +
-                            "${config.minCodes} in the coupons.yaml configuration file."
-                )
-            }
+            val maxNumberOfCodes = if (config.maxCodes > config.minCodes)
+                Random(seed).nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else config.minCodes
+
             return SystemCodes(maxNumberOfCodes)
         }
 }

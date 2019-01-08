@@ -28,4 +28,10 @@ data class BundleProductConfiguration(
      */
     val minQuantity: Int = 1,
     val maxQuantity: Int = 5
-)
+) {
+    init {
+        require(
+            maxBundledProducts >= minBundledProducts,
+            { "maxBundledProducts need to be greater equal minBundledProducts" })
+    }
+}

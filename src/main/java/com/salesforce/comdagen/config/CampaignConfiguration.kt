@@ -36,4 +36,13 @@ data class CampaignConfiguration(
      */
     override val elementCount: Int = 0,
     override val initialSeed: Long
-) : ExtendableObjectConfig
+) : ExtendableObjectConfig {
+    init {
+        require(maxPromotions >= minPromotions, { "maxPromotions need to be greater equal minPromotions" })
+        require(
+            maxCustomerGroups >= minCustomerGroups,
+            { "maxCustomerGroups need to be greater equal minCustomerGroups" })
+        require(maxCoupons >= minCoupons, { "maxCoupons need to be greater equal minCoupons" })
+        require(maxSourceCodes >= minSourceCodes, { "maxSourceCodes need to be greater equal minSourceCodes" })
+    }
+}

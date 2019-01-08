@@ -24,4 +24,9 @@ data class ShippingPromotionConfiguration(
     override val customAttributes: Map<String, AttributeConfig>? = null,
 
     override val generatedAttributes: GeneratedAttributeConfig? = null
-) : ExtendableObjectConfig
+) : ExtendableObjectConfig {
+    init {
+        require(maxDiscount >= minDiscount, { "maxDiscount needs to be greater equal minDiscount" })
+        require(maxThreshold >= minThreshold, { "maxThreshold needs to be greater equal minThreshold" })
+    }
+}

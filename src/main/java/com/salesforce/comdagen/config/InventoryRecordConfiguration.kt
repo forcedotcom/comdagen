@@ -21,4 +21,8 @@ data class InventoryRecordConfiguration(
     /** Not used. Number of records is determined by [InventoryConfig.coverage] percentage. */
     override val elementCount: Int = 0,
     override val initialSeed: Long
-) : ExtendableObjectConfig
+) : ExtendableObjectConfig {
+    init {
+        require(maxCount >= minCount, { "maxCount needs to be greater equal minCount" })
+    }
+}

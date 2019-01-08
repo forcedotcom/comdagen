@@ -7,7 +7,6 @@
 
 package com.salesforce.comdagen.model
 
-import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.SourceCodeConfiguration
@@ -25,16 +24,9 @@ data class SourceCodeGroup(private val seed: Long, private val config: SourceCod
         get() {
             val rng = Random(seed + "sourceCodes".hashCode())
 
-            val n = when {
-                config.maxCodes > config.minCodes ->
-                    rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
-                config.maxCodes == config.minCodes -> config.minCodes
-
-                else -> throw InvalidComdagenConfigurationValueException(
-                    "minCodes value ${config.minCodes} needs to be bigger than" +
-                            " maxCodes ${config.maxCodes} in the sourcecodes.yaml configuration file."
-                )
-            }
+            val n = if (config.maxCodes > config.minCodes)
+                rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else config.minCodes
 
             // generate n strings with length 12
             return (1..n).map {

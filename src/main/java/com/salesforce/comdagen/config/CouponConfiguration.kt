@@ -34,4 +34,8 @@ data class CouponConfiguration(
     override val outputDir: String = "site",
 
     override val templateName: String = "coupons.ftlx"
-) : RenderConfig, Configuration
+) : RenderConfig, Configuration {
+    init {
+        require(maxCodes >= minCodes, { "maxCodes needs to be greater equal minCodes" })
+    }
+}

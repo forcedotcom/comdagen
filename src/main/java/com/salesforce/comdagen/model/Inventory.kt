@@ -7,7 +7,6 @@
 
 package com.salesforce.comdagen.model
 
-import com.salesforce.InvalidComdagenConfigurationValueException
 import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.config.InventoryConfiguration
 import com.salesforce.comdagen.config.InventoryRecordConfiguration
@@ -85,30 +84,19 @@ class InventoryRecord(
 ) {
 
     val allocation: Int
-        get() = when {
-            config.maxCount > config.minCount -> Random(seed).nextInt(config.maxCount - config.minCount) +
-                    config.minCount
-            config.maxCount == config.minCount -> config.minCount
-            else -> throw InvalidComdagenConfigurationValueException(
-                "minCount value ${config.minCount} needs to be bigger than maxCount " +
-                        "${config.maxCount} in the inventories.yaml configuration file."
-            )
-        }
+        get() = if (config.maxCount > config.minCount)
+            Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        else config.minCount
 
     // use yesterday as allocation date to not conflict with different timezones
     val allocationDateTime: String
         get() = DateTimeFormatter.ISO_INSTANT.format(LocalDateTime.now().minusDays(1).toInstant(ZoneOffset.UTC))
 
     val ats: Int
-        get() = when {
-            config.maxCount > config.minCount -> Random(seed).nextInt(config.maxCount - config.minCount) +
-                    config.minCount
-            config.maxCount == config.minCount -> config.minCount
-            else -> throw InvalidComdagenConfigurationValueException(
-                "minCount value ${config.minCount} needs to be bigger than maxCount " +
-                        "${config.maxCount} in the inventories.yaml configuration file."
-            )
-        }
+        get() = if (config.maxCount > config.minCount)
+            Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        else config.minCount
+
 
     val perpetual: Boolean
         get() = false
