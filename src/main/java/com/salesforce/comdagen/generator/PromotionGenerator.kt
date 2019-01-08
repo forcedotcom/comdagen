@@ -73,8 +73,13 @@ data class PromotionGenerator(
             val defaultCustomerGroups = listOf("Everyone", "Registered", "Unregistered")
 
             while (promotions.isNotEmpty()) {
-                val promotionCount =
-                    assignmentRng.nextInt(configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions) + configuration.campaigns.minPromotions
+                val promotionCount = if (configuration.campaigns.maxPromotions > configuration.campaigns.minPromotions)
+                    assignmentRng.nextInt(
+                        configuration.campaigns.maxPromotions -
+                                configuration.campaigns.minPromotions
+                    ) + configuration.campaigns.minPromotions
+                else configuration.campaigns.minPromotions
+
                 val campaign = Campaign(
                     seed = campaignRng.nextLong(),
                     attributeDefinitions = metadata["Campaign"].orEmpty(),
@@ -108,8 +113,12 @@ data class PromotionGenerator(
             val assignments = mutableListOf<CampaignPromotionAssignment>()
 
             campaigns.forEach { campaign ->
-                val promotionCount =
-                    rng.nextInt(configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions) + configuration.campaigns.minPromotions
+                val promotionCount = if (configuration.campaigns.maxPromotions > configuration.campaigns.minPromotions)
+                    rng.nextInt(
+                        configuration.campaigns.maxPromotions - configuration.campaigns.minPromotions
+                    ) + configuration.campaigns.minPromotions
+                else
+                    configuration.campaigns.minPromotions
                 (1..promotionCount).forEach {
                     if (promotions.isNotEmpty()) {
                         val promotion = promotions[rng.nextInt(promotions.size)]

@@ -22,4 +22,8 @@ data class ProductSetConfiguration(
     val minSetProducts: Int = 2,
 
     val maxSetProducts: Int = 10
-)
+) {
+    init {
+        require(maxSetProducts >= minSetProducts, { "maxSetProducts needs to be greater equal minSetProducts" })
+    }
+}

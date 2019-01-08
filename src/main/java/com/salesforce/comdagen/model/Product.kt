@@ -156,8 +156,10 @@ data class BundleProduct(
 
             val productList = catalog.getAllProducts()
 
-            val elementCount =
+            val elementCount = if (config.maxBundledProducts > config.minBundledProducts)
                 rng.nextInt(config.maxBundledProducts - config.minBundledProducts) + config.minBundledProducts
+            else config.minBundledProducts
+
 
             val startIdx = rng.nextInt(productList.size - elementCount)
 
@@ -166,7 +168,10 @@ data class BundleProduct(
             if (startIdx >= 0) {
                 val products = productList.subList(startIdx, startIdx + elementCount)
                 products.forEach { product ->
-                    val quantity = rng.nextInt(config.maxQuantity - config.minQuantity) + config.minQuantity
+                    val quantity = if (config.maxQuantity > config.minQuantity)
+                        rng.nextInt(config.maxQuantity - config.minQuantity) + config.minQuantity
+                    else config.minQuantity
+
                     bundledProductMap.put(product, quantity)
                 }
             }
@@ -184,7 +189,11 @@ data class ProductSet(
             val rng = Random(seed)
 
             val productList = catalog.getAllProducts()
-            val elementCount = rng.nextInt(config.maxSetProducts - config.minSetProducts) + config.minSetProducts
+            val elementCount = if (config.maxSetProducts > config.minSetProducts)
+                rng.nextInt(config.maxSetProducts - config.minSetProducts) + config.minSetProducts
+            else
+                config.minSetProducts
+
             val startIdx = rng.nextInt(productList.size - elementCount)
 
             return productList.subList(startIdx, startIdx + elementCount)
@@ -219,7 +228,10 @@ data class ProductOption(
     override val dataStore: List<OptionValue>
         get() {
             val rng = Random(seed)
-            val n = rng.nextInt(config.maxValues - config.minValues) + config.minValues
+            val n = if (config.maxValues > config.minValues)
+                rng.nextInt(config.maxValues - config.minValues) + config.minValues
+            else config.minValues
+
 
             return (1..n).map {
                 if (it == 1) {

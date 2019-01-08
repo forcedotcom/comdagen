@@ -26,4 +26,8 @@ data class SourceCodeConfiguration(
     override val outputFilePattern: String = "sourcecodes.xml",
     override val outputDir: String = "",
     override val templateName: String = "sourcecodes.ftlx"
-) : RenderConfig, ExtendableObjectConfig
+) : RenderConfig, ExtendableObjectConfig {
+    init {
+        require(maxCodes >= minCodes, { "maxCodes needs to be greater equal minCodes" })
+    }
+}

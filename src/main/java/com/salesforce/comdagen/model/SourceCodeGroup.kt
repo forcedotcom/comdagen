@@ -24,7 +24,9 @@ data class SourceCodeGroup(private val seed: Long, private val config: SourceCod
         get() {
             val rng = Random(seed + "sourceCodes".hashCode())
 
-            val n = rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            val n = if (config.maxCodes > config.minCodes)
+                rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else config.minCodes
 
             // generate n strings with length 12
             return (1..n).map {

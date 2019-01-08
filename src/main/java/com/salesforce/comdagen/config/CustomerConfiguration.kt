@@ -48,4 +48,8 @@ data class CustomerConfiguration(
     override val outputFilePattern: String = "customer-list\${i}.xml",
     override val outputDir: String = "customer-lists",
     override val templateName: String = "customers.ftlx"
-) : RenderConfig, ExtendableObjectConfig
+) : RenderConfig, ExtendableObjectConfig {
+    init {
+        require(maxAddressCount >= minAddressCount, { "maxAdressCount needs to be greater equal minAdressCount" })
+    }
+}

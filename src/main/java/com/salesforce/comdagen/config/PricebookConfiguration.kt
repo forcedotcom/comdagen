@@ -81,4 +81,9 @@ data class PricebookConfiguration(
     override val outputFilePattern: String = "pricebooks\${i}.xml",
     override val outputDir: String = "pricebooks",
     override val templateName: String = "pricebooks.ftlx"
-) : RenderConfig, ExtendableObjectConfig
+) : RenderConfig, ExtendableObjectConfig {
+    init {
+        require(maxAmount >= minAmount, { "maxAmount needs to be greater equal minAmount" })
+        require(maxAmountCount >= minAmountCount, { "maxAmountCount needs to be greater equal minAmountCount" })
+    }
+}

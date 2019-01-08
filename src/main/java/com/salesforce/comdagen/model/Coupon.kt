@@ -39,8 +39,10 @@ class CodeListCoupon(private val seed: Long, private val config: CouponConfigura
     val codeList: List<String>
         get() {
             val rng = Random(seed)
-            val count = rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
-
+            val count = if (config.maxCodes > config.minCodes)
+                rng.nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else
+                config.minCodes
             return (1..count).map { RandomData.getRandomCouponCode(rng.nextLong()) }
         }
 }
@@ -51,7 +53,9 @@ class CodeListCoupon(private val seed: Long, private val config: CouponConfigura
 class SystemCodeCoupon(private val seed: Long, private val config: SystemCodeConfig) : Coupon(seed) {
     val systemCodes: SystemCodes
         get() {
-            val maxNumberOfCodes = Random(seed).nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            val maxNumberOfCodes = if (config.maxCodes > config.minCodes)
+                Random(seed).nextInt(config.maxCodes - config.minCodes) + config.minCodes
+            else config.minCodes
 
             return SystemCodes(maxNumberOfCodes)
         }

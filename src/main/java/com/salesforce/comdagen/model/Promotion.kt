@@ -38,7 +38,9 @@ data class ProductPromotion(
         get() = categoryIds[Random(seed).nextInt(categoryIds.size)]
 
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = if (config.maxDiscount > config.minDiscount)
+            Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        else config.minDiscount
 
     override val calloutMsg: String
         get() = "Get $discount% off!"
@@ -52,7 +54,9 @@ data class OrderPromotion(
     private val config: OrderPromotionConfiguration
 ) : Promotion(seed) {
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = if (config.maxDiscount > config.minDiscount)
+            Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        else config.minDiscount
 
     val threshold: Float
         get() = Random(seed).nextFloat() * (config.maxThreshold - config.minThreshold) + config.minThreshold
@@ -78,7 +82,10 @@ data class ShippingPromotion(
         get() = Random(seed).nextFloat() * (config.maxThreshold - config.minThreshold) + config.minThreshold
 
     val discount: Int
-        get() = Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        get() = if (config.maxDiscount > config.minDiscount)
+            Random(seed).nextInt(config.maxDiscount - config.minDiscount) + config.minDiscount
+        else
+            config.minDiscount
 
     val shippingMethod: String
         get() = shippingIds[Random(seed + "shippingMethod".hashCode()).nextInt(shippingIds.size)]
@@ -108,7 +115,9 @@ data class Campaign(
         get() {
             val rng = Random(seed)
 
-            val count = rng.nextInt(config.maxCoupons - config.minCoupons) + config.minCoupons
+            val count = if (config.maxCoupons > config.minCoupons)
+                rng.nextInt(config.maxCoupons - config.minCoupons) + config.minCoupons
+            else config.minCoupons
 
             if (count >= couponIds.size) {
                 return couponIds
@@ -123,7 +132,9 @@ data class Campaign(
         get() {
             val rng = Random(seed)
 
-            val count = rng.nextInt(config.maxCustomerGroups - config.minCustomerGroups) + config.minCustomerGroups
+            val count = if (config.maxCustomerGroups > config.minCustomerGroups)
+                rng.nextInt(config.maxCustomerGroups - config.minCustomerGroups) + config.minCustomerGroups
+            else config.minCustomerGroups
 
             if (count >= customerGroupIds.size) {
                 return customerGroupIds
@@ -138,7 +149,9 @@ data class Campaign(
         get() {
             val rng = Random(seed + "campaignSourceCodes".hashCode())
 
-            val count = rng.nextInt(config.maxSourceCodes - config.minSourceCodes) + config.minSourceCodes
+            val count = if (config.maxSourceCodes > config.minSourceCodes)
+                rng.nextInt(config.maxSourceCodes - config.minSourceCodes) + config.minSourceCodes
+            else config.minSourceCodes
 
             if (count >= sourceCodeIds.size) {
                 return sourceCodeIds

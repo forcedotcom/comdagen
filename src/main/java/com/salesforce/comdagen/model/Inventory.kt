@@ -84,14 +84,19 @@ class InventoryRecord(
 ) {
 
     val allocation: Int
-        get() = Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        get() = if (config.maxCount > config.minCount)
+            Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        else config.minCount
 
     // use yesterday as allocation date to not conflict with different timezones
     val allocationDateTime: String
         get() = DateTimeFormatter.ISO_INSTANT.format(LocalDateTime.now().minusDays(1).toInstant(ZoneOffset.UTC))
 
     val ats: Int
-        get() = Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        get() = if (config.maxCount > config.minCount)
+            Random(seed).nextInt(config.maxCount - config.minCount) + config.minCount
+        else config.minCount
+
 
     val perpetual: Boolean
         get() = false

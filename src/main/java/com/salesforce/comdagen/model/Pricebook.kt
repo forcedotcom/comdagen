@@ -116,7 +116,10 @@ class PriceTable(
 
             var amountCount = 1
             if (config.maxAmountCount > 1) {
-                amountCount = rng.nextInt(config.maxAmountCount - config.minAmountCount) + config.minAmountCount
+                amountCount = if (config.maxAmountCount > config.minAmountCount)
+                    rng.nextInt(config.maxAmountCount - config.minAmountCount) + config.minAmountCount
+                else config.minAmountCount
+
             }
             return (1..amountCount).map { quantity -> Amount(seed, config, quantity, currency, sale) }
         }

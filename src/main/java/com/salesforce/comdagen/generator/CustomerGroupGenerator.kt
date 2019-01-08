@@ -27,8 +27,11 @@ data class CustomerGroupGenerator(
             val groups = objects
             val rng = Random(configuration.initialSeed)
             return groups.flatMap { group ->
-                val customerCount =
-                    rng.nextInt(configuration.maxCustomers - configuration.minCustomers) + configuration.minCustomers
+                val customerCount = if (configuration.maxCustomers > configuration.minCustomers)
+                    rng.nextInt(configuration.maxCustomers - configuration.minCustomers) +
+                            configuration.minCustomers
+                else
+                    configuration.minCustomers
                 (1..customerCount).asSequence().map { GroupAssignment(group.id, getRandomCustomer(rng.nextInt())) }
             }
         }

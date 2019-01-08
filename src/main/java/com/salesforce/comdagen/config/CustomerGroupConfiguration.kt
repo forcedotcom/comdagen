@@ -26,4 +26,8 @@ data class CustomerGroupConfiguration(
     override val outputFilePattern: String = "generated.xml",
     override val outputDir: String = "",
     override val templateName: String = "customer-groups.ftlx"
-) : RenderConfig, ExtendableObjectConfig
+) : RenderConfig, ExtendableObjectConfig {
+    init {
+        require(maxCustomers >= minCustomers, { "maxCustomers needs to be greater equal minCustomers" })
+    }
+}

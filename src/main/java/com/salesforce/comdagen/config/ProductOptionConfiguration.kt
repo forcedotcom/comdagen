@@ -50,4 +50,9 @@ data class ProductOptionConfiguration(
      */
     @JsonProperty("probability")
     val probability: Float = 0.1F
-)
+) {
+    init {
+        require(maxPrice >= minPrice, { "maxPrice needs to be greater equal minPrice" })
+        require(maxValues >= minValues, { "maxValues needs to be greater equal minValues" })
+    }
+}
