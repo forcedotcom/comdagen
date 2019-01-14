@@ -201,6 +201,10 @@
         </sorting-attributes>
     </sorting-rule>
 
+    <#list gen.assignments as assignment>
+    <sorting-rule-assignment category-id="${assignment.categoryId}" rule-id="${assignment.ruleId}" />
+    </#list>
+
     <sorting-options>
         <sorting-option option-id="best-matches">
             <rule-id>best-matches</rule-id>
@@ -269,8 +273,4 @@
     </sorting-options>
 
     <keyword-search-sorting-rule-assignment rule-id="best-matches"/>
-
-    <#list gen.assignments as assignment>
-    <sorting-rule-assignment category-id="${assignment.categoryId}" rule-id="${assignment.ruleId}" />
-    </#list>
 </sort>
