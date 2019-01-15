@@ -4,6 +4,7 @@ import com.salesforce.comdagen.config.SortingRuleConfiguration
 import com.salesforce.comdagen.generator.SortingRuleGenerator
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class SortingRuleTest {
 
@@ -19,6 +20,9 @@ class SortingRuleTest {
         val generator = SortingRuleGenerator(config)
 
         assertEquals(elementCount, generator.objects.count())
-        assertEquals(elementCount, generator.assignments.count())
+        assertTrue(
+            generator.assignments.count() >= 1,
+            "At least the root category is per default assigned in the template"
+        )
     }
 }
