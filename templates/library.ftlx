@@ -39,15 +39,16 @@
                    &lt;/ul&gt;
                    &lt;h3&gt;Site statistics:&lt;/h3&gt;
                            <#list comdagensitestats?values as site>
-                               &lt;table&gt;
+                               &lt;table style=&quot;border: black solid 1px; width: auto&quot;&gt;
                                    &lt;tr&gt;
                                <#list site as key, value>
-                                           &lt;th&gt;${key}&lt;/th&gt;
+                                           &lt;th style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${key}&lt;/th&gt;
                                </#list>
                                    &lt;/tr&gt;
                                    &lt;tr&gt;
                                <#list site as key, value>
-                                           &lt;td&gt;${value}&lt;/td&gt;
+                                           &lt;td style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${value}
+                                   &lt;/td&gt;
                                </#list>
                                    &lt;/tr&gt;
                                &lt;/table&gt;
@@ -55,15 +56,16 @@
                            </#list>
                    &lt;h3&gt;Library statistics:&lt;/h3&gt;
                            <#list comdagenlibrarystats?values as site>
-                               &lt;table&gt;
+                               &lt;table style=&quot;border: black solid 1px; width: auto&quot;&gt;
                                    &lt;tr&gt;
                                <#list site as key, value>
-                                           &lt;th&gt;${key}&lt;/th&gt;
+                                           &lt;th style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${key}&lt;/th&gt;
                                </#list>
                                    &lt;/tr&gt;
                                    &lt;tr&gt;
                                <#list site as key, value>
-                                           &lt;td&gt;${value}&lt;/td&gt;
+                                           &lt;td style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${value}
+                                   &lt;/td&gt;
                                </#list>
                                    &lt;/tr&gt;
                                &lt;/table&gt;
