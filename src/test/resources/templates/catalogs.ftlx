@@ -424,9 +424,9 @@
 <#list catalog.sharedVariationAttributes as attribute>
     <variation-attribute attribute-id="${attribute.id}" variation-attribute-id="${attribute.id}">
         <display-name xml:lang="x-default">${attribute.id?capitalize}</display-name>
-        <#if attribute.values?has_content>
+        <#if attribute.dataStore?has_content>
             <variation-attribute-values>
-                <#list attribute.values as value>
+                <#list attribute.dataStore as value>
                     <variation-attribute-value value="${value}">
                         <display-value xml:lang="x-default">${value?capitalize}</display-value>
                     </variation-attribute-value>
