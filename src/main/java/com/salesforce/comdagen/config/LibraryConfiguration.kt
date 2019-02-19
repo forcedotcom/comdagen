@@ -26,8 +26,10 @@ data class LibraryConfiguration(
     @JsonProperty("folderDefaults")
     val defaultFolderConfigs: FolderConfiguration,
     val folderCount: Int = 6,
-    @JsonProperty("generateSummaryContentAsset")
-    val renderComdagenSummaryContentAsset: Boolean = true,
+    /* Set this to default false since a specific folder "ComdagenContentAssets" is
+     expected to exist in order to avoid DataErrors */
+    @JsonProperty("renderSummary")
+    val renderComdagenSummaryContentAsset: Boolean = false,
 
     val libraries: List<LibraryConfiguration> = listOf(),
     @JsonProperty("contentAssetDefaults")
