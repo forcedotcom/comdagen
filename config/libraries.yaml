@@ -28,7 +28,7 @@ libraryConfig:
   # sites if generateSummaryContentAsset is set to true or is left out in the config. Additionally display
   # product count for sites and content asset count for libraries. This content asset counts towards
   # contentAssetCount meaning, if generateSummaryContentAsset is set to true or is left out in the config,
-  # there will be 9 normally generated content assets.
+  # there will be 9 normally generated content assets. The folder "ComdagenContentAssets" is expected to exist.
   generateSummaryContentAsset: true
 
 
