@@ -16,7 +16,7 @@
             <preference preference-id="OrderExportDelay">30</preference>
             <preference preference-id="OrderIPLoggingEnabled">true</preference>
             <preference preference-id="OrderLifetime">0</preference>
-            <preference preference-id="PaymentAccountNumberLifetime">0</preference>
+            <preference preference-id="AccountNumberRetentionDays">0</preference>
             <preference preference-id="ProductChangeFrequency">daily</preference>
             <preference preference-id="ProductPriority">0.5</preference>
             <#if catalogs??>
