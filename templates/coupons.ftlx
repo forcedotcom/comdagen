@@ -17,6 +17,7 @@
         <#if coupon.systemCodes??>
         <system-codes>
             <max-number-of-codes>${coupon.systemCodes.maxNumberOfCodes}</max-number-of-codes>
+            <algorithm>F2</algorithm>
         </system-codes>
         </#if>
     </coupon>
