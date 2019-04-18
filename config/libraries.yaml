@@ -1,8 +1,6 @@
 # Configurations for libraries, folders and content assets. CustomAttributes are not supported yet. There is a main
 # library defined by "libraryConfig:". This library can contain additional further customized custom libraries under
 # "libraries:" and customized folders under "folders:".
-# If the library "ComdagenSharedLibrary" exists and contains a content asset named "ComdagenSummary" then this will be
-# rendered in a central content slot on the store front.
 libraryConfig:
   # root folder for libraries
   outputDir: "libraries"
@@ -24,11 +22,9 @@ libraryConfig:
   # generated folders up to "folderCount" folders
   folderCount: 10
 
-  # Generates a content asset containing the top level seeds and names of all generated libraries and
-  # sites if generateSummaryContentAsset is set to true or is left out in the config. Additionally display
-  # product count for sites and content asset count for libraries. This content asset counts towards
-  # contentAssetCount meaning, if generateSummaryContentAsset is set to true or is left out in the config,
-  # there will be 9 normally generated content assets. The folder "ComdagenContentAssets" is expected to exist.
+  # This generates a library called 'ComdagenSummaryLibrary' that consists of a single folder ('root') that contains
+  # a content asset called 'ComdagenSummary' that summarizes the comdagen run used to create the data. This will be
+  # displayed in the central content slot on the store front.
   generateSummaryContentAsset: true
 
 
@@ -36,15 +32,12 @@ libraryConfig:
   contentAssetDefaults:
     # Either use random contentIds or ContentId_<number> when generating random content assets
     useRandomContentIds: true
-    classificationFolder: "root"
 
   # This overrides default settings for folder generation
   folderDefaults:
     onlineFlag: false
     # Use randomly generated folderIds instead of Folder_<index>
     randomFolderIds: false
-    # Parent folder
-    parent: "ComdagenContentAssets"
 
 
   #------------------------
@@ -69,7 +62,7 @@ libraryConfig:
 
     # This overrides default settings for content asset generation
     contentAssetDefaults:
-      classificationFolder: "root"
+      useRandomContentIds: true
 
     # This overrides default settings for folder generation
     folderDefaults:
@@ -77,28 +70,14 @@ libraryConfig:
       parent: "root"
 
     folders:
-    - folderId: "root"
-      displayName: "Root folder"
-      description: "Offers comdagen generated content"
-      # The content of folders marked with onlineFlag false is disabled
-      onlineFlag: true
+      - folderId: "TestFolder2"
+        displayName: "Folder 2"
+        description:  "This is a second comdagen generated custom folder."
+        onlineFlag: true
 
   # Creating a custom folder for each entry
   folders:
-  # If no folderId is given a randomized generated one is being used
-  - folderId: "root"
-    displayName: "Root folder"
-    description: "Offers comdagen generated content"
+  - folderId: "TestFolder1"
+    displayName: "Folder 1"
+    description:  "This is a comdagen generated custom folder."
     onlineFlag: true
-
-  - folderId: "ComdagenContent"
-    displayName: "Custom comdagen folder"
-    description:  "Content folder for Comdagen generated content"
-    onlineFlag: true
-    parent: "root"
-
-  - folderId: "ComdagenContentAssets"
-    displayName: "Custom comdagen folder"
-    description: "Content folder for Comdagen generated content"
-    onlineFlag: true
-    parent: "ComdagenContent"
