@@ -29,7 +29,7 @@ class Library(
 ) {
 
     // Use the predefined libraryId or the internal id for the libraryId
-    val libraryId: String get() = config.libraryId ?: "Library_"+internId.toString()
+    val libraryId: String get() = config.libraryId ?: "Library_$internId"
 
     /**
      * Generate up to content assets up to the count contentAssetCount which is defined in the
@@ -61,15 +61,15 @@ class Library(
         get() {
             val rng = Random(seed + "folders".hashCode())
             // Create custom folders up to config.folderCount
-            return (1..Math.min(config.folderCount, config.folders.size)).map {
+            return ((1..Math.min(config.folderCount, config.folders.size)).map {
                 RandomFolder(rng.nextLong(), config.folders[it - 1])
                 // Fill with generated folders up to config.folderCount
-            }.plus((1..config.folderCount - config.folders.size).map {
+            }.asSequence() + (1..config.folderCount - config.folders.size).map {
                 IndexedRandomFolder(
                     it,
                     rng.nextLong(),
                     config.defaultFolderConfigs
                 )
-            })
+            }.asSequence()).toList()
         }
 }
