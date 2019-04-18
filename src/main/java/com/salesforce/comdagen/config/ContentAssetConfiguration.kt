@@ -15,7 +15,7 @@ import com.salesforce.comdagen.Configuration
 data class ContentConfiguration(
     override val initialSeed: Long = 1234,
     val contentId: String?,
-    val classificationFolder: String?,
+    val classificationFolder: String? = null,
 
     /**
      * Using either random nouns or incrementing ContentIds
