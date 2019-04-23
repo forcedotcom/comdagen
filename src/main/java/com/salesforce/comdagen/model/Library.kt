@@ -39,11 +39,7 @@ class Library(
     val contentAssets: List<RandomContentAsset>
         get() {
             val rng = Random(seed + "contentassets".hashCode())
-            val requestedGeneratedContentAssets: Long =
-                if (config.renderComdagenSummaryContentAsset)
-                    Math.max(config.contentAssetCount.toLong() - 1, 0)
-                else
-                    config.contentAssetCount.toLong()
+            val requestedGeneratedContentAssets: Long = config.contentAssetCount.toLong()
             return rng.longs(requestedGeneratedContentAssets).toList().mapIndexed { index, it ->
                 IndexedRandomContentAsset(
                     index + 1,

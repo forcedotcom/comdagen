@@ -10,7 +10,7 @@
         </folder>
     </#list>
 <#-- Creating comdagen specific content asset.-->
-   <#if library.config.renderComdagenSummaryContentAsset>
+   <#if library.libraryId == "ComdagenSummaryLibrary">
        <content content-id="ComdagenSummary">
            <display-name xml:lang="x-default">Comdagen summary</display-name>
            <description xml:lang="x-default">This content asset contains information about Comdagen and the generation
@@ -76,7 +76,7 @@
                </custom-attribute>
            </custom-attributes>
            <folder-links>
-               <classification-link folder-id="ComdagenContentAssets"/>
+               <classification-link folder-id="root"/>
            </folder-links>
        </content>
    </#if>
@@ -101,6 +101,10 @@
             <#if content.classificationFolder??>
                 <folder-links>
                     <classification-link folder-id="${content.classificationFolder}"/>
+                </folder-links>
+            <#else>
+                <folder-links>
+                    <classification-link folder-id="${folders[0].folderId}"/>
                 </folder-links>
             </#if>
         </content>

@@ -38,6 +38,7 @@ libraryConfig:
     onlineFlag: false
     # Use randomly generated folderIds instead of Folder_<index>
     randomFolderIds: false
+    parent: "root"
 
 
   #------------------------
@@ -57,9 +58,6 @@ libraryConfig:
     # Total generated folders per library
     folderCount: 4
 
-    # Renders a summary about the comdagen run
-    renderSummary: false
-
     # This overrides default settings for content asset generation
     contentAssetDefaults:
       useRandomContentIds: true
@@ -74,6 +72,7 @@ libraryConfig:
         displayName: "Folder 2"
         description:  "This is a second comdagen generated custom folder."
         onlineFlag: true
+        parent: "root"
 
   # Creating a custom folder for each entry
   folders:
@@ -81,3 +80,4 @@ libraryConfig:
     displayName: "Folder 1"
     description:  "This is a comdagen generated custom folder."
     onlineFlag: true
+    parent: "root"

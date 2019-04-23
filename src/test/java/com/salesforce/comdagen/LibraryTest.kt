@@ -67,18 +67,18 @@ class LibraryTest {
             "Testing if initial seed is present"
         )
 
-        assertEquals(3, libraryObjects.count(), "Testing library count")
+        assertEquals(3 + 1, libraryObjects.count(), "Testing library count")
 
-        assertEquals(10 * 3, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(10 * 3 + 1, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Library_0", "Library_1", "Library_2"),
+            listOf("ComdagenSummaryLibrary", "Library_0", "Library_1", "Library_2"),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
 
         assertEquals(
-            30,
+            30 + 1,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.parent }
             }.filter { it == "root" }.count(),
@@ -86,7 +86,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            30,
+            30 + 1,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -101,10 +101,13 @@ class LibraryTest {
             "Test folder description"
         )
 
-        assertEquals(9 * 3, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
+
+        // The 'ComdagenSummary' content assets is being created in the template and therefore does not count as content
+        // asset in the Library class.
+        assertEquals(10 * 3, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
 
 
-        assertEquals(9 * 3,
+        assertEquals(10 * 3,
             libraryObjects.flatMap { lib ->
                 lib.contentAssets.asSequence().map { it.classificationFolder }
             }.filter { it == "testfolder" }.count(),
@@ -112,7 +115,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            9 * 3,
+            10 * 3,
             libraryObjects.flatMap { lib ->
                 lib.contentAssets.asSequence().map { it.attributeId }
             }.filter { it == AttributeId.BODY }.count(),
@@ -227,12 +230,21 @@ class LibraryTest {
             "Testing if initial seed is present"
         )
 
-        assertEquals(7, libraryObjects.count(), "Testing library count")
+        assertEquals(7+1, libraryObjects.count(), "Testing library count")
 
-        assertEquals(6 * 5 + 6, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(6 * 5 + 6 + 1, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Testing library", "Library_1", "Library_2", "Library_3", "Library_4", "Library_5", "Library_6"),
+            listOf(
+                "ComdagenSummaryLibrary",
+                "Testing library",
+                "Library_1",
+                "Library_2",
+                "Library_3",
+                "Library_4",
+                "Library_5",
+                "Library_6"
+            ),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
@@ -242,7 +254,8 @@ class LibraryTest {
                 "testparent" to 3 * 6,
                 "testparent1" to 6,
                 "testparent2" to 11,
-                "testparent3" to 1
+                "testparent3" to 1,
+                "root" to 1
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.parent }.asSequence()
@@ -252,7 +265,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            29,
+            29 + 1,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -264,7 +277,8 @@ class LibraryTest {
                 "Testdescription" to 3 * 6,
                 "Testdescription1" to 6,
                 "Testdescription2" to 11,
-                "Testdescription3" to 1
+                "Testdescription3" to 1,
+                "Root folder containing the comdagen summary content asset." to 1
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.description }.asSequence()
@@ -273,11 +287,11 @@ class LibraryTest {
             "Test folder parent folder"
         )
 
-        assertEquals(9 * 6 + 20, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
+        assertEquals(6 * 10 + 20, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
 
         assertEquals(
             mapOf(
-                "classificationtest" to 54,
+                "classificationtest" to 60,
                 "null" to 20
             )
             , libraryObjects.flatMap { lib ->
@@ -290,7 +304,7 @@ class LibraryTest {
 
         assertEquals(
             mapOf(
-                AttributeId.BODY to 74
+                AttributeId.BODY to 80
             ) as Map<String, AttributeId>
             , libraryObjects.flatMap { lib ->
                 lib.contentAssets.map { if (it.attributeId == null) "null" else it.attributeId }
@@ -303,7 +317,7 @@ class LibraryTest {
     }
 
     @Test
-    fun testingOrderCreation() {
+    fun `testing cornercase configurations`() {
         val defaultFolderConfig = FolderConfiguration(
             328479,
             null,
@@ -423,19 +437,20 @@ class LibraryTest {
             "Testing if initial seed is present"
         )
 
-        assertEquals(1, libraryObjects.count(), "Testing library count")
+        assertEquals(1+1, libraryObjects.count(), "Testing library count")
 
-        assertEquals(1, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(1+1, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Library_0"),
+            listOf("ComdagenSummaryLibrary", "Library_0"),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
 
         assertEquals(
             mapOf(
-                "testparent1" to 1
+                "testparent1" to 1,
+                "root" to 1
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.parent }.asSequence()
@@ -445,7 +460,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            0,
+            1,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -454,7 +469,8 @@ class LibraryTest {
 
         assertEquals(
             mapOf(
-                "Testdescription1" to 1
+                "Testdescription1" to 1,
+                "Root folder containing the comdagen summary content asset." to 1
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.description }.asSequence()
@@ -483,19 +499,20 @@ class LibraryTest {
             "Testing if initial seed is present"
         )
 
+        // Additional 'ComdagenSummaryLibrary' is created (=3) but not configured in library configuration (=2).
+        assertEquals(2 + 1, libraryObjects2.count(), "Testing library count")
 
-        assertEquals(2, libraryObjects2.count(), "Testing library count")
-
-        assertEquals(2 + 6, libraryObjects2.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(2 + 6 + 1, libraryObjects2.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Testing library", "Library_1"),
+            listOf("ComdagenSummaryLibrary", "Testing library", "Library_1"),
             libraryObjects2.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
 
         assertEquals(
             mapOf(
+                "root" to 1,
                 "testparent1" to 1,
                 "testparent2" to 6,
                 "testparent3" to 1
@@ -508,7 +525,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            6,
+            6 + 1,
             libraryObjects2.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -519,7 +536,8 @@ class LibraryTest {
             mapOf(
                 "Testdescription1" to 1,
                 "Testdescription2" to 6,
-                "Testdescription3" to 1
+                "Testdescription3" to 1,
+                "Root folder containing the comdagen summary content asset." to 1
             )
             , libraryObjects2.flatMap { lib ->
                 lib.folders.map { it.description }.asSequence()
@@ -528,12 +546,13 @@ class LibraryTest {
             "Test folder parent folder"
         )
 
-        assertEquals(20, libraryObjects2.sumBy { it.contentAssets.count() }, "Test content asset count")
+        assertEquals(20 + 1, libraryObjects2.sumBy { it.contentAssets.count() }, "Test content asset count")
 
 
         assertEquals(
             mapOf(
-                "null" to 20
+                "null" to 20,
+                "classificationtest" to 1
             )
             , libraryObjects2.flatMap { lib ->
                 lib.contentAssets.map { if (it.classificationFolder == null) "null" else it.classificationFolder }
@@ -545,7 +564,7 @@ class LibraryTest {
 
         assertEquals(
             mapOf(
-                AttributeId.BODY to 20
+                AttributeId.BODY to 21
             ) as Map<String, AttributeId>
             , libraryObjects2.flatMap { lib ->
                 lib.contentAssets.map { if (it.attributeId == null) "null" else it.attributeId }
