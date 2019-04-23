@@ -25,8 +25,6 @@ open class RandomContentAsset(
 
     val attributeId: AttributeId get() = contentConfig.attributeId
 
-    val folderId: String? get() = contentConfig.classificationFolder
-
     val classificationFolder: String? get() = contentConfig.classificationFolder
 
     open val contentId: String

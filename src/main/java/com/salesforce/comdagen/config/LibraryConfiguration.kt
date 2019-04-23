@@ -27,8 +27,10 @@ data class LibraryConfiguration(
     val defaultFolderConfigs: FolderConfiguration =
         FolderConfiguration(initialSeed, null, null, null, parent = null),
     val folderCount: Int = 6,
-    /* Set this to default false since a specific folder "ComdagenContentAssets" is
-     expected to exist in order to avoid DataErrors */
+    /* If set to true generates a library called 'ComdagenSummaryLibrary' and the folders 'root' and the content
+    asset 'ComdagenSummary'. The generated library does not need to fulfill specified general requirements such as
+    a specific count of content assets or folders.
+    '*/
     @JsonProperty("generateSummaryContentAsset")
     val renderComdagenSummaryContentAsset: Boolean = false,
 

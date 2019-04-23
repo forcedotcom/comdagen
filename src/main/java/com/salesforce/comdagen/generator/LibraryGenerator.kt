@@ -7,6 +7,8 @@
 
 package com.salesforce.comdagen.generator
 
+import com.salesforce.comdagen.config.ContentConfiguration
+import com.salesforce.comdagen.config.FolderConfiguration
 import com.salesforce.comdagen.config.LibraryConfiguration
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Library
@@ -45,7 +47,7 @@ data class LibraryGenerator(
             )
             // Adding custom libraries
             x += (0 until Math.min(maxNumberOfLibraries - x.count(), configuration.libraries.size)).map { index ->
-                Library(index + 1, configuration.libraries[index].initialSeed, configuration.libraries[index])
+                Library(index + x.count(), configuration.libraries[index].initialSeed, configuration.libraries[index])
             }
 
             // Adding generated libraries to fill up
@@ -60,6 +62,40 @@ data class LibraryGenerator(
                     randomLong
                 )
             }.asSequence()
+
+            if (configuration.renderComdagenSummaryContentAsset)
+            // Adding the ComdagenSummaryLibrary that contains the comdagen summary content asset
+              x = sequenceOf(Library(
+                  1, configuration.initialSeed, LibraryConfiguration(
+                      configuration.initialSeed,
+                      "ComdagenSummaryLibrary",
+                      contentAssetCount = 0,
+                      folderCount = 1,
+                      folders = listOf(
+                          FolderConfiguration(
+                              configuration.initialSeed,
+                              "root",
+                              "Root folder",
+                              "Root folder containing the comdagen summary content asset.",
+                              true,
+                              "root",
+                              false,
+                              1
+                          )
+                      ), defaultFolderConfigs = FolderConfiguration(
+                          configuration.initialSeed,
+                          "root",
+                          "Root folder",
+                          "Root folder containing the comdagen summary content asset.",
+                          true,
+                          "root",
+                          false,
+                          1
+                      ),
+                      defaultContentAssetConfig = ContentConfiguration(configuration.initialSeed, contentId = null, classificationFolder = null)
+                  )
+              )) + x
+
             return x
         }
 
@@ -73,7 +109,8 @@ data class LibraryGenerator(
      * Generates a library according to the configuration of the generator but ignores the libraryId
      */
     val creatorFunIndexedLibrary =
-        { idx: Int, seed: Long -> Library(idx, seed, configuration.copy(libraryId = null)) }
+        { idx: Int, seed: Long -> Library(idx, seed, configuration.copy(libraryId = null,
+            renderComdagenSummaryContentAsset = false)) }
 
     // TODO: Implement metadata
     override val metadata: Map<String, Set<AttributeDefinition>>
