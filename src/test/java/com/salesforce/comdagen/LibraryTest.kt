@@ -216,27 +216,26 @@ class LibraryTest {
         val libraryObjects = libraryGenerator.objects
 
         assertTrue(
-            1 <= libraryObjects.map { it.seed }.filter { it == 122334L }.count() &&
-                    1 <= libraryObjects.map { it.seed }.filter { it == 1223345L }.count(),
+            1 <= libraryObjects.map { it.seed }.filter { it == 122334L }.count(),
             "Testing if initial seed is present"
         )
 
-        assertEquals(7, libraryObjects.count(), "Testing library count")
+        assertEquals(1, libraryObjects.count(), "Testing library count")
 
-        assertEquals(6 * 5 + 6, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(5, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Testing library", "Library_1", "Library_2", "Library_3", "Library_4", "Library_5", "Library_6"),
+            listOf("SiteGenesisSharedLibrary"),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
 
         assertEquals(
             mapOf(
-                "testparent" to 3 * 6,
-                "testparent1" to 6,
-                "testparent2" to 11,
-                "testparent3" to 1
+                "testparent" to 3,
+                "testparent1" to 1,
+                "testparent2" to 1
+
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.parent }.asSequence()
@@ -246,7 +245,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            29,
+            4,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -255,10 +254,9 @@ class LibraryTest {
 
         assertEquals(
             mapOf(
-                "Testdescription" to 3 * 6,
-                "Testdescription1" to 6,
-                "Testdescription2" to 11,
-                "Testdescription3" to 1
+                "Testdescription" to 3,
+                "Testdescription1" to 1,
+                "Testdescription2" to 1
             )
             , libraryObjects.flatMap { lib ->
                 lib.folders.map { it.description }.asSequence()
@@ -267,12 +265,11 @@ class LibraryTest {
             "Test folder parent folder"
         )
 
-        assertEquals(9 * 6 + 20, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
+        assertEquals(9, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
 
         assertEquals(
             mapOf(
-                "classificationtest" to 54,
-                "null" to 20
+                "classificationtest" to 9
             )
             , libraryObjects.flatMap { lib ->
                 lib.contentAssets.map { if (it.classificationFolder == null) "null" else it.classificationFolder }
@@ -284,7 +281,7 @@ class LibraryTest {
 
         assertEquals(
             mapOf(
-                AttributeId.BODY to 74
+                AttributeId.BODY to 9
             ) as Map<String, AttributeId>
             , libraryObjects.flatMap { lib ->
                 lib.contentAssets.map { if (it.attributeId == null) "null" else it.attributeId }
@@ -297,7 +294,7 @@ class LibraryTest {
     }
 
     @Test
-    fun testingOrderCreation() {
+    fun testingLibraries() {
         val defaultFolderConfig = FolderConfiguration(
             328479,
             null,
@@ -416,7 +413,7 @@ class LibraryTest {
         assertEquals(1, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Library_0"),
+            listOf("SiteGenesisSharedLibrary"),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
@@ -456,8 +453,7 @@ class LibraryTest {
         assertEquals(0
             , libraryObjects.flatMap { lib ->
                 lib.contentAssets.asSequence()
-            }
-                .count()
+            }.count()
             ,
             "Test folder parent folder"
         )
@@ -472,12 +468,12 @@ class LibraryTest {
         )
 
 
-        assertEquals(2, libraryObjects2.count(), "Testing library count")
+        assertEquals(1, libraryObjects2.count(), "Testing library count")
 
-        assertEquals(2 + 6, libraryObjects2.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(2, libraryObjects2.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Testing library", "Library_1"),
+            listOf("SiteGenesisSharedLibrary"),
             libraryObjects2.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
@@ -485,8 +481,7 @@ class LibraryTest {
         assertEquals(
             mapOf(
                 "testparent1" to 1,
-                "testparent2" to 6,
-                "testparent3" to 1
+                "testparent2" to 1
             )
             , libraryObjects2.flatMap { lib ->
                 lib.folders.map { it.parent }.asSequence()
@@ -496,7 +491,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            6,
+            1,
             libraryObjects2.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -506,41 +501,14 @@ class LibraryTest {
         assertEquals(
             mapOf(
                 "Testdescription1" to 1,
-                "Testdescription2" to 6,
-                "Testdescription3" to 1
+                "Testdescription2" to 1
             )
             , libraryObjects2.flatMap { lib ->
                 lib.folders.map { it.description }.asSequence()
-            }.asSequence().groupingBy { it }.eachCount() as Map<String, Int>
+            }.asSequence().groupingBy { it }.eachCount()
             ,
             "Test folder parent folder"
         )
-
-        assertEquals(20, libraryObjects2.sumBy { it.contentAssets.count() }, "Test content asset count")
-
-
-        assertEquals(
-            mapOf(
-                "null" to 20
-            )
-            , libraryObjects2.flatMap { lib ->
-                lib.contentAssets.map { if (it.classificationFolder == null) "null" else it.classificationFolder }
-                    .asSequence()
-            }.asSequence().groupingBy { it }.eachCount() as Map<String, Int>
-            ,
-            "Test folder parent folder"
-        )
-
-        assertEquals(
-            mapOf(
-                AttributeId.BODY to 20
-            ) as Map<String, AttributeId>
-            , libraryObjects2.flatMap { lib ->
-                lib.contentAssets.map { if (it.attributeId == null) "null" else it.attributeId }
-                    .asSequence()
-            }.asSequence().groupingBy { it }.eachCount() as Map<String, AttributeId>
-            ,
-            "Test folder parent folder"
-        )
+        assertEquals(0, libraryObjects2.sumBy { it.contentAssets.count() }, "Test generated content asset count")
     }
 }
