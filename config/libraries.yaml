@@ -1,8 +1,5 @@
-# Configurations for folders and content assets. CustomAttributes are not supported yet. The generated folders There is a main
-# library defined by "libraryConfig:". This library can contain additional further customized custom libraries under
-# "libraries:" and customized folders under "folders:".
-# If the library "ComdagenSharedLibrary" exists and contains a content asset named "ComdagenSummary" then this will be
-# rendered in a central content slot on the store front.
+# Configurations for folders and content assets. CustomAttributes are not supported yet. The defined content assets and
+# content folders will be spliced into the SiteGenesisSharedLibrary.
 libraryConfig:
   # root folder for libraries
   outputDir: "libraries"
@@ -10,18 +7,18 @@ libraryConfig:
   initialSeed: 1234
 
 
-  # Total number of generated content assets per library
+  # Total number of generated content assets
   generatedContentAssetCount: 30
 
-  # Total number of generated folders per library. Custom specified folders are generated first followed by default
+  # Total number of generated folders. Custom specified folders are generated first followed by default
   # generated folders up to "generatedFolderCount" folders
   generatedFolderCount: 10
 
   # Generates a content asset containing the top level seeds and names of all generated libraries and
-  # sites if generateSummaryContentAsset is set to true or is left out in the config. Additionally display
-  # product count for sites and content asset count for libraries. This content asset counts towards
-  # generatedContentAssetCount meaning, if generateSummaryContentAsset is set to true or is left out in the config,
-  # there will be 9 normally generated content assets.
+  # sites if generateSummaryContentAsset is set to true or is left out in the config. Additionally it displays
+  # the product count for sites. This content asset counts towards
+  # generatedContentAssetCount. If generateSummaryContentAsset is set to true or is left out in the config,
+  # there will be generatedContentAssetCount-1 normally generated content assets.
   generateSummaryContentAsset: true
 
 
