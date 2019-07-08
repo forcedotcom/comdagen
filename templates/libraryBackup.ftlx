@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.demandware.com/xml/impex/library/2006-10-31" library-id="${library.libraryId}">
+    <#list library.folders as folder>
+        <folder folder-id="${folder.folderId}">
+            <display-name xml:lang="x-default">${folder.displayName}</display-name>
+            <description xml:lang="x-default">${folder.description}</description>
+            <online-flag>${folder.onlineFlag?c}</online-flag><#if folder.parent??>
+            <parent>${folder.parent}</parent></#if>
+            <page-attributes/>
+        </folder>
+    </#list>
+<#-- Creating comdagen specific content asset.-->
+   <#if library.config.renderComdagenSummaryContentAsset>
+       <content content-id="ComdagenSummary">
+           <display-name xml:lang="x-default">Comdagen summary</display-name>
+           <description xml:lang="x-default">This content asset contains information about Comdagen and the generation
+               of data
+           </description>
+           <online-flag>true</online-flag>
+           <searchable-flag>true</searchable-flag>
+           <page-attributes/>
+           <custom-attributes>
+               <custom-attribute attribute-id="body" xml:lang="x-default">
+                   &lt;div style=&quot;padding:24px 16px 0 16px; font-size:1.1em;&quot;&gt;
+                   &lt;h2 style=&quot;color: rgb(86, 79, 71);&quot;&gt;Comdagen summary!&lt;/h2&gt;
+                   &lt;hr/&gt;
+                   &lt;p style=&quot;margin:0 0 8px 0;&quot;&gt;
+                   &lt;h3&gt;Generated sites with top level seed (${generalstatistics["Sites top level seed"]}):&lt;/h3&gt;
+                   &lt;ul&gt;
+                               <#list comdagensitestats?keys as siteid>
+                                   &lt;li&gt;${siteid}&lt;/li&gt;
+                               </#list>
+                   &lt;/ul&gt;
+                   &lt;h3&gt;Generated libraries with top level seed (${generalstatistics["Libraries top level seed"]}):&lt;/h3&gt;
+                   &lt;ul&gt;
+                               <#list comdagenlibrarystats?keys as libraryid>
+                                   &lt;li&gt;${libraryid}&lt;/li&gt;
+                               </#list>
+                   &lt;/ul&gt;
+                   &lt;h3&gt;Site statistics:&lt;/h3&gt;
+                           <#list comdagensitestats?values as site>
+                               &lt;table style=&quot;border: black solid 1px; width: auto&quot;&gt;
+                                   &lt;tr&gt;
+                               <#list site as key, value>
+                                           &lt;th style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${key}&lt;/th&gt;
+                               </#list>
+                                   &lt;/tr&gt;
+                                   &lt;tr&gt;
+                               <#list site as key, value>
+                                           &lt;td style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${value}
+                                   &lt;/td&gt;
+                               </#list>
+                                   &lt;/tr&gt;
+                               &lt;/table&gt;
+                               &lt;br /&gt;
+                           </#list>
+                   &lt;h3&gt;Library statistics:&lt;/h3&gt;
+                           <#list comdagenlibrarystats?values as site>
+                               &lt;table style=&quot;border: black solid 1px; width: auto&quot;&gt;
+                                   &lt;tr&gt;
+                               <#list site as key, value>
+                                           &lt;th style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${key}&lt;/th&gt;
+                               </#list>
+                                   &lt;/tr&gt;
+                                   &lt;tr&gt;
+                               <#list site as key, value>
+                                           &lt;td style=&quot;padding: 2px; border: solid black 1px&quot;&gt;${value}
+                                   &lt;/td&gt;
+                               </#list>
+                                   &lt;/tr&gt;
+                               &lt;/table&gt;
+                               &lt;br /&gt;
+                           </#list>
+                   &lt;/p&gt;
+                   &lt;/div&gt;
+               </custom-attribute>
+           </custom-attributes>
+           <folder-links>
+               <classification-link folder-id="ComdagenContentAssets"/>
+           </folder-links>
+       </content>
+   </#if>
+
+    <#list contentAssets as content>
+        <content content-id="${content.contentId}">
+            <#list content.displayName as region, name>
+                <display-name xml:lang="${region}">${name}</display-name>
+            </#list>
+            <#list content.description as region, description>
+                <description xml:lang="${region}">${description}</description>
+            </#list>
+            <online-flag>true</online-flag>
+            <searchable-flag>true</searchable-flag>
+            <page-attributes/>
+            <custom-attributes>
+            <#list content.customBody as region, body>
+                <custom-attribute attribute-id="${content.attributeId}"
+                                  xml:lang="${region}">${body?esc}</custom-attribute>
+            </#list>
+            </custom-attributes>
+            <#if content.classificationFolder??>
+                <folder-links>
+                    <classification-link folder-id="${content.classificationFolder}"/>
+                </folder-links>
+            </#if>
+        </content>
+    </#list>
+</library>
