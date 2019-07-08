@@ -42,19 +42,17 @@ class LibraryTest {
 
         val defaultLibraryConfig = LibraryConfiguration(
             1234,
-            null,
             10,
             emptyList(),
             defaultFolderConfig,
             10,
             true,
-            emptyList(),
 
             defaultContentConfig,
-            3,
+            1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
 
@@ -67,18 +65,18 @@ class LibraryTest {
             "Testing if initial seed is present"
         )
 
-        assertEquals(3, libraryObjects.count(), "Testing library count")
+        assertEquals(1, libraryObjects.count(), "Testing library count")
 
-        assertEquals(10 * 3, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
+        assertEquals(10, libraryObjects.sumBy { it.folders.count() }, "Test folder count")
 
         assertEquals(
-            listOf("Library_0", "Library_1", "Library_2"),
+            listOf("SiteGenesisSharedLibrary"),
             libraryObjects.map { it.libraryId }.toList(),
             "Test libraryIds"
         )
 
         assertEquals(
-            30,
+            10,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.parent }
             }.filter { it == "root" }.count(),
@@ -86,7 +84,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            30,
+            10,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.onlineFlag }
             }.filter { it }.count(),
@@ -94,17 +92,17 @@ class LibraryTest {
         )
 
         assertEquals(
-            30,
+            10,
             libraryObjects.flatMap { lib ->
                 lib.folders.asSequence().map { it.description }
             }.filter { it == "Testdescription" }.count(),
             "Test folder description"
         )
 
-        assertEquals(9 * 3, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
+        assertEquals(9, libraryObjects.sumBy { it.contentAssets.count() }, "Test content asset count")
 
 
-        assertEquals(9 * 3,
+        assertEquals(9,
             libraryObjects.flatMap { lib ->
                 lib.contentAssets.asSequence().map { it.classificationFolder }
             }.filter { it == "testfolder" }.count(),
@@ -112,7 +110,7 @@ class LibraryTest {
         )
 
         assertEquals(
-            9 * 3,
+            9,
             libraryObjects.flatMap { lib ->
                 lib.contentAssets.asSequence().map { it.attributeId }
             }.filter { it == AttributeId.BODY }.count(),
@@ -187,34 +185,30 @@ class LibraryTest {
 
         val customLibraryConfig = LibraryConfiguration(
             1223345,
-            null,
             20,
             listOf(customFolderConfig3),
             customFolderConfig2,
             6,
             false,
-            emptyList(),
             customContentConfig,
             1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
         val defaultLibraryConfig = LibraryConfiguration(
             122334,
-            "Testing library",
             10,
             listOf(customFolderConfig1, customFolderConfig2),
             defaultFolderConfig,
             5,
             true,
-            listOf(customLibraryConfig),
             defaultContentConfig,
-            7,
+            1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
 
@@ -368,50 +362,44 @@ class LibraryTest {
 
         val customLibraryConfig = LibraryConfiguration(
             1223345,
-            null,
             20,
             listOf(customFolderConfig3),
             customFolderConfig2,
             6,
             false,
-            emptyList(),
             customContentConfig,
             1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
         val defaultLibraryConfig = LibraryConfiguration(
             122334,
-            null,
             0,
             listOf(customFolderConfig1, customFolderConfig2),
             defaultFolderConfig,
             1,
             true,
-            emptyList(),
             defaultContentConfig,
             1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
         val defaultLibraryConfig2 = LibraryConfiguration(
             1221334,
-            "Testing library",
             1,
             listOf(customFolderConfig1, customFolderConfig2),
             defaultFolderConfig,
             2,
             true,
-            listOf(customLibraryConfig, customLibraryConfig),
             defaultContentConfig,
-            2,
+            1,
             "",
             "libraries",
-            "library.ftlx"
+            "libraryBackup.ftlx"
         )
 
 

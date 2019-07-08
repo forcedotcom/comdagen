@@ -178,7 +178,7 @@ constructor(
             )
         }
         comdagenStatistics.generalStatistics["Libraries top level seed"] =
-                generator.configuration.initialSeed.toString()
+            generator.configuration.initialSeed.toString()
 
         // For each library
         libraries.forEach { library ->
@@ -216,7 +216,7 @@ constructor(
         // Adding top level seed for statistics
         comdagenStatistics.generalStatistics["Sites top level seed"] = generator.configuration.initialSeed.toString()
 
-        generator.objects.forEach {
+        generator.objects.forEachIndexed { index, it ->
             // render site.xml
             LOGGER.info("Start rendering site ${it.id} with template $siteTemplateName")
             val siteModelData = mapOf("site" to it)
@@ -255,6 +255,33 @@ constructor(
                 preferencesTemplateName,
                 "${generator.configuration.outputDir}/${it.id}/preferences.xml", preferencesModelData
             )
+
+            /*
+            * render slots.xml
+            * This is dependent on the library.yaml generateSummaryContentAsset boolean. If a comdagen summary content
+            * asset gets generated, place it on the main page in a central slot. Otherwise use a default content asset
+            * there.
+            */
+            LOGGER.info("Start rendering slots for site ${it.id} with template $preferencesTemplateName")
+
+
+            // Use the configuration on the first x sites since those are the custom defined sites which could provde
+            // different slots.ftlx
+            if (index < generator.configuration.sites.size && generator.configuration.sites[index].slotsConfig != null) {
+                produce(
+                    generator.configuration.sites[index].slotsConfig!!,
+                    "${generator.configuration.outputDir}/${it.id}/slots.xml",
+                    mapOf("generateComdagenSummary" to generator.generateComdagenSummaryContentAsset)
+                )
+            } else {
+                // Render non custom specified sites by using the default slots.ftlx
+                produce(
+                    "slots.ftlx",
+                    "${generator.configuration.outputDir}/${it.id}/slots.xml",
+                    mapOf("generateComdagenSummary" to generator.generateComdagenSummaryContentAsset)
+                )
+            }
+
 
             // copy site specific static files to site output directory
             if (it.staticFiles.isNotEmpty()) {
