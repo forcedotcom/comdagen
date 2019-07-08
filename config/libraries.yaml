@@ -1,4 +1,4 @@
-# Configurations for libraries, folders and content assets. CustomAttributes are not supported yet. There is a main
+# Configurations for folders and content assets. CustomAttributes are not supported yet. The generated folders There is a main
 # library defined by "libraryConfig:". This library can contain additional further customized custom libraries under
 # "libraries:" and customized folders under "folders:".
 # If the library "ComdagenSharedLibrary" exists and contains a content asset named "ComdagenSummary" then this will be
@@ -40,21 +40,10 @@ libraryConfig:
     parent: "root"
 
   # Creating a custom folder for each entry
-#  folders:
-#  # If no folderId is given a randomized generated one is being used
-#  - folderId: "root"
-#    displayName: "Root folder"
-#    description: "Offers comdagen generated content"
-#    onlineFlag: true
-#
-#  - folderId: "ComdagenContent"
-#    displayName: "Custom comdagen folder"
-#    description:  "Content folder for Comdagen generated content"
-#    onlineFlag: true
-#    parent: "root"
-#
-#  - folderId: "ComdagenContentAssets"
-#    displayName: "Custom comdagen folder"
-#    description: "Content folder for Comdagen generated content"
-#    onlineFlag: true
-#    parent: "ComdagenContent"
+  folders:
+  # If no folderId is given a randomized generated one is being used
+  - folderId: "test1"
+    displayName: "Comdagen test folder"
+    description:  "Generated folder by comdagen"
+    onlineFlag: true
+    parent: "root"

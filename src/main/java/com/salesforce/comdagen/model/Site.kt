@@ -109,6 +109,8 @@ class Site(
             ?: defaults?.redirectUrlConfig
     )
 
+    private val slotsConfig: SlotConfiguration? = loadConfig(config.slotsConfig ?: defaults?.slotsConfig)
+
 
     // Generators
 
