@@ -169,7 +169,7 @@ constructor(
             val gatheredLibraryStatistics: Map<String, String> = mapOf(
                 "Library id" to it.libraryId,
                 "Library seed" to it.seed.toString(),
-                "Content asset count" to generator.configuration.contentAssetCount.toString()
+                "Content asset count" to generator.configuration.generatedContentAssetCount.toString()
             )
             comdagenStatistics.mergeIntoStatisticsMap(
                 it.libraryId,
