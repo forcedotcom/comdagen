@@ -9,7 +9,7 @@ import com.salesforce.comdagen.RenderConfig
  */
 class SlotConfiguration : RenderConfig {
 
-    override val elementCount: Int = 2
+    override val elementCount: Int = 1
 
     override val initialSeed: Long = 1234
 

@@ -52,7 +52,7 @@ class LibraryTest {
             1,
             "",
             "libraries",
-            "libraryBackup.ftlx"
+            "library.ftlx"
         )
 
 
@@ -152,17 +152,6 @@ class LibraryTest {
             1
         )
 
-        val customFolderConfig3 = FolderConfiguration(
-            479,
-            "folder3",
-            "3. Folder",
-            "Testdescription3",
-            false,
-            "testparent3",
-            false,
-            1
-        )
-
         val defaultContentConfig = ContentConfiguration(
             223345,
             null,
@@ -170,31 +159,6 @@ class LibraryTest {
             true,
             AttributeId.BODY,
             1
-        )
-
-
-        val customContentConfig = ContentConfiguration(
-            6375,
-            null,
-            null,
-            false,
-            AttributeId.BODY,
-            1
-        )
-
-
-        val customLibraryConfig = LibraryConfiguration(
-            1223345,
-            20,
-            listOf(customFolderConfig3),
-            customFolderConfig2,
-            6,
-            false,
-            customContentConfig,
-            1,
-            "",
-            "libraries",
-            "libraryBackup.ftlx"
         )
 
         val defaultLibraryConfig = LibraryConfiguration(
@@ -208,7 +172,7 @@ class LibraryTest {
             1,
             "",
             "libraries",
-            "libraryBackup.ftlx"
+            "library.ftlx"
         )
 
 
@@ -294,7 +258,7 @@ class LibraryTest {
     }
 
     @Test
-    fun testingLibraries() {
+    fun `disabled comdagen summary`() {
         val defaultFolderConfig = FolderConfiguration(
             328479,
             null,
@@ -326,17 +290,6 @@ class LibraryTest {
             1
         )
 
-        val customFolderConfig3 = FolderConfiguration(
-            479,
-            "folder3",
-            "3. Folder",
-            "Testdescription3",
-            false,
-            "testparent3",
-            false,
-            1
-        )
-
         val defaultContentConfig = ContentConfiguration(
             223345,
             null,
@@ -344,31 +297,6 @@ class LibraryTest {
             true,
             AttributeId.BODY,
             1
-        )
-
-
-        val customContentConfig = ContentConfiguration(
-            6375,
-            null,
-            null,
-            false,
-            AttributeId.BODY,
-            1
-        )
-
-
-        val customLibraryConfig = LibraryConfiguration(
-            1223345,
-            20,
-            listOf(customFolderConfig3),
-            customFolderConfig2,
-            6,
-            false,
-            customContentConfig,
-            1,
-            "",
-            "libraries",
-            "libraryBackup.ftlx"
         )
 
         val defaultLibraryConfig = LibraryConfiguration(
@@ -382,7 +310,7 @@ class LibraryTest {
             1,
             "",
             "libraries",
-            "libraryBackup.ftlx"
+            "library.ftlx"
         )
 
         val defaultLibraryConfig2 = LibraryConfiguration(
@@ -391,12 +319,12 @@ class LibraryTest {
             listOf(customFolderConfig1, customFolderConfig2),
             defaultFolderConfig,
             2,
-            true,
+            false,
             defaultContentConfig,
             1,
             "",
             "libraries",
-            "libraryBackup.ftlx"
+            "library.ftlx"
         )
 
 
@@ -509,6 +437,6 @@ class LibraryTest {
             ,
             "Test folder parent folder"
         )
-        assertEquals(0, libraryObjects2.sumBy { it.contentAssets.count() }, "Test generated content asset count")
+        assertEquals(1, libraryObjects2.sumBy { it.contentAssets.count() }, "Test generated content asset count")
     }
 }
