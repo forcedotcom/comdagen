@@ -16,6 +16,9 @@ data class NavigationCatalogConfiguration(
 
     val templateName: String = "catalogs.ftlx",
 
+    /** probability to assign a productsetitem to a productset in a navigationcatalog. Currently hidden. */
+    val productSetCoverage: Float = 1.0F,
+
     @JsonProperty("categories")
     override val categoryConfig: CategoryConfiguration = CategoryConfiguration(),
 
