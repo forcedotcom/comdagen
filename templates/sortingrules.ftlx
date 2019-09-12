@@ -96,10 +96,6 @@
     </sorting-rule>
     </#list>
 
-    <sorting-rule rule-id="Einstein Automatic Sort for Revenue">
-        <description>Sort by Einstein determined attributes to optimize for revenue</description>
-    </sorting-rule>
-
     <sorting-rule rule-id="best-matches">
         <description>Applies static sortings (category position, search placement/rank), then text relevance, then
             explicit sortings
