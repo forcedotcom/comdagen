@@ -3,22 +3,15 @@
     <standard-preferences>
         <all-instances>
             <preference preference-id="AddProductToBasketBehavior">IncrementQuantities</preference>
-            <preference preference-id="CategoryChangeFrequency">daily</preference>
-            <preference preference-id="CategoryPriority">0.5</preference>
-            <preference preference-id="ContentChangeFrequency">daily</preference>
-            <preference preference-id="ContentPriority">0.5</preference>
             <preference preference-id="CouponGeneratorIncludeDashes">true</preference>
             <preference preference-id="CouponGeneratorIncludeVowels">true</preference>
             <preference preference-id="EnableSiteOrderNumbers">false</preference>
             <preference preference-id="IntegrationOrderCenterIncludeSite">true</preference>
-            <preference preference-id="MaxURLsPerFile">5000</preference>
             <preference preference-id="OrderEditExportDelay">30</preference>
             <preference preference-id="OrderExportDelay">30</preference>
             <preference preference-id="OrderIPLoggingEnabled">true</preference>
             <preference preference-id="OrderLifetime">0</preference>
             <preference preference-id="AccountNumberRetentionDays">0</preference>
-            <preference preference-id="ProductChangeFrequency">daily</preference>
-            <preference preference-id="ProductPriority">0.5</preference>
             <#if navigationCatalog??><preference preference-id="SiteCatalog">${navigationCatalog}</preference></#if>
             <#if currencies??>
             <preference preference-id="SiteCurrencies">${currencies?join(":")}</preference>
