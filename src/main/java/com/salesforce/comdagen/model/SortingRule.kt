@@ -20,10 +20,6 @@ data class SortingRule(private val seed: Long) {
      * A number of default sorting rules, that are hardcoded in the freemarker template.
      */
     enum class DefaultRule(val id: String, val description: String) {
-        EINSTEIN(
-            "Einstein Automatic Sort for Revenue", "Sort by Einstein determined" +
-                    " attributes to optimize for revenue"
-        ),
         BEST_MATCH(
             "best-matches", "Applies static" +
                     " sortings (category position, search placement/rank), then text relevance, then" +
