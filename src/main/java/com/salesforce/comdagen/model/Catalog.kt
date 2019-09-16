@@ -127,26 +127,52 @@ abstract class Catalog(
     companion object {
         fun constructCategoryAssignments(
             products: Sequence<Product>, categories: List<Category>, seed: Long,
-            coverage: Float = 1.0F
+            coverage: Float = 1.0F, productSetCoverage: Float = 1.0F
         ): Sequence<CategoryAssignment> {
 
-            val rng = Random(seed + "categoryAssignments".hashCode())
+            val assignmentRNG = Random(seed + "categoryAssignments".hashCode())
+            val productsetRNG = Random(seed + "productSetAssignments".hashCode())
             val coverageRng = Random(seed + "assignmentCoverage".hashCode())
 
-            return products.map { product ->
+            return products.map productmapping@{ product ->
                 // only assign the coverage percentage of the product to the categories
                 if (coverageRng.nextFloat() < (1.0F - coverage)) {
-                    return@map null
+                    return@productmapping null
                 }
 
-                val category = categories[rng.nextInt(categories.size)]
+                val category = categories[assignmentRNG.nextInt(categories.size)]
 
-                // assign master and variation products to the same category
-                if (product is MasterProduct) {
-                    product.variants.map { variantProduct -> CategoryAssignment(variantProduct, category) }.asSequence()
+                when (product) {
+                    // TODO: Allow variations to be included without master or only the master
+                    // assign master and variation products to the same category
+                    is MasterProduct -> product.variants.map { variantProduct ->
+                        CategoryAssignment(
+                            variantProduct,
+                            category
+                        )
+                    }.asSequence()
                         .plusElement(CategoryAssignment(product, category))
-                } else {
-                    sequenceOf(CategoryAssignment(product, category))
+                    is ProductSet -> {
+                        // don't assign empty productsets to the navigationcatalog. This would lead to 404 pages
+                        if (product.products.count() < 1) {
+                            return@productmapping null
+                        }
+                        product.products.map { productSetItem ->
+                            // determine included productsetitems
+                            if (productsetRNG.nextFloat() < (1.0F - productSetCoverage)) {
+                                return@map null
+                            } else {
+                                CategoryAssignment(productSetItem, category)
+                            }
+                        }.filterNotNull().apply {
+                            /* Each productset needs to contain one assigned productsetitem so as
+                             * a workaround add the first productsetitem. */
+                            if (this.count() < 1) {
+                                this.plus(CategoryAssignment(product.products[0], category))
+                            }
+                        }.asSequence().plusElement(CategoryAssignment(product, category))
+                    }
+                    else -> sequenceOf(CategoryAssignment(product, category))
                 }
             }.filterNotNull().flatten()
         }
@@ -260,6 +286,7 @@ class MasterCatalog(
     fun getAllProducts(): List<Product> {
         return products.plus(masterProducts).plus(masterProducts.flatMap { it.variants.asSequence() }).toList()
     }
+
 }
 
 class NavigationCatalog(
@@ -281,7 +308,7 @@ class NavigationCatalog(
                 products,
                 categories,
                 seed + "categoryAssignments".hashCode(),
-                config.coverage
+                config.coverage, config.productSetCoverage
             )
         }
 
