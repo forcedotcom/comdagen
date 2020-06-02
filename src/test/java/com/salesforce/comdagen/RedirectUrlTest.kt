@@ -82,10 +82,11 @@ class RedirectUrlTest {
                     assertTrue(products.map { it.id }.contains(redirectUrl.destinationId))
                 }
                 is CategoryRedirectUrl -> {
+                    assertNotNull(redirectUrl.destinationId)
+
                     // check if destinationId is a category id from the categories list
-                    assertNotNull(redirectUrl.destinationId?.let { destinationID ->
-                        assertTrue(categories.map { it.id }.contains(destinationID))
-                    })
+                    // force cast because we know destinationId is only null on a StaticRedirectUrl
+                    assertTrue(categories.map { it.id }.contains(redirectUrl.destinationId!!))
                 }
             }
         }
