@@ -8,10 +8,7 @@ import com.salesforce.comdagen.model.CategoryRedirectUrl
 import com.salesforce.comdagen.model.ProductRedirectUrl
 import com.salesforce.comdagen.model.StaticRedirectUrl
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class RedirectUrlTest {
 
@@ -85,10 +82,10 @@ class RedirectUrlTest {
                     assertTrue(products.map { it.id }.contains(redirectUrl.destinationId))
                 }
                 is CategoryRedirectUrl -> {
-                    assertNotNull(redirectUrl.destinationId)
-
                     // check if destinationId is a category id from the categories list
-                    assertTrue(categories.map { it.id }.contains(redirectUrl.destinationId))
+                    assertNotNull(redirectUrl.destinationId?.let { destinationID ->
+                        assertTrue(categories.map { it.id }.contains(destinationID))
+                    })
                 }
             }
         }
