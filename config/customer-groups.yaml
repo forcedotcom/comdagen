@@ -1,10 +1,16 @@
 customer-groups:
   # number of generated customer groups
-  elementCount: 15
-  # range of customers per customer group
+  elementCount: 100
+
+  # range of customers per customer group - will be ignored if rules are present (see below)
   minCustomers: 5
   maxCustomers: 50
 
   # generate random custom attributes
   generatedAttributes:
     elementCount: 5
+
+  rules:
+    includeConditions:
+      - attributePath: session.sourceCodeGroup
+        operator: is-equal

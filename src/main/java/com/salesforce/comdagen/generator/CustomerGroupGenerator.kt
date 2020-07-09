@@ -13,17 +13,21 @@ import com.salesforce.comdagen.config.CustomerGroupConfiguration
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.CustomerGroup
 import com.salesforce.comdagen.model.GroupAssignment
+import com.salesforce.comdagen.model.GroupCondition
 import java.util.*
 
 data class CustomerGroupGenerator(
     override val configuration: CustomerGroupConfiguration,
-    private val customerConfig: CustomerConfiguration
+    private val customerConfig: CustomerConfiguration,
+    private val sourceCodes: List<String>
 ) : Generator<CustomerGroupConfiguration, CustomerGroup> {
 
-    override val creatorFunc = { _: Int, seed: Long -> CustomerGroup(seed, metadata["CustomerGroup"].orEmpty()) }
+    override val creatorFunc = { idx: Int, seed: Long -> CustomerGroup(idx, seed, metadata["CustomerGroup"].orEmpty(), includeConditions) }
 
     val assignments: Sequence<GroupAssignment>
         get() {
+            if(configuration.rules != null)
+                return emptySequence()
             val groups = objects
             val rng = Random(configuration.initialSeed)
             return groups.flatMap { group ->
@@ -34,6 +38,13 @@ data class CustomerGroupGenerator(
                     configuration.minCustomers
                 (1..customerCount).asSequence().map { GroupAssignment(group.id, getRandomCustomer(rng.nextInt())) }
             }
+        }
+    private val includeConditions: (Int) -> List<GroupCondition>? = { idx ->
+          configuration.rules?.includeConditions?.map { condition -> GroupCondition(condition.attributePath ,condition.operator, sourceCodes[idx]) }
+        }
+    val excludeConditions: List<GroupCondition>?
+        get() {
+            TODO()
         }
 
     override val metadata: Map<String, Set<AttributeDefinition>> = mapOf(

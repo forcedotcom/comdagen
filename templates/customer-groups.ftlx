@@ -4,6 +4,21 @@
     <#list gen.objects as group>
     <customer-group group-id="${group.id}">
         <description>${group.description}</description>
+        <#if group.conditions?has_content>
+        <membership-rule>
+            <included-customers>
+                <condition-group match-mode="all">
+                    <#list group.conditions as condition>
+                    <condition>
+                        <attribute-path>${condition.attributePath}</attribute-path>
+                        <operator>${condition.operator}</operator>
+                        <string>${condition.value}</string>
+                    </condition>
+                    </#list>
+                </condition-group>
+            </included-customers>
+        </membership-rule>
+        </#if>
         <#if group.customAttributes?has_content>
         <custom-attributes>
             <#list group.customAttributes as attribute>
