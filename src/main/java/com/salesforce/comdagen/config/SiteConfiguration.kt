@@ -54,6 +54,8 @@ data class SiteConfiguration(
 
     val promotionConfig: String? = null,
 
+    val productlistConfig: String? = null,
+
     val shippingConfig: String? = null,
 
     val sourceCodeConfig: String? = null,
@@ -71,4 +73,4 @@ data class SiteConfiguration(
     override val elementCount: Int = 1, // single site only ever has elementCount=1
 
     override val templateName: String = "site.ftlx"
-) : RenderConfig 
+) : RenderConfig

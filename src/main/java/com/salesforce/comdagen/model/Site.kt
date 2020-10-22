@@ -90,6 +90,8 @@ class Site(
             ?: defaults?.promotionConfig
     )
 
+    private val productlistConfig: ProductlistConfiguration? = loadConfig(config.productlistConfig ?: defaults?.productlistConfig)
+
     private val shippingConfig: ShippingConfiguration? = loadConfig(config.shippingConfig ?: defaults?.shippingConfig)
 
     private val sourceCodeConfig: SourceCodeConfiguration? = loadConfig(
@@ -145,6 +147,15 @@ class Site(
     val customerGroupGenerator: CustomerGroupGenerator? =
         if (customerGroupConfig != null && customerConfig != null)
             CustomerGroupGenerator(customerGroupConfig, customerConfig)
+        else
+            null
+
+    val productlistGenerator: ProductlistGenerator? =
+        if (productlistConfig != null && catalogGenerator != null && customerGroupGenerator != null)
+            ProductlistGenerator(
+                productlistConfig, catalogGenerator.objects.first(),
+                customerIds = customerGenerator?.objects?.map { it.id.toString() }?.toList() ?: emptyList()
+            )
         else
             null
 

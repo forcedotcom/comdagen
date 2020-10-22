@@ -27,6 +27,7 @@ sitesConfig:
     inventoryConfig: "inventories.yaml"
     customerGroupConfig: "customer-groups.yaml"
     promotionConfig: "promotions.yaml"
+    productlistConfig: "product-lists.yaml"
     shippingConfig: "shipping.yaml"
     sourceCodeConfig: "sourcecodes.yaml"
     storeConfig: "stores.yaml"

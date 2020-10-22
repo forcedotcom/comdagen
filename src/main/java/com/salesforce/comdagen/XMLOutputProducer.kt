@@ -210,6 +210,7 @@ constructor(
         val promotionGenerators: MutableSet<PromotionGenerator> = mutableSetOf()
         val sourceCodeGenerators: MutableSet<SourceCodeGenerator> = mutableSetOf()
         val customerGroupGenerators: MutableSet<CustomerGroupGenerator> = mutableSetOf()
+        val productlistGenerators: MutableSet<ProductlistGenerator> = mutableSetOf()
         val shippingGenerators: MutableSet<ShippingGenerator> = mutableSetOf()
         val storeGenerators: MutableSet<StoreGenerator> = mutableSetOf()
 
@@ -279,6 +280,15 @@ constructor(
                 )
 
                 customerGroupGenerators.add(it.customerGroupGenerator)
+            }
+
+            // render product-lists methods
+            if (it.productlistGenerator != null) {
+                LOGGER.info("Start rendering productlists methods for site ${it.id} with template ${it.productlistGenerator.generatorTemplate}")
+                val productlistData = mapOf("gen" to it.productlistGenerator)
+                produce(it.productlistGenerator.generatorTemplate, "sites/${it.id}/productlist.xml", productlistData)
+
+                productlistGenerators.add(it.productlistGenerator)
             }
 
             // render shipping methods

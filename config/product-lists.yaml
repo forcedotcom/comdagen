@@ -1,0 +1,13 @@
+# Most of this still needs implementation
+product-lists:
+
+
+  minProductCount: 0
+  maxProductCount: 2
+
+
+  numberOfDifferentProducts: 10
+
+  types: ["wish_list"]
+
+  elementCount: 2
