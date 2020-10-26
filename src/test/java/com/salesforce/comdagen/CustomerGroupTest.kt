@@ -1,11 +1,9 @@
 package com.salesforce.comdagen
 
-import com.salesforce.comdagen.config.AttributeConfig
-import com.salesforce.comdagen.config.CustomerConfiguration
-import com.salesforce.comdagen.config.CustomerGroupConfiguration
-import com.salesforce.comdagen.config.GeneratedAttributeConfig
+import com.salesforce.comdagen.config.*
 import com.salesforce.comdagen.generator.CustomerGroupGenerator
 import org.junit.Test
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
@@ -21,8 +19,9 @@ class CustomerGroupTest {
         val elementCount = 30
         val customerConfig = CustomerConfiguration(initialSeed = seed)
         val customerGroupConfig = CustomerGroupConfiguration(elementCount = elementCount, initialSeed = seed)
+        val sourceCodeConfig = SourceCodeConfiguration(initialSeed = seed)
         val customerGroupGenerator =
-            CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
+            CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig, sourceCodes = Collections.emptyList<String>())
 
         assertEquals(elementCount, customerGroupGenerator.objects.count())
     }
@@ -37,8 +36,9 @@ class CustomerGroupTest {
             minCustomers = minCustomers, maxCustomers = maxCustomers,
             elementCount = elementCount, initialSeed = seed
         )
+        val sourceCodeConfig = SourceCodeConfiguration(initialSeed = seed)
         val customerGroupGenerator =
-            CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig)
+                CustomerGroupGenerator(configuration = customerGroupConfig, customerConfig = customerConfig, sourceCodes = Collections.emptyList<String>())
 
         customerGroupGenerator.objects.forEach { group ->
             val assignmentCount: Int = customerGroupGenerator.assignments.count { it.groupId == group.id }
@@ -63,9 +63,11 @@ class CustomerGroupTest {
         val customAttribute: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 
         val customerGroupConfig = CustomerGroupConfiguration(customAttributes = customAttribute, initialSeed = seed)
+        val sourceCodeConfig = SourceCodeConfiguration(initialSeed = seed)
         val customerGroupGenerator = CustomerGroupGenerator(
             configuration = customerGroupConfig,
-            customerConfig = CustomerConfiguration(initialSeed = seed)
+            customerConfig = CustomerConfiguration(initialSeed = seed),
+            sourceCodes = Collections.emptyList<String>()
         )
 
         assertEquals(customAttribute.values.size, customerGroupGenerator.metadata.values.sumBy { it.size })
@@ -85,9 +87,11 @@ class CustomerGroupTest {
         val elementCount = 15
         val customerGroupConfig =
             CustomerGroupConfiguration(generatedAttributes = GeneratedAttributeConfig(elementCount), initialSeed = seed)
+        val sourceCodeConfiguration = SourceCodeConfiguration(initialSeed = seed)
         val customerGroupGenerator = CustomerGroupGenerator(
             configuration = customerGroupConfig,
-            customerConfig = CustomerConfiguration(initialSeed = seed)
+            customerConfig = CustomerConfiguration(initialSeed = seed),
+            sourceCodes = Collections.emptyList<String>()
         )
 
         customerGroupGenerator.objects.forEach { group ->

@@ -142,21 +142,21 @@ class Site(
         else
             null
 
+    val sourceCodeGenerator: SourceCodeGenerator? =
+            if (sourceCodeConfig != null)
+                SourceCodeGenerator(sourceCodeConfig)
+            else
+                null
+
     val customerGroupGenerator: CustomerGroupGenerator? =
-        if (customerGroupConfig != null && customerConfig != null)
-            CustomerGroupGenerator(customerGroupConfig, customerConfig)
+        if (customerGroupConfig != null && customerConfig != null && sourceCodeConfig != null)
+            CustomerGroupGenerator(customerGroupConfig, customerConfig, sourceCodeGenerator?.objects?.toList()?.map { it.id } ?: kotlin.collections.emptyList())
         else
             null
 
     val shippingGenerator: ShippingGenerator? =
         if (shippingConfig != null)
             ShippingGenerator(shippingConfig)
-        else
-            null
-
-    val sourceCodeGenerator: SourceCodeGenerator? =
-        if (sourceCodeConfig != null)
-            SourceCodeGenerator(sourceCodeConfig)
         else
             null
 

@@ -10,12 +10,14 @@ package com.salesforce.comdagen.model
 import com.salesforce.comdagen.RandomData
 import java.util.*
 
-class CustomerGroup(private val seed: Long, private val attributeDefinitions: Set<AttributeDefinition>) {
+class CustomerGroup(private val idx: Int, private val seed: Long, private val attributeDefinitions: Set<AttributeDefinition>, includeConditions: (Int) -> List<GroupCondition>?) {
     val id: String
         get() = "comdagen-${Math.abs(seed)}"
 
     val description: String
         get() = RandomData.getRandomSentence(seed + "customerGroupDescription".hashCode())
+
+    val conditions: List<GroupCondition>? = includeConditions(idx.toInt())
 
     val customAttributes: List<CustomAttribute>
         get() {
@@ -24,4 +26,5 @@ class CustomerGroup(private val seed: Long, private val attributeDefinitions: Se
         }
 }
 
+data class GroupCondition(val attributePath: String, val operator: String, val value: String)
 data class GroupAssignment(val groupId: String, val customerId: Int)
