@@ -21,7 +21,11 @@ import kotlin.streams.toList
  * @property configDir directory where linked configuration files are stored
  * @property generatorTemplate site configuration happens in this template
  */
-data class SiteGenerator(override val configuration: SitesConfig, private val configDir: File) :
+data class SiteGenerator(
+    override val configuration: SitesConfig,
+    private val configDir: File,
+    val generateComdagenSummaryContentAsset: Boolean
+) :
     Generator<SitesConfig, Site> {
 
     private val rng: Random

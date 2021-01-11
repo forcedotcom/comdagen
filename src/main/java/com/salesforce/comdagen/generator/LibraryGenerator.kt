@@ -23,57 +23,13 @@ data class LibraryGenerator(
     val configDir: File
 ) : Generator<LibraryConfiguration, Library> {
 
-    private val rng: Random
-        get() = Random(configuration.initialSeed)
-
     /**
      * First the library from the main library configuration file gets created. Following are custom libraries and
      * generated libraries up to the defined number of libraries elementCount.
      */
     override val objects: Sequence<Library>
-        get() {
-            val maxNumberOfLibraries = configuration.elementCount
+        get() = sequenceOf(Library(configuration.initialSeed, configuration))
 
-            if (maxNumberOfLibraries <= 0)
-                return emptySequence()
-            var x = emptySequence<Library>()
-
-            // Adding one library with the configured libraryId. If libraryId is null the internId will be 0
-            x += creatorFunc(
-                0,
-                configuration.initialSeed
-            )
-            // Adding custom libraries
-            x += (0 until Math.min(maxNumberOfLibraries - x.count(), configuration.libraries.size)).map { index ->
-                Library(index + 1, configuration.libraries[index].initialSeed, configuration.libraries[index])
-            }
-
-            // Adding generated libraries to fill up
-            x += rng.longs(
-                Math.max(
-                    maxNumberOfLibraries - configuration.libraries.size - 1,
-                    0
-                ).toLong()
-            ).toList().mapIndexed { index, randomLong ->
-                creatorFunIndexedLibrary(
-                    index + x.count(),
-                    randomLong
-                )
-            }.asSequence()
-            return x
-        }
-
-
-    /**
-     * Creates a library according to the configuration of the generator.
-     */
-    override val creatorFunc = { idx: Int, seed: Long -> Library(idx, seed, configuration) }
-
-    /**
-     * Generates a library according to the configuration of the generator but ignores the libraryId
-     */
-    val creatorFunIndexedLibrary =
-        { idx: Int, seed: Long -> Library(idx, seed, configuration.copy(libraryId = null)) }
 
     // TODO: Implement metadata
     override val metadata: Map<String, Set<AttributeDefinition>>

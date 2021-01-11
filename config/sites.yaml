@@ -65,7 +65,7 @@ sitesConfig:
       # pseudo randomization seed, could be overwritten in generator config files
       initialSeed: 1234
       customCartridges: ["sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"]
-      staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml", "slots.xml"]
+      staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml"]
 
     # MFRA site import
     - regions: [Generic, German, Chinese]
