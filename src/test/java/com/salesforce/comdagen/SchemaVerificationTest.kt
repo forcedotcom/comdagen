@@ -10,6 +10,7 @@ import org.xmlunit.validation.Languages
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import java.util.*
 import javax.xml.transform.stream.StreamSource
 import javax.xml.validation.SchemaFactory
 import javax.xml.validation.Validator
@@ -218,7 +219,7 @@ class SchemaVerificationTest {
     fun testCustomerGroupValid() {
         val customerConfig = CustomerConfiguration(initialSeed = seed)
         val customerGroupConfig = CustomerGroupConfiguration(initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(customerGroupConfig, customerConfig)
+        val customerGroupGenerator = CustomerGroupGenerator(customerGroupConfig, customerConfig, sourceCodes = Collections.emptyList<String>())
 
         val v = getValidator("/schema/customergroup.xsd")
 
@@ -309,7 +310,7 @@ class SchemaVerificationTest {
         val catalog = CatalogGenerator(CatalogListConfiguration(initialSeed = seed)).objects.first()
         val customerGroupIds = CustomerGroupGenerator(
             CustomerGroupConfiguration(initialSeed = seed),
-            CustomerConfiguration(initialSeed = seed)
+            CustomerConfiguration(initialSeed = seed), sourceCodes = Collections.emptyList<String>()
         ).objects.map { it.id }.toList()
         val shippingMethods =
             ShippingGenerator(ShippingConfiguration(initialSeed = seed)).objects.map { it.id }.toList()

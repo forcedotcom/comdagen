@@ -7,6 +7,7 @@ import com.salesforce.comdagen.model.OrderPromotion
 import com.salesforce.comdagen.model.ProductPromotion
 import com.salesforce.comdagen.model.ShippingPromotion
 import org.junit.Test
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -431,7 +432,8 @@ class PromotionTest {
 
         val customerConfig = CustomerConfiguration(initialSeed = seed)
         val customerGroupConfig = CustomerGroupConfiguration(initialSeed = seed)
-        val customerGroupGenerator = CustomerGroupGenerator(customerGroupConfig, customerConfig)
+        val sourceCodeConfiguration = SourceCodeConfiguration(initialSeed = seed)
+        val customerGroupGenerator = CustomerGroupGenerator(customerGroupConfig, customerConfig, sourceCodes = Collections.emptyList<String>())
 
         val customerGroupIds = customerGroupGenerator.objects.map { it.id }.toList()
             .plus(listOf("Everyone", "Registered", "Unregistered"))
