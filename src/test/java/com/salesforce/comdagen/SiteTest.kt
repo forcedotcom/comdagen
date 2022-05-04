@@ -25,7 +25,11 @@ class SiteTest {
     fun `random single site created`() {
         val config = SitesConfig(elementCount = 1, initialSeed = 123, defaults = SiteConfiguration("random"))
         val generator =
-            SiteGenerator(config, testFolder.root /* nothing in here, but we also have no config files specified */)
+            SiteGenerator(
+                config,
+                testFolder.root /* nothing in here, but we also have no config files specified */,
+                false
+            )
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(1)))
@@ -36,7 +40,7 @@ class SiteTest {
     @Test
     fun `can generate multiple random sites`() {
         val config = SitesConfig(elementCount = 3, initialSeed = 123, defaults = SiteConfiguration("random"))
-        val generator = SiteGenerator(config, testFolder.root)
+        val generator = SiteGenerator(config, testFolder.root, false)
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(3)))
@@ -53,7 +57,7 @@ class SiteTest {
             sites = listOf(SiteConfiguration("First")),
             defaults = null
         )
-        val generator = SiteGenerator(config, testFolder.root)
+        val generator = SiteGenerator(config, testFolder.root, false)
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(1)))
@@ -66,7 +70,7 @@ class SiteTest {
             elementCount = 1, initialSeed = 123, sites = listOf(SiteConfiguration("First")),
             defaults = SiteConfiguration("Doesn't matter", "My site")
         )
-        val generator = SiteGenerator(config, testFolder.root)
+        val generator = SiteGenerator(config, testFolder.root, false)
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(1)))
@@ -81,7 +85,7 @@ class SiteTest {
             defaults = SiteConfiguration("random", "My site")
         )
 
-        val generator = SiteGenerator(config, testFolder.root)
+        val generator = SiteGenerator(config, testFolder.root, false)
 
         val sites = generator.objects.toList()
         assertThat(sites, hasSize(equalTo(2)))
