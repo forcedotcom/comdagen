@@ -11,6 +11,7 @@ import com.salesforce.comdagen.RandomData
 import com.salesforce.comdagen.SupportedCurrency
 import com.salesforce.comdagen.SupportedZone
 import com.salesforce.comdagen.attributeDefinitions
+import com.salesforce.comdagen.localizableAttributeDefinitions
 import com.salesforce.comdagen.config.CatalogConfiguration
 import com.salesforce.comdagen.config.CatalogListConfiguration
 import com.salesforce.comdagen.config.NavigationCatalogConfiguration
@@ -195,6 +196,8 @@ class MasterCatalog(
 
     val generatedProductAttributes = config.products.attributeDefinitions()
 
+    val localizedProductAttributes = config.products.localizableAttributeDefinitions()
+
     val products: Sequence<StandardProduct>
         get() {
             val rng = Random(seed)
@@ -229,7 +232,7 @@ class MasterCatalog(
 
                 StandardProduct(
                     seed + "product${idx + 1}".hashCode(), regions, sharedOptions,
-                    localOptions, generatedProductAttributes
+                    localOptions, generatedProductAttributes, localizedProductAttributes
                 )
             }.asSequence()
         }
@@ -237,7 +240,7 @@ class MasterCatalog(
     val masterProducts: Sequence<MasterProduct>
         get() = config.variationProducts.asSequence().flatMap { variationConfig ->
             (1..variationConfig.elementCount).asSequence().map {
-                MasterProduct(seed + "master$it".hashCode() + variationConfig.hashCode(), regions, variationConfig)
+                MasterProduct(seed + "master$it".hashCode() + variationConfig.hashCode(), regions, variationConfig, generatedProductAttributes)
             }
         }
 

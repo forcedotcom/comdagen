@@ -19,6 +19,8 @@ data class SourceCodeConfiguration(
 
     override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
 
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
+
     override val generatedAttributes: GeneratedAttributeConfig? = null,
 
     override val elementCount: Int = 10,

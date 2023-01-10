@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="${catalog.id}">
+<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="MasterCatalogBulk">
     <category category-id="root">
         <display-name xml:lang="x-default">Root Category</display-name>
         <refinement-definitions>
@@ -131,6 +131,17 @@
             <page-description xml:lang="${region}">${pageDescription}</page-description>
             </#list>
         </page-attributes>
+        <custom-attributes>
+            <#list masterProduct.customAttributes as attribute>
+                <custom-attribute attribute-id="${attribute.id}">${attribute.value}</custom-attribute>
+            </#list>
+            <#if masterProduct.localizableCustomAttributes?has_content>
+                <#list masterProduct.localizableCustomAttributes as attr>
+                    <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                    <custom-attribute xml:lang="de" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                </#list>
+            </#if>
+        </custom-attributes>
         <variations>
             <attributes>
                 <#list masterProduct.localVariationAttributes as attribute>
@@ -158,7 +169,6 @@
                 </#list>
             </variants>
         </variations>
-        <classification-category catalog-id="${catalog.id}">root</classification-category>
     </product>
     <#list masterProduct.variants as variant>
         <product product-id="${variant.id}">
@@ -257,6 +267,12 @@
                 <#list product.customAttributes as attr>
                     <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
                 </#list>
+                <#if product.localizableCustomAttributes?has_content>
+                    <#list product.localizableCustomAttributes as attr>
+                        <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                        <custom-attribute xml:lang="de" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                    </#list>
+                </#if>
             </custom-attributes>
         </#if>
         <#if product.hasOptions()>
@@ -285,7 +301,6 @@
                 </#list>
             </options>
         </#if>
-        <classification-category catalog-id="${catalog.id}">root</classification-category>
     </product>
 </#list>
 

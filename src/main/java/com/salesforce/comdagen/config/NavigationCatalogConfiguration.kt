@@ -25,6 +25,7 @@ data class NavigationCatalogConfiguration(
     override val generatedAttributes: GeneratedAttributeConfig?,
 
     override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     /** Not used. See [coverage]. */
     override val elementCount: Int = 0,

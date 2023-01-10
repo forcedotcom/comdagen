@@ -52,7 +52,7 @@ class Inventory(
         }
 
     val listId: String
-        get() = "inventory-$index-${config.hashCode() + catalogHashCode}"
+        get() = "bookstore-inventory"
 
     val inventoryRecords: Sequence<InventoryRecord>
         get() {

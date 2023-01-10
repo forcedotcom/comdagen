@@ -29,6 +29,7 @@ data class CampaignConfiguration(
     override val customAttributes: Map<String, AttributeConfig>? = null,
 
     override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     /**
      * This parameter is ignored, campaigns get auto-created based on the number of available promotions and

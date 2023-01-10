@@ -44,7 +44,7 @@ abstract class Pricebook(
     open val salePriceBook: Boolean = false
 
     val id: String
-        get() = "${config.id}-$currency-${Math.abs(config.hashCode() * catalogHashCode)}-$index"
+        get() = "${config.id}-$currency"
 
     val customAttributes: List<CustomAttribute>
         get() {

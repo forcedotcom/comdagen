@@ -28,6 +28,11 @@ data class VariationProductConfiguration(
 
     @JsonProperty("sharedVariationAttributes")
     val sharedVariationAttributes: List<String> = emptyList()
+
+//    @JsonProperty("customAttributes")
+//    val customAttributes: Map<String, AttributeConfig>? = null,
+//
+//    val generatedAttributes: GeneratedAttributeConfig? = null
 ) {
     lateinit var attributes: List<VariationAttributeConfiguration>
 }

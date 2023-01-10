@@ -18,6 +18,7 @@ data class CustomerGroupConfiguration(
     val maxCustomers: Int = 100,
 
     override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     override val generatedAttributes: GeneratedAttributeConfig? = null,
 

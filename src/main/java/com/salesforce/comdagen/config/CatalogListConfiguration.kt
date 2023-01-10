@@ -52,6 +52,7 @@ data class CatalogListConfiguration(
      * Define custom attributes for the generated _products_.
      */
     override val customAttributes: Map<String, AttributeConfig> = emptyMap(),
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     /**
      * configuration for randomly generated custom attributes

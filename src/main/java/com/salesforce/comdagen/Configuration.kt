@@ -50,6 +50,8 @@ interface ExtendableObjectConfig : Configuration {
      */
     val customAttributes: Map<String, AttributeConfig>?
 
+    val localizableCustomAttributes: Map<String, AttributeConfig>?
+
     /**
      * Defines automatically generated attributes.
      */
@@ -98,5 +100,12 @@ inline fun <reified T : ExtendableObjectConfig> T.attributeDefinitions(objName: 
         this.initialSeed,
         this.customAttributes,
         this.generatedAttributes
+    )
+
+inline fun <reified T : ExtendableObjectConfig> T.localizableAttributeDefinitions(objName: String = T::class.java.name) =
+    CustomAttribute.getLocalizableCustomAttributeDefinitions(
+        objName,
+        this.initialSeed,
+        this.localizableCustomAttributes
     )
 

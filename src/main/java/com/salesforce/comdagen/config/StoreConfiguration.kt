@@ -24,6 +24,8 @@ data class StoreConfiguration(
 
     override val customAttributes: Map<String, AttributeConfig>? = null,
 
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
+
     override val generatedAttributes: GeneratedAttributeConfig? = null,
 
     override val elementCount: Int = 10,

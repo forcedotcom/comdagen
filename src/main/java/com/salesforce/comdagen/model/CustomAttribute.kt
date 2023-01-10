@@ -52,8 +52,9 @@ data class CustomAttribute(
             RANDOM -> when (definition.type) {
                 DataType.BOOLEAN -> Random(seed).nextBoolean().toString()
                 DataType.DATE -> maxDate.minusDays(Random(seed).nextInt(maxDays).toLong()).toString()
-                DataType.STRING -> RandomStringUtils.random(12, 0, 0, true, true, null, Random(seed))
+                DataType.STRING -> RandomData.bookCite(seed, Random().nextInt(15 - 5 + 1) + 5)
                 DataType.EMAIL -> RandomData.getRandomEmail(seed)
+                DataType.HTML -> RandomData.bookCite(seed, 500)
             }
             LIST -> {
                 val possibleValues = definition.dataStore as List<*>
@@ -82,7 +83,23 @@ data class CustomAttribute(
             // generated custom attributes
             val generatedAttributesConfig =
                 RandomAttributeDefinition.fromConfig(extendedObj, generatedAttributeConfig, seed)
-            return predefinedAttributes + generatedAttributesConfig
+            return predefinedAttributes +  generatedAttributesConfig
+        }
+
+        fun getLocalizableCustomAttributeDefinitions(
+            extendedObj: String, seed: Long,
+            localizableCustomAttributeConfigs: Map<String, AttributeConfig>?
+        ): Set<AttributeDefinition> {
+            // predefined custom attributes
+            val localizedCustomAttributes = localizableCustomAttributeConfigs?.map {
+                StandardAttributeDefinition(
+                    "$extendedObj.${it.key}",
+                    it.value.type, it.value.searchable, it.value.generationStrategy, it.value.dataStore
+                )
+            }?.toSet()
+                ?: emptySet()
+
+            return localizedCustomAttributes;
         }
     }
 }

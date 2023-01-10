@@ -1,18 +1,18 @@
 # catalog configuration
 catalogs:
   # number of master catalogs
-  elementCount: 3
-
-  initialSeed: 1234
+  elementCount: 1
+  coverage: 1
+  initialSeed: 12
 
   outputDir: "catalogs"
   outputFilePattern: "catalog.xml"
 
   # number of categories per catalog
   categories:
-    elementCount: 50
-    categoryTreeDepth: 5
-    categoryTreeBreadth: 10
+    elementCount: 5
+    categoryTreeDepth: 7
+    categoryTreeBreadth: 3
 
   # define category custom attributes
   customAttributes:
@@ -28,6 +28,21 @@ catalogs:
       type: string
       data: static
       staticValue: ""
+    string1:
+      type: string
+      data: random
+      staticValue: ""
+      searchable: true
+    string2:
+      type: string
+      data: random
+      staticValue: ""
+      searchable: true
+    date1:
+      type: date
+      data: random
+      staticValue: ""
+      searchable: false
     # This attribute, unlike others, is not used by SiteGenesis but to show the "searchable" config
     inStock:
       type: boolean
@@ -38,10 +53,10 @@ catalogs:
       searchable: true
 
   # randomly generate category custom attributes
-  generatedAttributes:
-    elementCount: 40
+  #generatedAttributes:
+    #elementCount: 5
     # out of 40 attributes, the first 10 will be indexed (and thus searchable)
-    thereofSearchable: 10
+    #thereofSearchable: 3
 
   # define shared variation attributes by name and available values
   sharedVariationAttributes:
@@ -60,26 +75,122 @@ catalogs:
         - "4"
 
   # configure shared product options
-  sharedOptions:
+  #sharedOptions:
     # number of generated shared product options per catalog
-    elementCount: 10
+    #elementCount: 10
     # minimum number of values per option
-    minValues: 1
+    #minValues: 1
     # maximum number of values per option
-    maxValues: 5
+   # maxValues: 5
     # minimum price of product option value in USD
-    minPrice: 0.01
+    #minPrice: 0.01
     # maximum price of product option value in USD
-    maxPrice: 500.0
+   # maxPrice: 500.0
     # Chance of a product using will use options. Results in about (not exactly) 10% of all products having them.
-    probability: 0.1
+    #probability: 0.1
 
   products:
     # number of standard products per catalog
-    elementCount: 100
-    generatedAttributes:
-      elementCount: 20
-      thereofSearchable: 5
+    elementCount: 2
+    #generatedAttributes:
+      #elementCount: 5
+      #thereofSearchable: 5
+
+    customAttributes:
+      string1:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      string2:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      string3:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      string4:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      string5:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: false
+      string6:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: false
+      boolean1:
+        type: boolean
+        data: random
+        staticValue: ""
+        searchable: false
+      boolean2:
+        type: boolean
+        data: random
+        staticValue: ""
+        searchable: false
+      boolean3:
+        type: boolean
+        data: random
+        staticValue: ""
+        searchable: false
+      boolean4:
+        type: boolean
+        data: random
+        staticValue: ""
+        searchable: false
+      date1:
+        type: date
+        data: random
+        staticValue: ""
+        searchable: false
+      html1:
+        type: html
+        data: random
+        staticValue: ""
+        searchable: false
+      html2:
+        type: html
+        data: random
+        staticValue: ""
+        searchable: false
+      html3:
+        type: html
+        data: random
+        staticValue: ""
+        searchable: false
+      html4:
+        type: html
+        data: random
+        staticValue: ""
+        searchable: false
+      html5:
+        type: html
+        data: random
+        staticValue: ""
+        searchable: false
+    #generatedAttributes:
+      #elementCount: 10
+      #thereofSearchable: 3
+    localizableCustomAttributes:
+      localString1:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      localString2:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
 
     # local options are defined _for each_ product individually. Since that's an uncommon (and expensive to generate)
     # use case, the default is to not have them.
@@ -96,7 +207,7 @@ catalogs:
   variationProducts:
     # list of different variation master product configs
       # number of master products to generate per configuration
-    - elementCount: 30
+    - elementCount: 1
       # define local variation attributes
       localVariationAttributes:
         - name: "color"
@@ -117,24 +228,24 @@ catalogs:
       # reference shared variation attributes to use
       sharedVariationAttributes:
         - "size"
-    - elementCount: 20
+    - elementCount: 5
       sharedVariationAttributes:
         - "color"
         - "size"
 
-  bundleConfig:
+  #bundleConfig:
     # number of product bundles to generate
-    elementCount: 10
+    #elementCount: 1
 
     # define range of bundled products per bundle
-    minBundledProducts: 2
-    maxBundledProducts: 5
+    #minBundledProducts: 2
+    #maxBundledProducts: 5
 
-  productSets:
+ # productSets:
     # number of product sets to generate
-    elementCount: 10
+    #elementCount: 1
 
     # define range of products per product set
-    minSetProducts: 3
-    maxSetProducts: 8
+    #minSetProducts: 3
+    #maxSetProducts: 8
 

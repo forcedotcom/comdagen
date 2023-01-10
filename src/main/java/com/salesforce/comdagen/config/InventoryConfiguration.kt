@@ -20,6 +20,7 @@ data class InventoryConfiguration(
     val coverage: Float = 1.0F,
 
     override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     override val generatedAttributes: GeneratedAttributeConfig? = null,
 

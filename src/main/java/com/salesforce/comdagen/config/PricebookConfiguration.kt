@@ -65,6 +65,7 @@ data class PricebookConfiguration(
      * custom attributes for pricebooks
      */
     override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     /**
      * randomly generate custom attributes

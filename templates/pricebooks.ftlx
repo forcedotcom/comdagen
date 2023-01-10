@@ -9,6 +9,7 @@
             <#if pricebook.parentId?has_content>
             <parent>${pricebook.parentId}</parent>
             </#if>
+            <feed-based>true</feed-based>
             <#if pricebook.customAttributes?has_content>
             <custom-attributes>
                 <#list pricebook.customAttributes as attr>

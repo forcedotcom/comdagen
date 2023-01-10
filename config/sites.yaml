@@ -9,7 +9,7 @@ sitesConfig:
   # Total amount of sites that will be generated. Sites specified under "sites" count against this.
   # If you specify more sites below than in elementCount this number will be silently expanded.
   # If you specify less, we will generate "random" sites to fill the gap.
-  elementCount: 3
+  elementCount: 1
 
   # the top-level seed - everything in your site import will derive from this unless explicitly overwritten
   initialSeed: 1234
@@ -20,26 +20,26 @@ sitesConfig:
 
   # Defaults you specify here will be respected for both sites you specify and those that are generated automatically.
   defaults:
-    customerConfig: "customers.yaml"
+    #customerConfig: "customers.yaml"
     pricebookConfig: "pricebooks.yaml"
     catalogConfig: "catalogs.yaml"
-    couponConfig: "coupons.yaml"
+    #couponConfig: "coupons.yaml"
     inventoryConfig: "inventories.yaml"
-    customerGroupConfig: "customer-groups.yaml"
-    promotionConfig: "promotions.yaml"
-    shippingConfig: "shipping.yaml"
-    sourceCodeConfig: "sourcecodes.yaml"
-    storeConfig: "stores.yaml"
-    sortingRuleConfig: "sortingrules.yaml"
-    redirectUrlConfig: "redirect-urls.yaml"
+    #customerGroupConfig: "customer-groups.yaml"
+    #promotionConfig: "promotions.yaml"
+    #shippingConfig: "shipping.yaml"
+    #sourceCodeConfig: "sourcecodes.yaml"
+    #storeConfig: "stores.yaml"
+    #sortingRuleConfig: "sortingrules.yaml"
+    #redirectUrlConfig: "redirect-urls.yaml"
 
     regions: [Generic]
     currencies: [USD]
 
     navigationCatalog:
-      coverage: 0.8
+      coverage: 0.0000001
       categories:
-        elementCount: 50
+        elementCount: 1
         categoryTreeDepth: 5
         categoryTreeBreadth: 10
         categoryTemplate: "rendering/category/categoryproducthits"
@@ -60,18 +60,18 @@ sitesConfig:
     # You can customize the name by specifying the "sitename" attribute
 
     # SiteGenesis site import
-    - regions: [Generic, German, Chinese]
-      currencies: [USD, EUR, CNY]
+    #- regions: [Generic, German, Chinese]
+     # currencies: [USD, EUR, CNY]
       # pseudo randomization seed, could be overwritten in generator config files
-      initialSeed: 1234
-      customCartridges: ["sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"]
-      staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml", "slots.xml"]
+      #initialSeed: 1234
+      #customCartridges: ["sitegenesis_storefront_pipelines", "sitegenesis_storefront_core"]
+      #staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml", "slots.xml"]
 
     # MFRA site import
-    - regions: [Generic, German, Chinese]
+    - regions: [Generic, German]
       currencies: [USD]
       # can optionally give a site name and description to make site meaning clear
-      # siteName: "MFRA"
+      siteName: "BookStore"
       siteDescription: "Mobile First Reference Architecture demo site"
       # pseudo randomization seed, could be overwritten in generator config files
 
@@ -79,20 +79,4 @@ sitesConfig:
       staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml"]
       # navigation catalog inherits seed from site
       # need to overwrite the whole thing as we can't handle merging right now
-      navigationCatalog:
-        coverage: 0.8
-        categories:
-          elementCount: 50
-          categoryTreeDepth: 5
-          categoryTreeBreadth: 10
-          categoryTemplate: "rendering/category/catLanding"
-        # define category custom attributes
-        customAttributes:
-          enableCompare:
-            type: boolean
-            data: static
-            staticValue: true
-          showInMenu:
-            type: boolean
-            data: static
-            staticValue: true
+

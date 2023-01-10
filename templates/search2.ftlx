@@ -3,7 +3,7 @@
     <searchable-attributes>
         <#list searchableAttributes as attr>
         <searchable-attribute>
-            <attribute-path>${attr.path}</attribute-path>
+            <attribute-path><#if attr.path?starts_with("com.salesforce.comdagen.config.Product")>product.custom.<#else>catalog.custom.</#if>${attr.id}</attribute-path>
             <boost>1.0</boost>
         </searchable-attribute>
         </#list>

@@ -29,6 +29,7 @@ data class CustomerConfiguration(
 
     override val customAttributes: Map<String, AttributeConfig>? = null,
     override val generatedAttributes: GeneratedAttributeConfig? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     /**
      * The id attribute of the customer list.

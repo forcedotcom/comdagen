@@ -36,6 +36,7 @@ data class OrderPromotionConfiguration(
     override val initialSeed: Long,
 
     override val customAttributes: Map<String, AttributeConfig>? = null,
+    override val localizableCustomAttributes: Map<String, AttributeConfig>? = null,
 
     override val generatedAttributes: GeneratedAttributeConfig? = null
 ) : ExtendableObjectConfig {

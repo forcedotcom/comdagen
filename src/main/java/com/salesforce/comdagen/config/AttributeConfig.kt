@@ -37,7 +37,7 @@ constructor(
     val dataStore: Any
 ) {
     enum class DataType(private val text: String) {
-        BOOLEAN("boolean"), STRING("string"), DATE("date"), EMAIL("email");
+        BOOLEAN("boolean"), STRING("string"), DATE("date"), EMAIL("email"), HTML("html");
 
         @JsonValue
         fun forJackson(): String {
