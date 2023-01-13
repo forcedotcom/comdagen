@@ -13,6 +13,7 @@ import com.salesforce.comdagen.config.AttributeConfig.DataType
 import com.salesforce.comdagen.config.AttributeConfig.GenerationStrategy.*
 import com.salesforce.comdagen.config.GeneratedAttributeConfig
 import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.lang3.StringUtils
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -52,9 +53,11 @@ data class CustomAttribute(
             RANDOM -> when (definition.type) {
                 DataType.BOOLEAN -> Random(seed).nextBoolean().toString()
                 DataType.DATE -> maxDate.minusDays(Random(seed).nextInt(maxDays).toLong()).toString()
-                DataType.STRING -> RandomData.bookCite(seed, Random().nextInt(15 - 5 + 1) + 5)
+                DataType.STRING -> RandomData.getRandomNoun(seed+definition.id.hashCode())
                 DataType.EMAIL -> RandomData.getRandomEmail(seed)
                 DataType.HTML -> RandomData.bookCite(seed, 500)
+                DataType.INTEGER -> (Random().nextInt(10000 - 500 + 1) + 500).toString()
+                DataType.SETOFSTRING -> StringUtils.trim(RandomData.bookCite(seed, Random().nextInt(15 - 5 + 1) + 5)).replace("\r", "").replace("\n", "")
             }
             LIST -> {
                 val possibleValues = definition.dataStore as List<*>

@@ -27,7 +27,7 @@ sitesConfig:
     inventoryConfig: "inventories.yaml"
     #customerGroupConfig: "customer-groups.yaml"
     #promotionConfig: "promotions.yaml"
-    #shippingConfig: "shipping.yaml"
+    shippingConfig: "shipping.yaml"
     #sourceCodeConfig: "sourcecodes.yaml"
     #storeConfig: "stores.yaml"
     #sortingRuleConfig: "sortingrules.yaml"
@@ -68,7 +68,7 @@ sitesConfig:
       #staticFiles: ["payment-methods.xml", "payment-processors.xml", "tax.xml", "url-rules.xml", "slots.xml"]
 
     # MFRA site import
-    - regions: [Generic, German]
+    - regions: [Generic, French]
       currencies: [USD]
       # can optionally give a site name and description to make site meaning clear
       siteName: "BookStore"

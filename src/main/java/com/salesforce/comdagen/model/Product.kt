@@ -92,7 +92,8 @@ data class MasterProduct(
     override val seed: Long,
     override val regions: List<SupportedZone>,
     private val config: VariationProductConfiguration,
-    private val extraAttributes: Set<AttributeDefinition>
+    private val extraAttributes: Set<AttributeDefinition>,
+    private val localizableAttributes: Set<AttributeDefinition>
 ) : Product() {
 
     val variants: List<VariationProduct>
@@ -106,6 +107,9 @@ data class MasterProduct(
 
     val customAttributes
         get() = extraAttributes.map { CustomAttribute(it, seed + it.id.hashCode()) }
+
+    val localizableCustomAttributes
+        get() = localizableAttributes.map { CustomAttribute(it, seed + it.id.hashCode()) }
 
     private fun generateVariants(): List<VariationProduct> {
         val rng = Random(seed + "variants".hashCode())

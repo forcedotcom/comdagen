@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="MasterCatalogBulk">
+<catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="BookStoreCatalog">
     <category category-id="root">
         <display-name xml:lang="x-default">Root Category</display-name>
         <refinement-definitions>
@@ -79,6 +79,48 @@
                     </price-bucket>
                 </bucket-definitions>
             </refinement-definition>
+            <refinement-definition type="attribute" attribute-id="age" bucket-type="none"  system="false">
+                <display-name xml:lang="x-default">Age</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+            <refinement-definition type="attribute" attribute-id="canadian" bucket-type="none"  system="false">
+                <display-name xml:lang="x-default">Canadian</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+             <refinement-definition type="attribute" attribute-id="language" bucket-type="none"  system="false">
+                 <display-name xml:lang="x-default">Language</display-name>
+                 <sort-mode>value-name</sort-mode>
+                 <sort-direction>ascending</sort-direction>
+                 <cutoff-threshold>5</cutoff-threshold>
+             </refinement-definition>
+            <refinement-definition type="attribute" attribute-id="contAuthor" bucket-type="none"  system="false">
+                <display-name xml:lang="x-default">ContAuthor</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+            <refinement-definition type="attribute" attribute-id="isLargePrint" bucket-type="none"  system="false">
+                <display-name xml:lang="x-default">IsLargePrint</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+             <refinement-definition type="attribute" attribute-id="pageCount" bucket-type="none"  system="false">
+                 <display-name xml:lang="x-default">PageCount</display-name>
+                 <sort-mode>value-name</sort-mode>
+                 <sort-direction>ascending</sort-direction>
+                 <cutoff-threshold>5</cutoff-threshold>
+             </refinement-definition>
+             <refinement-definition type="attribute" attribute-id="bindingType" bucket-type="none"  system="false">
+                 <display-name xml:lang="x-default">BindingType</display-name>
+                 <sort-mode>value-name</sort-mode>
+                 <sort-direction>ascending</sort-direction>
+                 <cutoff-threshold>5</cutoff-threshold>
+             </refinement-definition>
         </refinement-definitions>
     </category>
 </#list>
@@ -96,9 +138,6 @@
         </#list>
         <#list masterProduct.shortDescription as region, shortDescription>
         <short-description xml:lang="${region}">${shortDescription}</short-description>
-        </#list>
-        <#list masterProduct.longDescription as region, longDescription>
-        <long-description xml:lang="${region}">${longDescription}</long-description>
         </#list>
         <online-flag>true</online-flag>
         <available-flag>true</available-flag>
@@ -133,12 +172,44 @@
         </page-attributes>
         <custom-attributes>
             <#list masterProduct.customAttributes as attribute>
-                <custom-attribute attribute-id="${attribute.id}">${attribute.value}</custom-attribute>
+                <#if attribute.id?matches("canadian")>
+                    <#if (masterProduct?counter)%2==0>
+                         <custom-attribute attribute-id="${attribute.id}">${attribute.value}</custom-attribute>
+                    </#if>
+                <#else>
+                    <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                </#if>
             </#list>
             <#if masterProduct.localizableCustomAttributes?has_content>
                 <#list masterProduct.localizableCustomAttributes as attr>
-                    <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
-                    <custom-attribute xml:lang="de" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                       <#if attr.id?matches("contAuthor")>
+                           <#if masterProduct?counter &lt; 3>
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">EnglishAuthor1</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">FrenchAuthor1</custom-attribute>
+                            <#elseif masterProduct?counter &gt; 2 && masterProduct?counter &lt; 5 >
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">EnglishAuthor2</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">FrenchAuthor2</custom-attribute>
+                           <#else>
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                           </#if>
+                       <#elseif attr.id?matches("language")>
+                              <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                             <#if attr.value?matches("English")>
+                                  <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Anglais</custom-attribute>
+                              <#elseif attr.value?matches("German")>
+                                  <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Allemande</custom-attribute>
+                              <#elseif attr.value?matches("French")>
+                                  <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Francais</custom-attribute>
+                              <#elseif attr.value?matches("Spanish")>
+                                  <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Espagnol</custom-attribute>
+                             <#else>
+                                  <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Autres</custom-attribute>
+                             </#if>
+                       <#else>
+                            <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                            <custom-attribute xml:lang="fr" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                       </#if>
                 </#list>
             </#if>
         </custom-attributes>
@@ -183,9 +254,6 @@
             <#list variant.shortDescription as region, shortDescription>
             <short-description xml:lang="${region}">${shortDescription}</short-description>
             </#list>
-            <#list variant.longDescription as region, longDescription>
-            <long-description xml:lang="${region}">${longDescription}</long-description>
-            </#list>
             <online-flag>true</online-flag>
             <available-flag>true</available-flag>
             <searchable-flag>true</searchable-flag>
@@ -228,9 +296,6 @@
         <#list product.shortDescription as region, shortDescription>
         <short-description xml:lang="${region}">${shortDescription}</short-description>
         </#list>
-        <#list product.longDescription as region, longDescription>
-        <long-description xml:lang="${region}">${longDescription}</long-description>
-        </#list>
         <online-flag>true</online-flag>
         <available-flag>true</available-flag>
         <searchable-flag>true</searchable-flag>
@@ -265,12 +330,44 @@
         <#if product.customAttributes?has_content>
             <custom-attributes>
                 <#list product.customAttributes as attr>
-                    <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                    <#if attr.id?matches("canadian")>
+                        <#if (product?counter)%2==0>
+                             <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                        </#if>
+                    <#else>
+                        <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                    </#if>
                 </#list>
                 <#if product.localizableCustomAttributes?has_content>
                     <#list product.localizableCustomAttributes as attr>
-                        <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
-                        <custom-attribute xml:lang="de" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                       <#if attr.id?matches("contAuthor")>
+                           <#if product?counter &lt; 3>
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">EnglishAuthor1</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">FrenchAuthor1</custom-attribute>
+                            <#elseif product?counter &gt; 2 && product?counter &lt; 5 >
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">EnglishAuthor2</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">FrenchAuthor2</custom-attribute>
+                           <#else>
+                                <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                                <custom-attribute xml:lang="fr" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                           </#if>
+                      <#elseif attr.id?matches("language")>
+                           <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                          <#if attr.value?matches("English")>
+                               <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Anglais</custom-attribute>
+                           <#elseif attr.value?matches("German")>
+                               <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Allemande</custom-attribute>
+                           <#elseif attr.value?matches("French")>
+                               <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Francais</custom-attribute>
+                           <#elseif attr.value?matches("Spanish")>
+                               <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Espagnol</custom-attribute>
+                          <#else>
+                               <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Autres</custom-attribute>
+                          </#if>
+                      <#else>
+                           <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                           <custom-attribute xml:lang="fr" attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                      </#if>
                     </#list>
                 </#if>
             </custom-attributes>

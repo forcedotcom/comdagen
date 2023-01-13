@@ -60,7 +60,7 @@ object GeneratorHelper {
         val variationMasterConfig = catalogConfig.variationProducts
         val variantProducts: Sequence<String> = variationMasterConfig.asSequence().flatMap { config ->
             (1..config.elementCount).asSequence().flatMap {
-                val masterProduct = MasterProduct(seed + "master$it".hashCode() + config.hashCode(), regions, config, catalogConfig.products.attributeDefinitions())
+                val masterProduct = MasterProduct(seed + "master$it".hashCode() + config.hashCode(), regions, config, catalogConfig.products.attributeDefinitions(), catalogConfig.products.localizableAttributeDefinitions())
                 masterProduct.variants.asSequence().map { it.id }
             }
         }

@@ -11,6 +11,7 @@ import com.salesforce.comdagen.SupportedCurrency
 import com.salesforce.comdagen.SupportedZone
 import com.salesforce.comdagen.attributeDefinitions
 import com.salesforce.comdagen.config.CatalogListConfiguration
+import com.salesforce.comdagen.localizableAttributeDefinitions
 import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.MasterCatalog
 import com.salesforce.comdagen.model.VariationAttribute
@@ -35,6 +36,7 @@ data class CatalogGenerator(
     val productCustomAttributes: Set<AttributeDefinition>
         get() {
             val standardProducts = configuration.products.attributeDefinitions()
+            val localizedAttributes = configuration.products.localizableAttributeDefinitions()
 
             val localVariationAttributes = configuration.variationProducts
                 .flatMap { it.localVariationAttributes }
@@ -55,7 +57,7 @@ data class CatalogGenerator(
                     emptySet()
                 }
 
-            return (standardProducts + localVariationAttributes + sharedVariationAttributes + sharedOptions + localOptions).toSet()
+            return (standardProducts + localVariationAttributes + sharedVariationAttributes + sharedOptions + localOptions + localizedAttributes).toSet()
         }
 
     companion object {

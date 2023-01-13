@@ -6,7 +6,7 @@
 package com.salesforce.comdagen;
 
 public enum SupportedZone {
-    Generic("generic"), German("de"), Chinese("zh"), Russian("ru");
+    Generic("generic"), German("de"), Chinese("zh"), Russian("ru"), French("fr");
 
     private String countryCode;
 

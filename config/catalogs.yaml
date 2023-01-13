@@ -91,88 +91,72 @@ catalogs:
 
   products:
     # number of standard products per catalog
-    elementCount: 2
+    elementCount: 10
     #generatedAttributes:
       #elementCount: 5
       #thereofSearchable: 5
 
     customAttributes:
-      string1:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: true
-      string2:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: true
-      string3:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: true
-      string4:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: true
-      string5:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: false
-      string6:
-        type: string
-        data: random
-        staticValue: ""
-        searchable: false
-      boolean1:
+      adultOnly:
         type: boolean
         data: random
         staticValue: ""
         searchable: false
-      boolean2:
+      canadian:
         type: boolean
         data: random
         staticValue: ""
         searchable: false
-      boolean3:
+      isLargePrint:
         type: boolean
         data: random
         staticValue: ""
         searchable: false
-      boolean4:
+      isMapApplicable:
         type: boolean
         data: random
         staticValue: ""
         searchable: false
-      date1:
+      releaseDate:
         type: date
         data: random
         staticValue: ""
         searchable: false
-      html1:
-        type: html
+      pageCount:
+        type: integer
+        data: random
+        staticValue: ""
+      id:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      bindingType:
+        type: string
+        data: list
+        list: [ "Paperback","Hardcover","Audiobook", "Board Book","Mass Market Paperback","Picture Book" ]
+        searchable: false
+      isbn10:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      isbn13:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: true
+      layoutModuleID:
+        type: string
         data: random
         staticValue: ""
         searchable: false
-      html2:
-        type: html
+      merchCategoryID:
+        type: string
         data: random
         staticValue: ""
         searchable: false
-      html3:
-        type: html
-        data: random
-        staticValue: ""
-        searchable: false
-      html4:
-        type: html
-        data: random
-        staticValue: ""
-        searchable: false
-      html5:
+      combinedAttributes:
         type: html
         data: random
         staticValue: ""
@@ -181,16 +165,42 @@ catalogs:
       #elementCount: 10
       #thereofSearchable: 3
     localizableCustomAttributes:
-      localString1:
+      age:
+        type: string
+        data: list
+        list: [ "Adult","Teen","Tween", "Kid","Toddler" ]
+        searchable: false
+      contAuthor:
         type: string
         data: random
         staticValue: ""
         searchable: true
-      localString2:
+      title:
         type: string
         data: random
         staticValue: ""
         searchable: true
+      language:
+        type: string
+        data: list
+        list: [ "English","German","French", "Spanish","Others" ]
+        searchable: false
+      ContEditor:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: false
+      ContTranslator:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: false
+      ContIllustrator:
+        type: string
+        data: random
+        staticValue: ""
+        searchable: false
+
 
     # local options are defined _for each_ product individually. Since that's an uncommon (and expensive to generate)
     # use case, the default is to not have them.

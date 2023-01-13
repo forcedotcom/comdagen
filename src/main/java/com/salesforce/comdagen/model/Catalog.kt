@@ -240,7 +240,7 @@ class MasterCatalog(
     val masterProducts: Sequence<MasterProduct>
         get() = config.variationProducts.asSequence().flatMap { variationConfig ->
             (1..variationConfig.elementCount).asSequence().map {
-                MasterProduct(seed + "master$it".hashCode() + variationConfig.hashCode(), regions, variationConfig, generatedProductAttributes)
+                MasterProduct(seed + "master$it".hashCode() + variationConfig.hashCode(), regions, variationConfig, generatedProductAttributes, localizedProductAttributes)
             }
         }
 
