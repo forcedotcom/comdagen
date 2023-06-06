@@ -1,8 +1,13 @@
 stores:
   # number of generated stores
-  elementCount: 20
+  elementCount: 500
   # generate stores located around a center coordinate (optional)
   centerLatitude: 37.789875
   centerLongitude: -122.396911
   # max distance to center point in kilometers
   distance: 100.0
+  customAttributes:
+    priceBookIds:
+      type: string
+      data: static
+      staticValue: "true"

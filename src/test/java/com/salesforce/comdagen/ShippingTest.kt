@@ -48,7 +48,8 @@ class ShippingTest {
             type = type,
             dataStore = dataStore,
             generationStrategy = generationStrategy,
-            searchable = false
+            searchable = false,
+            probability = 1
         )
         val customAttributesConfig: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
 

@@ -34,6 +34,10 @@ pricebooks:
     # define child pricebooks
     children:
       - id: "bookstore-sales-pricebook"
-        coverage: 0.25
+        coverage: 0.10
+        sales: true
+        maxAmountCount: 1
+      - id: "Store-Pricebook"
+        coverage: 0.01
         sales: true
         maxAmountCount: 1

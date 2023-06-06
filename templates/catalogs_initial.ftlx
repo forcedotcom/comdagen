@@ -101,6 +101,82 @@
              </refinement-definition>
         </refinement-definitions>
     </category>
+    <category category-id="hiddenbooks">
+        <display-name xml:lang="x-default">hiddenbooks</display-name>
+        <display-name xml:lang="fr">Russe</display-name>
+        <description xml:lang="x-default">Listen, Tesh, I am not some fly by night.</description>
+        <description xml:lang="fr">En quoi consiste la rétribution de mon agent immobilier?</description>
+        <online-flag>false</online-flag>
+        <parent>root</parent>
+        <thumbnail>images/baseThumb.jpg</thumbnail>
+        <image>images/baseImage.jpg</image>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>yearly</sitemap-changefrequency>
+        <sitemap-priority>0.6</sitemap-priority>
+        <custom-attributes>
+                <custom-attribute attribute-id="enableCompare">true</custom-attribute>
+                <custom-attribute attribute-id="showInMenu">false</custom-attribute>
+                <custom-attribute attribute-id="headerMenuBanner"></custom-attribute>
+                <custom-attribute attribute-id="string1">three wheelers</custom-attribute>
+                <custom-attribute attribute-id="string2">three-phase current</custom-attribute>
+                <custom-attribute attribute-id="date1">2006-01-25</custom-attribute>
+                <custom-attribute attribute-id="inStock">true</custom-attribute>
+        </custom-attributes>
+        <refinement-definitions>
+            <refinement-definition type="attribute" attribute-id="contAuthor" bucket-type="none"  system="false">
+                <display-name xml:lang="x-default">ContAuthor</display-name>
+                <sort-mode>value-name</sort-mode>
+                <sort-direction>ascending</sort-direction>
+                <cutoff-threshold>5</cutoff-threshold>
+            </refinement-definition>
+        </refinement-definitions>
+    </category>
+    <category category-id="Books">
+        <display-name xml:lang="x-default">Books</display-name>
+        <display-name xml:lang="fr">Books</display-name>
+        <description xml:lang="x-default">Listen, Tesh, I am not some fly by night.</description>
+        <description xml:lang="fr">En quoi consiste la rétribution de mon agent immobilier?</description>
+        <online-flag>true</online-flag>
+        <parent>root</parent>
+        <thumbnail>images/baseThumb.jpg</thumbnail>
+        <image>images/baseImage.jpg</image>
+        <sitemap-included-flag>true</sitemap-included-flag>
+        <sitemap-changefrequency>yearly</sitemap-changefrequency>
+        <sitemap-priority>0.6</sitemap-priority>
+        <custom-attributes>
+                <custom-attribute attribute-id="enableCompare">true</custom-attribute>
+                <custom-attribute attribute-id="showInMenu">true</custom-attribute>
+                <custom-attribute attribute-id="headerMenuBanner"></custom-attribute>
+                <custom-attribute attribute-id="string1">three wheelers</custom-attribute>
+                <custom-attribute attribute-id="string2">three-phase current</custom-attribute>
+                <custom-attribute attribute-id="date1">2006-01-25</custom-attribute>
+                <custom-attribute attribute-id="inStock">true</custom-attribute>
+        </custom-attributes>
+    </category>
+    <#list 1..10 as i>
+            <category category-id="BooksChild${i}">
+                <display-name xml:lang="x-default">BooksChild${i}</display-name>
+                <display-name xml:lang="fr">BooksChild${i}</display-name>
+                <description xml:lang="x-default">Listen, Tesh, I am not some fly by night.</description>
+                <description xml:lang="fr">En quoi consiste la rétribution de mon agent immobilier?</description>
+                <online-flag>true</online-flag>
+                <parent>Books</parent>
+                <thumbnail>images/baseThumb.jpg</thumbnail>
+                <image>images/baseImage.jpg</image>
+                <sitemap-included-flag>true</sitemap-included-flag>
+                <sitemap-changefrequency>yearly</sitemap-changefrequency>
+                <sitemap-priority>0.6</sitemap-priority>
+                <custom-attributes>
+                        <custom-attribute attribute-id="enableCompare">true</custom-attribute>
+                        <custom-attribute attribute-id="showInMenu">true</custom-attribute>
+                        <custom-attribute attribute-id="headerMenuBanner"></custom-attribute>
+                        <custom-attribute attribute-id="string1">three wheelers</custom-attribute>
+                        <custom-attribute attribute-id="string2">three-phase current</custom-attribute>
+                        <custom-attribute attribute-id="date1">2006-01-25</custom-attribute>
+                        <custom-attribute attribute-id="inStock">true</custom-attribute>
+                </custom-attributes>
+            </category>
+    </#list>
 <#list catalog.categories as category>
     <category category-id="${category.id}">
         <#list category.name as region, name>
@@ -336,7 +412,7 @@
                              <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
                         </#if>
                     <#elseif attr.id?starts_with("shipping")>
-                        <#if product?counter &lt; 3500000>
+                        <#if product?counter &lt; 7000000>
                              <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
                         </#if>
                      <#else>
@@ -352,7 +428,7 @@
                            <#elseif product?counter &lt; 10000>
                                 <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">Leo Tolstoy</custom-attribute>
                                 <custom-attribute xml:lang="fr" attribute-id="${attr.id}">Leo Tolstoy</custom-attribute>
-                           <#elseif product?counter &gt; 10000 && product?counter &lt; 1500000>
+                           <#elseif product?counter &gt; 10000 && product?counter &lt; 3000000>
                                 <custom-attribute xml:lang="x-default" attribute-id="${attr.id}">EnglishAuthor ${product?counter}</custom-attribute>
                                 <custom-attribute xml:lang="fr" attribute-id="${attr.id}">FrenchAuthor ${product?counter}</custom-attribute>
                            <#else>
@@ -547,12 +623,22 @@
         </#if>
     </variation-attribute>
 </#list>
+<#list 1..10 as i>
+    <#list catalog.products as product>
+        <#if product?counter <= i*200000>
+            <category-assignment product-id="${product.id}" category-id="BooksChild${i}">
+                <primary-flag>true</primary-flag>
+            </category-assignment>
+        </#if>
+    </#list>
+</#list>
+</#if>
 
 <#list catalog.categoryAssignments as assignment>
     <category-assignment product-id="${assignment.product.id}" category-id="${assignment.category.id}">
         <primary-flag>true</primary-flag>
     </category-assignment>
 </#list>
-</#if>
+
 
 </catalog>

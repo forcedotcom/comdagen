@@ -25,11 +25,11 @@ import com.salesforce.comdagen.config.AttributeConfig.GenerationStrategy.*
  * @property dataStore the known data portion, if any
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class AttributeConfig
-constructor(
-    val type: AttributeConfig.DataType,
+data class AttributeConfig(
+    val type: DataType,
     val searchable: Boolean,
-    val generationStrategy: AttributeConfig.GenerationStrategy,
+    val probability: Int,
+    val generationStrategy: GenerationStrategy,
     /**
      * Contains the value to be used for this attribute. Interpretation varies depending on the
      * [.generationStrategy].
@@ -75,14 +75,15 @@ constructor(
             @JsonProperty("staticValue") staticValue: String?,
             @JsonProperty("counter") counterConfig: Counter?,
             @JsonProperty("list") listConfig: List<String>?,
-            @JsonProperty("searchable") searchable: Boolean = false
+            @JsonProperty("searchable") searchable: Boolean = false,
+            @JsonProperty("probability") probability: Int = 1
         ): AttributeConfig {
             // note that we fail with NPE when the matching data gen strategy isn't specified
             when (generationStrategy) {
-                STATIC -> return AttributeConfig(type, searchable, STATIC, staticValue!!)
-                COUNTER -> return AttributeConfig(type, searchable, COUNTER, counterConfig!!)
-                LIST -> return AttributeConfig(type, searchable, LIST, listConfig!!)
-                else -> return AttributeConfig(type, searchable, generationStrategy, Any())
+                STATIC -> return AttributeConfig(type, searchable, probability, STATIC, staticValue!!)
+                COUNTER -> return AttributeConfig(type, searchable, probability, COUNTER, counterConfig!!)
+                LIST -> return AttributeConfig(type, searchable, probability, LIST, listConfig!!)
+                else -> return AttributeConfig(type, searchable, probability, generationStrategy, Any())
             }
         }
 

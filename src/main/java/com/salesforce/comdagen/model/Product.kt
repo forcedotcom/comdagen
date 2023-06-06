@@ -134,7 +134,7 @@ data class MasterProduct(
         CustomAttribute(
             "product.$name", AttributeConfig(
                 AttributeConfig.DataType.STRING,
-                false, AttributeConfig.GenerationStrategy.STATIC, value
+                false, 1, AttributeConfig.GenerationStrategy.STATIC, value
             ), 0
         )
 }

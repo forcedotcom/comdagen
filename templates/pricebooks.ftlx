@@ -1,33 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <pricebooks xmlns="http://www.demandware.com/xml/impex/pricebook/2006-10-31">
 <#list gen.objects as pricebook>
-    <pricebook>
-        <header pricebook-id="${pricebook.id}">
-            <currency>${pricebook.currency}</currency>
-            <display-name xml:lang="x-default">Pricebook (${pricebook.id})</display-name>
-            <online-flag>true</online-flag>
-            <#if pricebook.parentId?has_content>
-            <parent>${pricebook.parentId}</parent>
-            </#if>
-            <feed-based>true</feed-based>
-            <#if pricebook.customAttributes?has_content>
-            <custom-attributes>
-                <#list pricebook.customAttributes as attr>
-                <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
-                </#list>
-            </custom-attributes>
-            </#if>
-        </header>
-        <price-tables>
-        <#list pricebook.pricetables as pricetable>
-            <price-table product-id="${pricetable.productId}">
-                <#list pricetable.amounts as amount>
-                <#setting number_format="0.##">
-                <amount quantity="${amount.quantity}">${amount.amount}</amount>
-                </#list>
-            </price-table>
+    <#if !pricebook.id?starts_with("Store")>
+        <pricebook>
+            <header pricebook-id="${pricebook.id}">
+                <currency>${pricebook.currency}</currency>
+                <display-name xml:lang="x-default">Pricebook (${pricebook.id})</display-name>
+                <online-flag>true</online-flag>
+                <#if pricebook.parentId?has_content>
+                <parent>${pricebook.parentId}</parent>
+                </#if>
+                <feed-based>true</feed-based>
+                <#if pricebook.customAttributes?has_content>
+                <custom-attributes>
+                    <#list pricebook.customAttributes as attr>
+                    <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                    </#list>
+                </custom-attributes>
+                </#if>
+            </header>
+            <price-tables>
+            <#list pricebook.pricetables as pricetable>
+                <price-table product-id="${pricetable.productId}">
+                    <#list pricetable.amounts as amount>
+                    <#setting number_format="0.##">
+                    <amount quantity="${amount.quantity}">${amount.amount}</amount>
+                    </#list>
+                </price-table>
+            </#list>
+            </price-tables>
+        </pricebook>
+    <#else>
+        <#list 1..250 as i>
+            <pricebook>
+              <header pricebook-id="${pricebook.id}-${i}">
+                  <currency>${pricebook.currency}</currency>
+                  <display-name xml:lang="x-default">Store Pricebook ${i}</display-name>
+                  <online-flag>true</online-flag>
+                  <feed-based>true</feed-based>
+                  <#if pricebook.customAttributes?has_content>
+                  <custom-attributes>
+                      <#list pricebook.customAttributes as attr>
+                      <custom-attribute attribute-id="${attr.id}">${attr.value}</custom-attribute>
+                      </#list>
+                  </custom-attributes>
+                  </#if>
+              </header>
+              <price-tables>
+              <#list pricebook.pricetables as pricetable>
+                  <price-table product-id="${pricetable.productId}">
+                      <#list pricetable.amounts as amount>
+                      <#setting number_format="0.##">
+                      <amount quantity="${amount.quantity}">${amount.amount}</amount>
+                      </#list>
+                  </price-table>
+              </#list>
+              </price-tables>
+            </pricebook>
         </#list>
-        </price-tables>
-    </pricebook>
+    </#if>
 </#list>
 </pricebooks>

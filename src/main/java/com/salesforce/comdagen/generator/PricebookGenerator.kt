@@ -71,7 +71,7 @@ data class PricebookGenerator(
                                 getPartialProductSequence(
                                     seed,
                                     totalProductCount,
-                                    configuration.coverage,
+                                    childConfig.coverage,
                                     allProductIds
                                 ),
                                 seed,

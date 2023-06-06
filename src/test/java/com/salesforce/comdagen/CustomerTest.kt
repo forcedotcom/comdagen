@@ -79,7 +79,8 @@ class CustomerTest {
             type = type,
             generationStrategy = generationStrategy,
             dataStore = dataStore,
-            searchable = false
+            searchable = false,
+            probability = 1
         )
         val customAttribute: Map<String, AttributeConfig> = mapOf(name to attributeConfig)
         val customerConfig = CustomerConfiguration(customAttributes = customAttribute, initialSeed = seed)

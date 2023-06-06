@@ -29,7 +29,7 @@ sitesConfig:
     #promotionConfig: "promotions.yaml"
     shippingConfig: "shipping.yaml"
     #sourceCodeConfig: "sourcecodes.yaml"
-    #storeConfig: "stores.yaml"
+    storeConfig: "stores.yaml"
     #sortingRuleConfig: "sortingrules.yaml"
     #redirectUrlConfig: "redirect-urls.yaml"
 
