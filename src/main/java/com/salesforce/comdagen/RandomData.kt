@@ -126,7 +126,7 @@ object RandomData {
         return "${getRandomString(rng.nextLong(), 4)}-${getRandomString(
             rng.nextLong(),
             4
-        )}-${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}".toUpperCase()
+        )}-${getRandomString(rng.nextLong(), 4)}-${getRandomString(rng.nextLong(), 4)}".uppercase()
     }
 
     private fun getRandomString(seed: Long, length: Int): String {
