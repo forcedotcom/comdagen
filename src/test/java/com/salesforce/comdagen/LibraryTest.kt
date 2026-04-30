@@ -5,19 +5,18 @@ import com.salesforce.comdagen.config.ContentConfiguration
 import com.salesforce.comdagen.config.FolderConfiguration
 import com.salesforce.comdagen.config.LibraryConfiguration
 import com.salesforce.comdagen.generator.LibraryGenerator
-import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.rules.TemporaryFolder
+import org.junit.jupiter.api.io.TempDir
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class LibraryTest {
 
-    @Rule
-    @JvmField
-    val tmpFolder = TemporaryFolder()
+    @TempDir
+    lateinit var tmpFolder: File
 
     @Test
     fun `default configuration tests`() {
@@ -56,7 +55,7 @@ class LibraryTest {
         )
 
 
-        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder.root)
+        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder)
         val libraryObjects = libraryGenerator.objects
 
 
@@ -176,7 +175,7 @@ class LibraryTest {
         )
 
 
-        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder.root)
+        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder)
         val libraryObjects = libraryGenerator.objects
 
         assertTrue(
@@ -328,7 +327,7 @@ class LibraryTest {
         )
 
 
-        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder.root)
+        val libraryGenerator = LibraryGenerator(defaultLibraryConfig, tmpFolder)
         val libraryObjects = libraryGenerator.objects
 
         assertTrue(
@@ -387,7 +386,7 @@ class LibraryTest {
         )
 
 
-        val libraryGenerator2 = LibraryGenerator(defaultLibraryConfig2, tmpFolder.root)
+        val libraryGenerator2 = LibraryGenerator(defaultLibraryConfig2, tmpFolder)
         val libraryObjects2 = libraryGenerator2.objects
 
         assertTrue(

@@ -8,7 +8,7 @@ import com.salesforce.comdagen.config.InventoryRecordConfiguration
 import com.salesforce.comdagen.config.ProductConfiguration
 import com.salesforce.comdagen.generator.CatalogGenerator
 import com.salesforce.comdagen.generator.InventoryGenerator
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue

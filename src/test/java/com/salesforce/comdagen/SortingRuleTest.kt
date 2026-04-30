@@ -2,7 +2,7 @@ package com.salesforce.comdagen
 
 import com.salesforce.comdagen.config.SortingRuleConfiguration
 import com.salesforce.comdagen.generator.SortingRuleGenerator
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

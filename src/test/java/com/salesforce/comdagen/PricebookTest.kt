@@ -4,7 +4,7 @@ import com.salesforce.comdagen.config.*
 import com.salesforce.comdagen.generator.CatalogGenerator
 import com.salesforce.comdagen.generator.PricebookGenerator
 import com.salesforce.comdagen.model.Amount
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
