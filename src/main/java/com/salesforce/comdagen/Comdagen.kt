@@ -176,7 +176,7 @@ class Comdagen {
 
         /** Used for parsing the generator config files.  */
         val OBJECT_MAPPER = ObjectMapper(YAMLFactory())
-            .registerModule(KotlinModule())
+            .registerModule(KotlinModule.Builder().build())
             .addMixIn(Configuration::class.java, SeedInheritanceMixin::class.java)
             .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
 
