@@ -2,7 +2,7 @@ package com.salesforce.comdagen
 
 import com.salesforce.comdagen.config.GeneratedAttributeConfig
 import com.salesforce.comdagen.model.RandomAttributeDefinition
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.util.*
 import kotlin.test.assertEquals
 

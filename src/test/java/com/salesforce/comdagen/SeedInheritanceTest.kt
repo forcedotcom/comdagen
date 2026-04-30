@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectReader
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.salesforce.InvalidSpecificationException
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.fail
 
 class SeedInheritanceTest {

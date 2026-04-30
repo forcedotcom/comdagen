@@ -5,7 +5,7 @@ import com.salesforce.comdagen.config.CustomerConfiguration
 import com.salesforce.comdagen.config.GeneratedAttributeConfig
 import com.salesforce.comdagen.generator.CustomerGenerator
 import com.salesforce.comdagen.model.Customer
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.*
 
 class CustomerTest {

@@ -5,7 +5,7 @@ import com.salesforce.comdagen.config.SystemCodeConfig
 import com.salesforce.comdagen.generator.CouponGenerator
 import com.salesforce.comdagen.model.CodeListCoupon
 import com.salesforce.comdagen.model.SystemCodeCoupon
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals

@@ -10,7 +10,8 @@ import com.salesforce.comdagen.model.AttributeDefinition
 import com.salesforce.comdagen.model.Category
 import com.salesforce.comdagen.model.Product
 import com.salesforce.comdagen.model.ProductOption
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
@@ -259,14 +260,18 @@ class CatalogTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testVariantConfigProbabilityEnforced() {
-        VariationAttributeConfiguration("test", listOf("1"), 2.0f)
+        assertThrows<IllegalArgumentException> {
+            VariationAttributeConfiguration("test", listOf("1"), 2.0f)
+        }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun testVariantConfigNegativeProbabilityRejected() {
-        VariationAttributeConfiguration("test", listOf("1"), -1.4f)
+        assertThrows<IllegalArgumentException> {
+            VariationAttributeConfiguration("test", listOf("1"), -1.4f)
+        }
     }
 
     @Test

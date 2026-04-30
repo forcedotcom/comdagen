@@ -5,7 +5,7 @@ import com.salesforce.comdagen.config.CustomerConfiguration
 import com.salesforce.comdagen.config.CustomerGroupConfiguration
 import com.salesforce.comdagen.config.GeneratedAttributeConfig
 import com.salesforce.comdagen.generator.CustomerGroupGenerator
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue

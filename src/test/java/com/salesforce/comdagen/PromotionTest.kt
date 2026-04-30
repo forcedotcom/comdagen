@@ -6,7 +6,7 @@ import com.salesforce.comdagen.model.CampaignPromotionAssignment
 import com.salesforce.comdagen.model.OrderPromotion
 import com.salesforce.comdagen.model.ProductPromotion
 import com.salesforce.comdagen.model.ShippingPromotion
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

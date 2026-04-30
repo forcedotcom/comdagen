@@ -4,7 +4,7 @@ import com.salesforce.comdagen.config.AttributeConfig
 import com.salesforce.comdagen.config.GeneratedAttributeConfig
 import com.salesforce.comdagen.config.SourceCodeConfiguration
 import com.salesforce.comdagen.generator.SourceCodeGenerator
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
