@@ -64,6 +64,8 @@ data class SiteConfiguration(
 
     val redirectUrlConfig: String? = null,
 
+    val slotsConfig: String? = null,
+
     override val outputFilePattern: String = "site.xml",
 
     override val outputDir: String = "sites",

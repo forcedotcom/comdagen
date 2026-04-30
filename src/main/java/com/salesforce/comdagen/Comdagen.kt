@@ -92,21 +92,43 @@ class Comdagen {
             )
         }
 
+
+        /*
+        * load library configuration
+        * This is done before site generation because it is required to know if the comdagen summary content asset
+        * will be created in order to determine the content asset to be loaded in the central content asset slot on
+        * home page.
+        */
+        val librariesConfFile = File(configDir, "libraries.yaml")
+        val librariesConf: LibraryConfiguration? =
+            if (librariesConfFile.isFile && librariesConfFile.canRead()) OBJECT_MAPPER.readValue(
+                librariesConfFile,
+                LibraryConfiguration::class.java
+            ) else null
+
+
         // load sites configuration
         val sitesConfig = OBJECT_MAPPER.readValue(sitesConfigFile, SitesConfig::class.java)
 
-        // render generated data as xml files
-        outputProducer.render(SiteGenerator(sitesConfig, configDir))
 
-        // load library configuration
-        val librariesConfFile = File(configDir, "libraries.yaml")
-        val librariesConf: LibraryConfiguration?
+        // render generated data as xml files; if the library config couldn't be read, don't set the content slot to
+        // the comdagen summary content asset
+        outputProducer.render(
+            SiteGenerator(
+                sitesConfig,
+                configDir,
+                librariesConf?.renderComdagenSummaryContentAsset ?: false
+            )
+        )
+
 
         // render libraries
-        if (librariesConfFile.isFile && librariesConfFile.canRead()) {
-            librariesConf = OBJECT_MAPPER.readValue(librariesConfFile, LibraryConfiguration::class.java)
-            outputProducer.render(LibraryGenerator(librariesConf, configDir))
-        }
+        if (librariesConf != null) outputProducer.render(
+            LibraryGenerator(
+                librariesConf,
+                configDir
+            )
+        ) else LOGGER.warn("Could not read in library configuration \"library.yaml\".")
 
         // zip generated output directory if cmd option is set
         if (zip) {
@@ -118,7 +140,8 @@ class Comdagen {
         if (xltExport) {
             LOGGER.info("Start exporting product names.")
 
-            val siteGenerator = SiteGenerator(sitesConfig, configDir)
+            val siteGenerator =
+                SiteGenerator(sitesConfig, configDir, librariesConf?.renderComdagenSummaryContentAsset ?: false)
 
             val allRegions = siteGenerator.configuration.sites.flatMap { it.regions.toList() }.toSet()
 
