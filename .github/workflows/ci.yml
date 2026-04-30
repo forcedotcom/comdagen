@@ -19,3 +19,10 @@ jobs:
 
       - name: Build and test
         run: mvn -B verify
+
+      - name: Smoke test — generate data set with default config
+        run: |
+          JAR=$(ls target/comdagen-*-SNAPSHOT.jar | grep -v '/original-' | head -1)
+          java -jar "$JAR" --zip
+          test -s output/generated.zip
+          unzip -l output/generated.zip | tail -20
