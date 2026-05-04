@@ -41,7 +41,8 @@ class XMLOutputProducer
 @Throws(IOException::class)
 constructor(
     private val templateDir: File = File("./templates"),
-    private val outputDir: File = File("./output/generated")
+    private val outputDir: File = File("./output/generated"),
+    private val maxProductsPerFile: Int = 0
 ) {
 
     private val freemarkerConfig: freemarker.template.Configuration =
@@ -121,17 +122,43 @@ constructor(
     @Throws(IOException::class)
     private fun render(templateName: String, generator: CatalogGenerator) {
         val catalogs = generator.objects
+        val chunker = CatalogChunker(maxProductsPerFile)
         catalogs.forEachIndexed { index, catalog ->
-            val modelData = mapOf(
-                "catalog" to catalog, "index" to index,
-                "configuration" to generator.configuration
-            )
             File("$outputDir/${generator.configuration.outputDir}/${catalog.id}").apply { mkdirs() }
             copyResources(staticImagesNameWithPath, File(outputDir, "/catalogs/${catalog.id}/static/default/"))
-            produce(
-                templateName,
-                "${generator.configuration.outputDir}/${catalog.id}/${generator.configuration.getFileName()}", modelData
-            )
+
+            val chunks = chunker.chunk(catalog, generator.configuration.getFileName())
+            if (chunks.size == 1 && chunks[0].isFirstFile) {
+                val modelData = mapOf(
+                    "catalog" to catalog, "index" to index,
+                    "configuration" to generator.configuration
+                )
+                produce(
+                    templateName,
+                    "${generator.configuration.outputDir}/${catalog.id}/${generator.configuration.getFileName()}",
+                    modelData
+                )
+            } else {
+                chunks.forEach { chunk ->
+                    val modelData = mapOf(
+                        "catalog" to catalog,
+                        "index" to index,
+                        "configuration" to generator.configuration,
+                        "isChunked" to true,
+                        "isFirstFile" to chunk.isFirstFile,
+                        "chunkedProducts" to chunk.products,
+                        "chunkedMasterProducts" to chunk.masterProducts,
+                        "chunkedBundles" to chunk.bundles,
+                        "chunkedProductSets" to chunk.productSets,
+                        "chunkedCategoryAssignments" to chunk.categoryAssignments
+                    )
+                    produce(
+                        templateName,
+                        "${generator.configuration.outputDir}/${catalog.id}/${chunk.fileName}",
+                        modelData
+                    )
+                }
+            }
         }
     }
 
