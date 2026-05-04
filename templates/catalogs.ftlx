@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="${catalog.id}">
+<#if !isChunked?? || isFirstFile!true>
     <category category-id="root">
         <display-name xml:lang="x-default">Root Category</display-name>
         <refinement-definitions>
@@ -82,9 +83,11 @@
         </refinement-definitions>
     </category>
 </#list>
+</#if>
 
 <#if catalog.class.simpleName == "MasterCatalog">
-<#list catalog.masterProducts as masterProduct>
+<#assign masterProductsList = (isChunked?? && chunkedMasterProducts??)?then(chunkedMasterProducts, catalog.masterProducts)>
+<#list masterProductsList as masterProduct>
     <product product-id="${masterProduct.id}">
         <ean>EAN</ean>
         <upc>UPC</upc>
@@ -205,7 +208,8 @@
     </#list>
 </#list>
 
-<#list catalog.products as product>
+<#assign productsList = (isChunked?? && chunkedProducts??)?then(chunkedProducts, catalog.products)>
+<#list productsList as product>
     <product product-id="${product.id}">
         <ean>EAN</ean>
         <upc>UPC</upc>
@@ -289,7 +293,8 @@
     </product>
 </#list>
 
-<#list catalog.bundles as bundle>
+<#assign bundlesList = (isChunked?? && chunkedBundles??)?then(chunkedBundles, catalog.bundles)>
+<#list bundlesList as bundle>
     <product product-id="${bundle.id}">
         <ean>EAN</ean>
         <upc>UPC</upc>
@@ -346,7 +351,8 @@
     </product>
 </#list>
 
-<#list catalog.productSets as set>
+<#assign productSetsList = (isChunked?? && chunkedProductSets??)?then(chunkedProductSets, catalog.productSets)>
+<#list productSetsList as set>
     <product product-id="${set.id}">
         <ean>EAN</ean>
         <upc>UPC</upc>
@@ -401,6 +407,7 @@
     </product>
 </#list>
 
+<#if !isChunked?? || isFirstFile!true>
 <#list catalog.sharedOptions as option>
     <product-option option-id="${option.id}">
         <display-name xml:lang="x-default">${option.displayName}</display-name>
@@ -436,8 +443,10 @@
     </variation-attribute>
 </#list>
 </#if>
+</#if>
 
-<#list catalog.categoryAssignments as assignment>
+<#assign categoryAssignmentsList = (isChunked?? && chunkedCategoryAssignments??)?then(chunkedCategoryAssignments, catalog.categoryAssignments)>
+<#list categoryAssignmentsList as assignment>
     <category-assignment product-id="${assignment.product.id}" category-id="${assignment.category.id}">
         <primary-flag>true</primary-flag>
     </category-assignment>

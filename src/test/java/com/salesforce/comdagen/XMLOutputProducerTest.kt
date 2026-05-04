@@ -136,4 +136,44 @@ class XMLOutputProducerTest {
         )
         assertFalse(File(outputFolder, "catalogs/${catalog.id}/catalog-2.xml").exists())
     }
+
+    @Test
+    @Throws(IOException::class)
+    fun testRenderCatalogGenerator_firstChunkHasRootCategory_subsequentChunksDoNot() {
+        val templateFileName = "catalogs.ftlx"
+        Files.copy(
+            File("templates", templateFileName).toPath(),
+            File(inputFolder, templateFileName).toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
+
+        val seed: Long = 1234
+        val catalogConfig = CatalogListConfiguration(
+            elementCount = 1,
+            products = ProductConfiguration(elementCount = 10, initialSeed = seed),
+            initialSeed = seed
+        )
+        val catalogGenerator = CatalogGenerator(configuration = catalogConfig)
+
+        XMLOutputProducer(inputFolder, outputFolder, maxProductsPerFile = 4).render(catalogGenerator)
+
+        val catalog = catalogGenerator.objects.first()
+        val catalogDir = File(outputFolder, "catalogs/${catalog.id}")
+        val first = File(catalogDir, "catalog.xml").readText()
+        val second = File(catalogDir, "catalog-2.xml").readText()
+        val third = File(catalogDir, "catalog-3.xml").readText()
+
+        assertTrue(
+            first.contains("<category category-id=\"root\""),
+            "first chunk must contain root category"
+        )
+        assertFalse(
+            second.contains("<category category-id=\"root\""),
+            "second chunk must NOT contain root category"
+        )
+        assertFalse(
+            third.contains("<category category-id=\"root\""),
+            "third chunk must NOT contain root category"
+        )
+    }
 }
