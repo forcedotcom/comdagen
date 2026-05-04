@@ -52,6 +52,12 @@ class Comdagen {
     )
     private var outputNames = "./output/productnames_\${site}_\${locale}.txt"
 
+    @Option(
+        name = "--max-products-per-file",
+        usage = "When > 0, split each catalog.xml into chunks of at most this many products"
+    )
+    internal var maxProductsPerFile: Int = 0
+
     @Throws(IOException::class)
     private fun doMain(args: Array<String>): Int {
         val parser = CmdLineParser(this)
@@ -79,7 +85,7 @@ class Comdagen {
             throw IOException("Unable to read from config directory ${configDir.name}")
         }
 
-        val outputProducer = XMLOutputProducer(templateDir, outputDir)
+        val outputProducer = XMLOutputProducer(templateDir, outputDir, maxProductsPerFile)
 
         // load default sites config if none is specified as cli parameter
         if (sitesConfigFile == null) {
