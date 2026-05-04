@@ -41,7 +41,7 @@ constructor(
 
         @JsonValue
         fun forJackson(): String {
-            return name.toLowerCase()
+            return name.lowercase()
         }
 
         override fun toString(): String {
@@ -54,7 +54,7 @@ constructor(
 
         @JsonValue
         fun forJackson(): String {
-            return name.toLowerCase()
+            return name.lowercase()
         }
     }
 

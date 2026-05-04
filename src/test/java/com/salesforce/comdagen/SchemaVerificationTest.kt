@@ -3,9 +3,8 @@ package com.salesforce.comdagen
 import com.salesforce.comdagen.config.*
 import com.salesforce.comdagen.generator.*
 import com.salesforce.comdagen.model.AttributeDefinition
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.TemporaryFolder
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import org.xmlunit.validation.Languages
 import java.io.File
 import java.nio.file.Files
@@ -25,13 +24,11 @@ class SchemaVerificationTest {
         private val seed: Long = 1234
     }
 
-    @Rule
-    @JvmField
-    val inputDir = TemporaryFolder()
+    @TempDir
+    lateinit var inputDir: File
 
-    @Rule
-    @JvmField
-    val outputDir = TemporaryFolder()
+    @TempDir
+    lateinit var outputDir: File
 
     @Test
     fun testCustomerValid() {
@@ -41,20 +38,20 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/customerlist2.xsd")
 
         val templateFileName = "customers.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(customerGenerator)
         assertTrue {
             try {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${customerConfig.outputDir}/${customerConfig.getFileName()}"
                         )
                     )
@@ -76,13 +73,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/pricebook.xsd")
 
         val templateFileName = "pricebooks.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(pricebookGenerator)
 
         assertTrue {
@@ -90,7 +87,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${pricebookConfig.outputDir}/${pricebookConfig.getFileName()}"
                         )
                     )
@@ -113,13 +110,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/catalog.xsd")
 
         val templateFileName = "catalogs.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(catalogGenerator)
 
         assertTrue {
@@ -127,7 +124,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${catalogConfig.outputDir}/$catalogId/${catalogConfig.outputFilePattern}"
                         )
                     )
@@ -152,13 +149,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/inventory.xsd")
 
         val templateFileName = "inventories.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(inventoryGenerator)
 
         assertTrue {
@@ -166,7 +163,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${inventoryConfig.outputDir}/${inventoryConfig.getFileName()}"
                         )
                     )
@@ -187,13 +184,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/coupon.xsd")
 
         val templateFileName = "coupons.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(couponGenerator)
 
         assertTrue {
@@ -201,7 +198,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${couponConfig.outputDir}/${couponConfig.outputFilePattern}"
                         )
                     )
@@ -223,13 +220,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/customergroup.xsd")
 
         val templateFileName = "customer-groups.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
         producer.render(customerGroupGenerator)
 
         assertTrue {
@@ -237,7 +234,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${customerGroupConfig.outputDir}/${customerGroupConfig.outputFilePattern}"
                         )
                     )
@@ -275,17 +272,17 @@ class SchemaVerificationTest {
         val searchSchema = getValidator("/schema/search2.xsd")
 
         val templateFileName = "system-objecttype-extensions.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
         Files.copy(
-            javaClass.getResourceAsStream("/templates/search2.ftlx"), inputDir.newFile("search2.ftlx").toPath(),
+            javaClass.getResourceAsStream("/templates/search2.ftlx"), File(inputDir, "search2.ftlx").toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         val customAttributes: Map<String, Set<AttributeDefinition>> =
             catalogGenerator.metadata + pricebookGenerator.metadata + customerGenerator.metadata
@@ -294,8 +291,8 @@ class SchemaVerificationTest {
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, "meta/system-objecttype-extensions.xml")))
-                searchSchema.validate(StreamSource(File(outputDir.root, "search2.xml")))
+                v.validate(StreamSource(File(outputDir, "meta/system-objecttype-extensions.xml")))
+                searchSchema.validate(StreamSource(File(outputDir, "search2.xml")))
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -329,13 +326,13 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/promotion.xsd")
 
         val templateFileName = "promotions.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         producer.render(promotionGenerator)
 
@@ -344,7 +341,7 @@ class SchemaVerificationTest {
                 v.validate(
                     StreamSource(
                         File(
-                            outputDir.root,
+                            outputDir,
                             "${promotionConfig.outputDir}/${promotionConfig.outputFilePattern}"
                         )
                     )
@@ -365,19 +362,19 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/shipping.xsd")
 
         val templateFileName = "shipping.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         producer.render(shippingGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, shippingConfig.outputFilePattern)))
+                v.validate(StreamSource(File(outputDir, shippingConfig.outputFilePattern)))
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -394,19 +391,19 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/store.xsd")
 
         val templateFileName = "stores.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         producer.render(storeGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, storeConfig.outputFilePattern)))
+                v.validate(StreamSource(File(outputDir, storeConfig.outputFilePattern)))
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -423,19 +420,19 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/sort.xsd")
 
         val templateFileName = "sortingrules.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         producer.render(sortingRuleGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, sortingRuleConfig.outputFilePattern)))
+                v.validate(StreamSource(File(outputDir, sortingRuleConfig.outputFilePattern)))
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -457,19 +454,19 @@ class SchemaVerificationTest {
         val v = getValidator("/schema/redirecturl.xsd")
 
         val templateFileName = "redirect-urls.ftlx"
-        val template = inputDir.newFile(templateFileName)
+        val template = File(inputDir, templateFileName)
         Files.copy(
             javaClass.getResourceAsStream("/templates/$templateFileName"), template.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
 
-        val producer = XMLOutputProducer(inputDir.root, outputDir.root)
+        val producer = XMLOutputProducer(inputDir, outputDir)
 
         producer.render(redirectUrlGenerator)
 
         assertTrue {
             try {
-                v.validate(StreamSource(File(outputDir.root, redirectUrlConfig.outputFilePattern)))
+                v.validate(StreamSource(File(outputDir, redirectUrlConfig.outputFilePattern)))
                 return@assertTrue true
             } catch (e: Exception) {
                 e.printStackTrace()

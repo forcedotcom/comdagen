@@ -7,7 +7,7 @@ import com.salesforce.comdagen.generator.RedirectUrlGenerator
 import com.salesforce.comdagen.model.CategoryRedirectUrl
 import com.salesforce.comdagen.model.ProductRedirectUrl
 import com.salesforce.comdagen.model.StaticRedirectUrl
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.*
 
 class RedirectUrlTest {
