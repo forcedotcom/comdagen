@@ -23,7 +23,7 @@ The executable JAR file will be placed in `target/comdagen-<VERSION>-SNAPSHOT.ja
 Execute comdagen by calling one of:
 
 ```
-    $ java -jar target/comdagen-1.1-SNAPSHOT.jar --zip
+    $ java -jar target/comdagen-1.2-SNAPSHOT.jar --zip
     $ ~/comdagen/bin/comdagen.sh --zip
 ```
 
