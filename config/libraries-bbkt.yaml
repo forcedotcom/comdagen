@@ -1,0 +1,63 @@
+# Load-test profile: Fullbeauty Brands (BBKT) — shape derived from the March 2026 Sev1 incident.
+#
+# Incident data (CONTENT_AV table):
+#   Total AV rows:     ~273 000
+#   Rows with CLOBs:    68 444  (25 % of total)
+#   CLOB size breakdown:
+#     67 % under 63 KB   — "typical" body tier
+#     25 % at 188–376 KB — "outlier" tier; this 25 % drove 80 % of total LOB storage
+#   Cold-cache replication time: 40–80 min (baseline: 3–7 min); AWR: 37 % of DB time on LOB access.
+#
+# Primary axis: per-PO localized-AV volume = bodyLengthChars × localeCount (not row count).
+# The quota counter is char-based (MChars).  See W-23796921 design doc for context.
+#
+# Run this profile on a PIG instance (POD222, POD223, or POD326).
+# Measure: import speed, cold-cache replication time, storefront thread state post-replication.
+
+libraryConfig:
+  outputDir: "libraries"
+  initialSeed: 20260301
+
+  # --- Row count (secondary axis) ---
+  # BBKT had ~273 000 content AV rows.  Start at 50 000 and step to 273 000 for the full run.
+  generatedContentAssetCount: 50000
+
+  generatedFolderCount: 50
+  generateSummaryContentAsset: false
+
+  # --- Locale set ---
+  # BBKT ran ~50 active locales across its storefront regions.
+  # CJK locales (zh, ja, ko) must be included: 1 char = 3 bytes UTF-8, which is exactly where
+  # char count diverges from byte count and stresses the MChars quota most.
+  locales:
+    - Generic    # en_US / x-default
+    - German     # de
+    - Chinese    # zh  — CJK: 1 char = 3 bytes
+    - Russian    # ru
+    - Japanese   # ja  — CJK: 1 char = 3 bytes
+    - Korean     # ko  — CJK: 1 char = 3 bytes
+
+  contentAssetDefaults:
+    useRandomContentIds: true
+    classificationFolder: "root"
+    # --- Body size (primary axis, tier 1: typical) ---
+    # 67 % of BBKT CLOB rows were under 63 KB.
+    # Per-PO localized-AV volume for this tier: 63 000 chars × 6 locales = 378 000 chars (0.38 MChars).
+    bodyLengthChars: 63000
+
+  folderDefaults:
+    onlineFlag: true
+    randomFolderIds: true
+    parent: "root"
+
+---
+# BBKT outlier tier — the 25 % of rows that drove 80 % of LOB storage (188–376 KB).
+# Run as a separate pass after the typical-tier baseline, or blend with a custom generator profile.
+#
+# Per-PO localized-AV volume for this tier: 375 000 chars × 6 locales = 2.25 MChars per asset.
+
+# libraryConfig:
+#   generatedContentAssetCount: 13611   # 25 % of 54 444 CLOB rows
+#   locales: [Generic, German, Chinese, Russian, Japanese, Korean]
+#   contentAssetDefaults:
+#     bodyLengthChars: 375000

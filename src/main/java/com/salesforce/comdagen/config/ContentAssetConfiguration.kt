@@ -30,7 +30,15 @@ data class ContentConfiguration(
     /**
      * This is one because the [ContentConfiguration] is specific to one ContentAsset
      */
-    override val elementCount: Int = 1
+    override val elementCount: Int = 1,
+
+    /**
+     * Target body size in characters per locale. Null = use a random sentence (~100–200 chars).
+     * Set to model real customer outliers: BBKT typical 63_000, BBKT outlier 375_000,
+     * Kering-class 1_200_000.  The quota counter is char-based (MChars), so this is the
+     * right unit to control.
+     */
+    val bodyLengthChars: Int? = null
 
 ) : Configuration
 

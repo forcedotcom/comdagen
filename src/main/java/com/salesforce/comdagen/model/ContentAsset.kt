@@ -49,30 +49,46 @@ open class RandomContentAsset(
      * limited in computation; many different types of content assets could get very confusing
      */
     val customBody: Map<SupportedZone, String>
-        get() = SupportedZone.values().associateBy({ it },
+        // Uses `regions` (not SupportedZone.values()) so locale count is controlled by the caller,
+        // matching the behaviour of `displayName` and `description`.
+        get() = regions.associateBy({ it },
             {
-                val headerStyle = "color: rgb(86, 79, 71);"
-                val generalStyle = "padding:24px 16px 0 16px; font-size:1.1em;"
-                val paragraphStyle = "margin:0 0 8px 0;"
-                val header = RandomData.getRandomNoun(
-                    seed + "header".hashCode(),
-                    it
-                )
-                val paragraph = RandomData.getRandomSentence(seed + "body".hashCode(), it)
+                val bodyLength = contentConfig.bodyLengthChars
+                if (bodyLength != null) {
+                    // Generate an exact-size body for load-test profiling.
+                    // bookCite cycles the source text if the book file is shorter than bodyLength,
+                    // so the char count is always exactly bodyLength regardless of locale file size.
+                    RandomData.bookCite(seed + "body".hashCode().toLong(), bodyLength, it)
+                } else {
+                    val headerStyle = "color: rgb(86, 79, 71);"
+                    val generalStyle = "padding:24px 16px 0 16px; font-size:1.1em;"
+                    val paragraphStyle = "margin:0 0 8px 0;"
+                    val header = RandomData.getRandomNoun(seed + "header".hashCode(), it)
+                    val paragraph = RandomData.getRandomSentence(seed + "body".hashCode(), it)
 
-                // HTML template
-                """
-                    <div style="$generalStyle">
-                        <h1 style="$headerStyle">
-                            $header
-                        </h1>
-                        <hr />
-                        <p style="$paragraphStyle">
-                            $paragraph
-                        </p>
-                    </div>
-                """
+                    // HTML template
+                    """
+                        <div style="$generalStyle">
+                            <h1 style="$headerStyle">
+                                $header
+                            </h1>
+                            <hr />
+                            <p style="$paragraphStyle">
+                                $paragraph
+                            </p>
+                        </div>
+                    """
+                }
             })
+
+    /**
+     * Total body characters across all locales for this asset.
+     * This is the per-PO localized-AV volume the quota enforces — body_chars × locale_count.
+     * The quota counter is char-based (MChars), not byte-based, so CJK locales (Japanese, Korean,
+     * Chinese) contribute 1 char per codepoint even though they encode as 3 bytes in UTF-8.
+     */
+    val localizedBodyVolumeChars: Long
+        get() = customBody.values.sumOf { it.length.toLong() }
 }
 
 /**

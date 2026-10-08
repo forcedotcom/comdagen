@@ -148,7 +148,17 @@ object RandomData {
             else 0
         val startIndex = book.indexOfAny(" \r\n\t".toCharArray(), rawStart)
 
-        return book.substring(startIndex, Math.min(startIndex + length, book.length))
+        // If the book is shorter than the requested length, cycle the content so that
+        // bodyLengthChars always produces exactly `length` characters.  This is important
+        // for load-test profiles (e.g. Kering 1.2M-char bodies) where the source book file
+        // would otherwise be truncated.
+        if (startIndex + length <= book.length) {
+            return book.substring(startIndex, startIndex + length)
+        }
+        val base = book.substring(startIndex)
+        val sb = StringBuilder(length)
+        while (sb.length < length) sb.append(base)
+        return sb.substring(0, length)
     }
 
     private fun exists(resourceFileName: String) =

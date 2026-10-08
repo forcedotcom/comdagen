@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonRootName
 import com.salesforce.comdagen.RenderConfig
+import com.salesforce.comdagen.SupportedZone
 
 
 /**
@@ -33,5 +34,12 @@ data class LibraryConfiguration(
     override val elementCount: Int = 1,
     override val outputFilePattern: String = "",
     override val outputDir: String = "libraries",
-    override val templateName: String = "library.ftlx"
+    override val templateName: String = "library.ftlx",
+
+    /**
+     * Locales to generate body content for. Defaults to all supported locales.
+     * Override in load-test profiles to isolate CJK, or to exactly match a customer's locale set
+     * (e.g. Kering 100-locale config, BBKT 50-locale config).
+     */
+    val locales: List<SupportedZone> = SupportedZone.values().toList()
 ) : RenderConfig

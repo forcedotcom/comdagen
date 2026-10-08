@@ -41,7 +41,7 @@ class Library(
                     index + 1,
                     it,
                     config.defaultContentAssetConfig,
-                    SupportedZone.values().asList()
+                    config.locales
                 )
             }
         }

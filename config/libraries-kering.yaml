@@ -1,0 +1,59 @@
+# Load-test profile: Kering-class outlier — worst-case body/locale density observed in production.
+#
+# Source: design doc W-23796921 §6.2 "Performance Testing Methodology & Matrix".
+# Kering-class is defined as the outlier tier: 500 KB–1.2 MB bodies, 100+ locales.
+# This is the shape that causes realms with as few as 5 000 ContentPOs to experience outages,
+# because per-PO AV-relation load (body_chars × locales) dwarfs raw row count as a cost driver.
+#
+# Reference: footer example from design doc —
+#   "A footer with 50 KB of text translated into 220 locales will load ~11 MB of data every
+#    time it is touched."  Kering-class assets are 10–24× larger than that footer per locale.
+#
+# Primary axis: per-PO localized-AV volume (bodyLengthChars × localeCount).
+# At peak: 1 200 000 chars × 6 locales = 7.2 MChars per asset.
+#
+# Run on a PIG instance (POD222, POD223, or POD326) AFTER the context-scoped AV-load fix
+# (W-24128619, toggle ContentContextScopedAVLoadEnabled) is deployed.
+# Run with toggle OFF then ON to quantify the improvement.
+#
+# Measure: cold-cache replication time, storefront P99 latency, DB LOB I/O (Oracle AWR).
+
+libraryConfig:
+  outputDir: "libraries"
+  initialSeed: 20260401
+
+  # --- Row count (secondary axis) ---
+  # Kering-class realms typically hold 5 000–50 000 ContentPOs.
+  # Even 5 000 assets at 7.2 MChars/asset = 36 000 MChars total AV load.
+  generatedContentAssetCount: 5000
+
+  generatedFolderCount: 20
+  generateSummaryContentAsset: false
+
+  # --- Locale set ---
+  # Kering runs 100+ storefront locales.  ComdaGen currently supports 6; use all of them.
+  # CJK locales (zh, ja, ko) must be included — they contribute 1 char = 3 bytes UTF-8,
+  # which is the maximum char/byte divergence for the MChars quota.
+  locales:
+    - Generic    # en_US / x-default
+    - German     # de
+    - Chinese    # zh  — CJK
+    - Russian    # ru
+    - Japanese   # ja  — CJK
+    - Korean     # ko  — CJK
+
+  contentAssetDefaults:
+    useRandomContentIds: true
+    classificationFolder: "root"
+    # --- Body size (primary axis) ---
+    # Kering-class peak: 1.2 MB per locale.
+    # Per-PO localized-AV volume: 1 200 000 chars × 6 locales = 7.2 MChars per asset.
+    # Step values for the sweep:
+    #   Step 1 (midpoint):  bodyLengthChars: 500000    # 0.5 MB / locale → 3 MChars/asset
+    #   Step 2 (peak):      bodyLengthChars: 1200000   # 1.2 MB / locale → 7.2 MChars/asset
+    bodyLengthChars: 1200000
+
+  folderDefaults:
+    onlineFlag: true
+    randomFolderIds: true
+    parent: "root"
